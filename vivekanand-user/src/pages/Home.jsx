@@ -156,11 +156,11 @@ export default function Home() {
                 <span className="font-heading text-[32px] sm:text-[46px] lg:text-[56px] font-black uppercase tracking-wider text-white">
                   ADMISSION <span className="text-[#FF6600]">OPEN</span>
                 </span>
-                <span className="block font-heading text-[48px] sm:text-[68px] lg:text-[80px] font-black text-[#FFD54F] leading-[1.6] mt-1 pb-2 pt-2">
+                <span className="block font-heading text-[48px] sm:text-[68px] lg:text-[80px] font-black text-[#FFD54F] leading-[2.1] mt-1 pb-2 pt-2">
                   2026-27
                 </span>
               </div>
-              <h1 className="font-heading font-extrabold text-[28px] sm:text-[36px] lg:text-[42px] leading-[1.7] text-[#FFE082] mt-3 pb-2 pt-2">
+              <h1 className="font-heading font-extrabold text-[28px] sm:text-[36px] lg:text-[42px] leading-[2.1] text-[#FFE082] mt-3 pb-2 pt-2">
                 આજનું યોગ્ય માર્ગદર્શન,
                 <span className="block text-white">આવતીકાલનું ઉજ્જવળ ભવિષ્ય.</span>
               </h1>
@@ -408,7 +408,7 @@ export default function Home() {
                       <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#FF6600] text-white shrink-0 shadow">
                         <Icon className="w-5 h-5" strokeWidth={2} />
                       </div>
-                      <h3 className="font-heading font-extrabold text-[18px] text-white leading-[1.6]">
+                      <h3 className="font-heading font-extrabold text-[18px] text-white leading-[2.1] pb-1">
                         {course.name}
                       </h3>
                     </div>
@@ -685,7 +685,7 @@ export default function Home() {
         <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
         <div className="relative z-10 max-w-[1320px] mx-auto px-4 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left">
           <Reveal>
-            <h2 className="font-heading font-extrabold text-3xl md:text-[40px] leading-[1.7] md:leading-[1.65] pb-2 pt-1">
+            <h2 className="font-heading font-extrabold text-3xl md:text-[40px] leading-[2.1] pb-2 pt-1">
               મફત ડેમો ક્લાસ બુક કરો
             </h2>
             <p className="mt-3 font-body text-[18px] text-white/85 max-w-xl">

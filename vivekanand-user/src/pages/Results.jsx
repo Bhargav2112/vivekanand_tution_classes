@@ -171,7 +171,7 @@ export default function Results() {
       <section className="bg-accent text-white py-16 lg:py-20">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8 text-center">
           <Reveal>
-            <h2 className="font-heading font-extrabold text-3xl md:text-[40px] leading-[1.7] md:leading-[1.65] pb-2 pt-1">
+            <h2 className="font-heading font-extrabold text-3xl md:text-[40px] leading-[2.1] pb-2 pt-1">
               તમારા બાળકને પણ સફળતાના શિખરે પહોંચાડો.
             </h2>
             <div className="mt-8">

@@ -38,7 +38,7 @@ export default function PageHero({ title, subtitle, breadcrumb = [], bg = 'prima
               ))}
             </nav>
           )}
-          <h1 className="font-heading font-extrabold text-3xl md:text-5xl lg:text-[56px] leading-[1.7] md:leading-[1.65] text-balance pb-3 pt-2">
+          <h1 className="font-heading font-extrabold text-3xl md:text-5xl lg:text-[56px] leading-[2.1] text-balance pb-3 pt-2">
             {title}
           </h1>
           {subtitle && (
