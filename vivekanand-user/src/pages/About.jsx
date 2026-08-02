@@ -117,10 +117,14 @@ export default function About() {
             </Reveal>
             <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {shortVideos.map((video, i) => {
-                let embedUrl = video.youtube_url;
-                const ytId = String(embedUrl).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/|watch\?.+&v=))([\w-]{11})/);
-                if (ytId && ytId[1]) {
-                  embedUrl = `https://www.youtube.com/embed/${ytId[1]}?rel=0`;
+                let embedUrl = video.embedUrl || video.youtube_url;
+                if (video.videoId) {
+                  embedUrl = `https://www.youtube.com/embed/${video.videoId}?rel=0`;
+                } else {
+                  const ytId = String(embedUrl).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/|watch\?.+&v=))([\w-]{11})/);
+                  if (ytId && ytId[1]) {
+                    embedUrl = `https://www.youtube.com/embed/${ytId[1]}?rel=0`;
+                  }
                 }
                 return (
                   <Reveal key={video._id || i} delay={i * 0.1}>

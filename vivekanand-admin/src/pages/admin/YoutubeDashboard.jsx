@@ -134,6 +134,7 @@ export default function YoutubeDashboard() {
                 <img 
                   src={channel.thumbnailUrl} 
                   alt={channel.title} 
+                  referrerPolicy="no-referrer"
                   className={`w-20 h-20 rounded-full mx-auto border-4 border-card bg-white ${channel.bannerUrl ? '-mt-16' : ''} mb-4`} 
                 />
               )}

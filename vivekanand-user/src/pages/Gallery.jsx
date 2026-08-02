@@ -78,16 +78,17 @@ export default function Gallery() {
             ) : (
               videos.map((v, i) => {
                 const details = getYouTubeDetails(v.youtube_url);
-                const thumb = v.thumbnail_url || details.thumbnailUrl;
+                const thumb = v.thumbnailUrl || v.thumbnail_url || details.thumbnailUrl;
+                const embed = v.embedUrl || details.embedUrl;
                 return (
                   <Reveal key={v._id || i} delay={i * 0.1}>
                     <div
-                      onClick={() => setActiveVideoModal(details.embedUrl)}
+                      onClick={() => setActiveVideoModal(embed)}
                       className="block card-hover group border border-border bg-white overflow-hidden h-full cursor-pointer"
                     >
                       <div className="relative aspect-[16/9] bg-slate-900 overflow-hidden">
                         {thumb ? (
-                          <img src={thumb} alt={v.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          <img src={thumb} alt={v.title} referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
                           <ImgPlaceholder label="વિડિયો થમ્બનેલ" ratio="16/9" className="border-0 group-hover:scale-105 transition-transform duration-500" showLabel={false} />
                         )}
