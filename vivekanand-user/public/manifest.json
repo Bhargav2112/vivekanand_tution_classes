@@ -1,0 +1,17 @@
+{
+  "name": "Vivekanand Tution Classes",
+  "short_name": "VTS",
+  "description": "Vivekanand Tution Classes",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7a1d1d",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

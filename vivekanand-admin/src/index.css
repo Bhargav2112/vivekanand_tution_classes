@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 8% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 8% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 8% 12%;
+    --primary: 357 63% 30%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 35 92% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 97%;
+    --muted-foreground: 222 5% 42%;
+    --accent: 0 0% 97%;
+    --accent-foreground: 357 63% 30%;
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 357 63% 30%;
+    --maroon: 357 63% 30%;
+    --maroon-light: 357 50% 42%;
+    --orange: 35 92% 50%;
+    --radius: 0px;
+    --font-heading: 'Noto Sans Gujarati', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Noto Sans Gujarati', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Noto Sans Gujarati', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+}
+
+@layer components {
+  .admin-card {
+    @apply bg-white border border-border p-5;
+  }
+  .admin-btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 font-semibold transition-colors disabled:opacity-50;
+  }
+  .admin-btn-primary {
+    @apply bg-[#7a1d1d] text-white hover:bg-[#631515];
+  }
+  .admin-btn-secondary {
+    @apply bg-[#f59e0b] text-white hover:bg-[#d97f06];
+  }
+  .admin-btn-outline {
+    @apply border border-[#7a1d1d] text-[#7a1d1d] hover:bg-[#7a1d1d] hover:text-white;
+  }
+}
+
+/* Sharp corners everywhere */
+* {
+  border-radius: 0 !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #7a1d1d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #631515;
+}
