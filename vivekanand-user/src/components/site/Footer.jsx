@@ -42,7 +42,7 @@ export default function Footer() {
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
         aria-hidden="true"
       >
-        <span className="font-heading font-extrabold text-[24px] sm:text-[45px] md:text-[60px] lg:text-[72px] text-white/[0.05] leading-none whitespace-nowrap transform -rotate-[12deg] tracking-wider">
+        <span className="font-heading font-extrabold text-[24px] sm:text-[45px] md:text-[60px] lg:text-[72px] text-white/[0.05] leading-[1.3] whitespace-nowrap transform -rotate-[12deg] tracking-wider">
           વિવેકાનંદ ટ્યુશન ક્લાસીસ
         </span>
       </div>

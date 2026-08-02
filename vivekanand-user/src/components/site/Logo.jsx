@@ -17,7 +17,7 @@ export default function Logo({ light = false, className = '' }) {
           className="w-full h-full object-cover rounded-full"
         />
       </div>
-      <div className="leading-tight">
+      <div className="leading-[1.3]">
         <div
           className={cn(
             'font-heading font-bold text-[17px] md:text-[18px] tracking-tight',
