@@ -38,7 +38,7 @@ export default function SectionHeading({
       {title && (
         <h2
           className={cn(
-            'font-heading font-extrabold leading-[2.1] text-balance pb-2 pt-1',
+            'font-heading font-extrabold !leading-loose text-balance pb-4 pt-2',
             light ? 'text-white' : 'text-foreground',
             align === 'center' ? 'text-3xl md:text-[42px] lg:text-[48px]' : 'text-3xl md:text-4xl lg:text-[44px]'
           )}

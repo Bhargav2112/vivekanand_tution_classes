@@ -104,7 +104,7 @@ export default function Courses() {
                           );
                         })()}
                         <div>
-                          <h3 className="font-heading font-extrabold text-[28px] text-foreground leading-[2.1] pb-1 pt-1">{active.name}</h3>
+                          <h3 className="font-heading font-extrabold text-[28px] text-foreground !leading-loose pb-2 pt-2">{active.name}</h3>
                           {active.badge && <span className="inline-block mt-1 bg-primary text-white px-3 py-1 text-[12px] font-heading font-semibold">{active.badge}</span>}
                         </div>
                       </div>

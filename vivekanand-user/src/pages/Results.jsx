@@ -144,7 +144,7 @@ export default function Results() {
                       {t.rank && (
                         <div className="absolute top-3 right-3 bg-golden text-white w-12 h-12 flex flex-col items-center justify-center">
                           <Trophy className="w-4 h-4" strokeWidth={2} />
-                          <span className="font-heading font-extrabold text-[13px] leading-[1.4] mt-0.5">#{t.rank}</span>
+                          <span className="font-heading font-extrabold text-[13px] !leading-loose mt-0.5">#{t.rank}</span>
                         </div>
                       )}
                     </div>
@@ -171,7 +171,7 @@ export default function Results() {
       <section className="bg-accent text-white py-16 lg:py-20">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8 text-center">
           <Reveal>
-            <h2 className="font-heading font-extrabold text-3xl md:text-[40px] leading-[2.1] pb-2 pt-1">
+            <h2 className="font-heading font-extrabold text-3xl md:text-[40px] !leading-loose pb-4 pt-2">
               તમારા બાળકને પણ સફળતાના શિખરે પહોંચાડો.
             </h2>
             <div className="mt-8">
