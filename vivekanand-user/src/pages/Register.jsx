@@ -65,7 +65,8 @@ export default function Register() {
   };
 
   const handleGoogle = () => {
-    const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'development' ? 'http://localhost:5000/api/v1' : '');
+    const envUrl = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'development' ? 'http://localhost:5000' : '');
+    const API_URL = envUrl ? `${envUrl.replace(/\/api\/v1\/?$/, '').replace(/\/$/, '')}/api/v1` : '/api/v1';
     window.location.href = `${API_URL}/auth/google`;
   };
 
