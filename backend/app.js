@@ -13,13 +13,26 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 
 // CORS configuration (Must be first to avoid preflight/CORS blocks on rate limits or errors)
+const allowedOrigins = [
+  process.env.FRONTEND_USER_URL,
+  process.env.FRONTEND_ADMIN_URL,
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+].map(url => url ? url.replace(/\/$/, '') : null).filter(Boolean);
+
 const corsOptions = {
-  origin: [
-    process.env.FRONTEND_USER_URL || 'http://localhost:5173',
-    process.env.FRONTEND_ADMIN_URL || 'http://localhost:5174',
-    'http://localhost:5175'
-  ],
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes(origin.replace(/\/$/, ''))) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 };
 app.use(cors(corsOptions));
 
