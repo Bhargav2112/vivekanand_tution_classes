@@ -12,8 +12,6 @@ const TITLES = {
   "/batches": "બેચ",
   "/results": "પરિણામ",
   "/gallery": "ગેલેરી",
-  "/videos": "વિડિઓ",
-  "/shortvideos": "શોર્ટ્સ વિડિઓ",
   "/youtube": "યુટ્યુબ સિંક (YouTube Sync)",
   "/notices": "જાહેરાતો",
   "/events": "કાર્યક્રમો",

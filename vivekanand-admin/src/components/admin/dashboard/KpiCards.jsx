@@ -20,7 +20,7 @@ const KPIS = [
   { key: "activeCourses", label: "સક્રિય કોર્સ", icon: "BookOpen", color: "#7a1d1d", link: "/courses" },
   { key: "teachers", label: "શિક્ષકો", icon: "School", color: "#f59e0b", link: "/teachers" },
   { key: "galleryImages", label: "ગેલેરી ઈમેજ", icon: "Image", color: "#7a1d1d", link: "/gallery" },
-  { key: "videos", label: "વિડિઓ", icon: "Video", color: "#f59e0b", link: "/videos" },
+  { key: "videos", label: "યુટ્યુબ સિંક", icon: "Video", color: "#f59e0b", link: "/youtube" },
 ];
 
 export default function KpiCards({ counts = {} }) {

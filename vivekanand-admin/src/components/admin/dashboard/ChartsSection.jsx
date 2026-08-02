@@ -4,7 +4,7 @@ import {
   ResponsiveContainer, PieChart, Pie, Cell, Legend
 } from "recharts";
 import { Link } from "react-router-dom";
-import { UserPlus, BookPlus, Megaphone, ImagePlus, Video, Download } from "lucide-react";
+import { UserPlus, BookPlus, Megaphone, ImagePlus, Video, Download, Youtube } from "lucide-react";
 
 const MONTHS_GU = ["જાન્યુઆરી", "ફેબ્રુઆરી", "માર્ચ", "એપ્રિલ", "મે", "જૂન", "જુલાઈ", "ઓગસ્ટ", "સપ્ટે", "ઓક્ટો", "નવેમ્બર", "ડિસેમ્બર"];
 
@@ -13,7 +13,7 @@ const QUICK_LINKS = [
   { label: "કોર્સ ઉમેરો", icon: BookPlus, to: "/courses", color: "#f59e0b" },
   { label: "જાહેરાત ઉમેરો", icon: Megaphone, to: "/notices", color: "#7a1d1d" },
   { label: "ગેલેરી અપલોડ", icon: ImagePlus, to: "/gallery", color: "#f59e0b" },
-  { label: "વિડિઓ ઉમેરો", icon: Video, to: "/videos", color: "#7a1d1d" },
+  { label: "યુટ્યુબ સિંક", icon: Youtube, to: "/youtube", color: "#7a1d1d" },
   { label: "રિપોર્ટ ડાઉનલોડ", icon: Download, to: "/", color: "#f59e0b" },
 ];
 

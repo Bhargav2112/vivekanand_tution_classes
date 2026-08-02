@@ -22,7 +22,7 @@ router.route('/webhook')
   .post(youtubeWebhook);
 
 // Admin protected routes
-router.post('/sync', protect, authorize('Admin'), triggerSync);
-router.get('/logs', protect, authorize('Admin'), getSyncLogs);
+router.post('/sync', protect, authorize('Super Admin', 'Admin'), triggerSync);
+router.get('/logs', protect, authorize('Super Admin', 'Admin'), getSyncLogs);
 
 module.exports = router;
