@@ -86,7 +86,7 @@ export default function Home() {
           apiClient.get('/courses'),
           apiClient.get('/notices'),
           apiClient.get('/galleries'),
-          apiClient.get('/videos'),
+          apiClient.get('/youtube/videos'),
           apiClient.get('/settings'),
           apiClient.get('/banners')
         ]);

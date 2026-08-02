@@ -112,6 +112,7 @@ app.use('/api/v1/contactenquiries', require('./src/routes/contactenquiry.routes'
 app.use('/api/v1/newsletters', require('./src/routes/newsletter.routes'));
 app.use('/api/v1/downloads', require('./src/routes/download.routes'));
 app.use('/api/v1/upload', require('./src/routes/upload.routes'));
+app.use('/api/v1/youtube', require('./src/routes/youtube.routes'));
 
 // Error Handling Middlewares
 app.use(notFound);

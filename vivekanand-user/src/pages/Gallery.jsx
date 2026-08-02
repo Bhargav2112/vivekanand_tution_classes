@@ -39,7 +39,7 @@ export default function Gallery() {
       try {
         const [photoRes, videoRes] = await Promise.all([
           apiClient.get('/galleries'),
-          apiClient.get('/videos')
+          apiClient.get('/youtube/videos')
         ]);
         const photoData = Array.isArray(photoRes.data) ? photoRes.data : (photoRes.data?.data || []);
         const videoData = Array.isArray(videoRes.data) ? videoRes.data : (videoRes.data?.data || []);

@@ -25,9 +25,12 @@ cloudinary.api.ping()
   .then(() => console.log(`✅ Cloudinary Configured & Connected Successfully (Cloud: ${process.env.CLOUDINARY_NAME})`))
   .catch((err) => console.error(`❌ Cloudinary Connection Error: ${err.message}`));
 
+const initYoutubeCron = require('./src/cron/youtube.cron');
+
 // Start Server
 server.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  initYoutubeCron();
 });
 
 // Handle unhandled promise rejections without crashing the server

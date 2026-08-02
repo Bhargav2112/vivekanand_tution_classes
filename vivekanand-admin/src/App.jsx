@@ -33,6 +33,7 @@ import SEO from '@/pages/admin/SEO';
 import Settings from '@/pages/admin/Settings';
 import AdminUsers from '@/pages/admin/AdminUsers';
 import Banners from '@/pages/admin/Banners';
+import YoutubeDashboard from '@/pages/admin/YoutubeDashboard';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -80,6 +81,7 @@ const AuthenticatedApp = () => {
           <Route path="/notices" element={<Notices />} />
           <Route path="/events" element={<Events />} />
           <Route path="/testimonials" element={<Testimonials />} />
+          <Route path="/youtube" element={<YoutubeDashboard />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/contact-enquiry" element={<ContactMessages />} />
           <Route path="/banners" element={<Banners />} />

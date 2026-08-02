@@ -25,7 +25,7 @@ export default function About() {
         const [teacherRes, settingsRes, shortsRes] = await Promise.allSettled([
           apiClient.get('/teachers'),
           apiClient.get('/settings'),
-          apiClient.get('/shortvideos')
+          apiClient.get('/youtube/shorts')
         ]);
         if (teacherRes.status === 'fulfilled') {
           const data = Array.isArray(teacherRes.value.data) ? teacherRes.value.data : (teacherRes.value.data?.data || []);
