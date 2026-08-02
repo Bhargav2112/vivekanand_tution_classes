@@ -192,7 +192,7 @@ export default function Gallery() {
       <section className="bg-accent text-white py-16 lg:py-20">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8 text-center">
           <Reveal>
-            <h2 className="font-heading font-extrabold text-3xl md:text-[40px] leading-[1.4] md:leading-[1.35] pb-2">
+            <h2 className="font-heading font-extrabold text-3xl md:text-[40px] leading-[1.7] md:leading-[1.65] pb-2 pt-1">
               આજે જ તમારા બાળકના ભવિષ્યની શરૂઆત કરો.
             </h2>
             <div className="mt-8">
