@@ -7,7 +7,7 @@ const {
   deleteShortVideo
 } = require('../controllers/shortVideo.controller');
 const ShortVideo = require('../models/ShortVideo.model');
-const advancedResults = require('../middlewares/advancedResults.middleware');
+const advancedResults = require('../middlewares/advancedResults');
 const { protect, authorize } = require('../middlewares/auth.middleware');
 
 const router = express.Router();
@@ -15,12 +15,12 @@ const router = express.Router();
 router
   .route('/')
   .get(advancedResults(ShortVideo), getShortVideos)
-  .post(protect, authorize('admin', 'superadmin'), createShortVideo);
+  .post(protect, authorize('Super Admin', 'Admin'), createShortVideo);
 
 router
   .route('/:id')
   .get(getShortVideo)
-  .put(protect, authorize('admin', 'superadmin'), updateShortVideo)
-  .delete(protect, authorize('admin', 'superadmin'), deleteShortVideo);
+  .put(protect, authorize('Super Admin', 'Admin'), updateShortVideo)
+  .delete(protect, authorize('Super Admin', 'Admin'), deleteShortVideo);
 
 module.exports = router;
