@@ -18,6 +18,7 @@ const NAV_ITEMS = [
   { to: "/results", label: "પરિણામ", icon: Trophy },
   { to: "/gallery", label: "ગેલેરી", icon: ImageIcon },
   { to: "/videos", label: "વિડિઓ", icon: Video },
+  { to: "/shortvideos", label: "શોર્ટ્સ વિડિઓ", icon: Video },
   { to: "/notices", label: "જાહેરાતો", icon: Megaphone },
   { to: "/testimonials", label: "વાલીઓના અભિપ્રાય", icon: MessageSquareHeart },
   { to: "/faq", label: "FAQ", icon: HelpCircle },

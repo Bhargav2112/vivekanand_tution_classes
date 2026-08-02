@@ -13,6 +13,7 @@ const entityToEndpoint = {
   Result: "results",
   GalleryImage: "galleries",
   Video: "videos",
+  ShortVideo: "shortvideos",
   Testimonial: "testimonials",
   Event: "events",
   Notice: "notices",

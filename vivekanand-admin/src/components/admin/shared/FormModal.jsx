@@ -221,7 +221,7 @@ function renderField(f, value, setField, error, setUploadingFile) {
             setField(f.key, digits ? `+91 ${digits}` : "");
           }}
           className={baseClass}
-          placeholder={f.placeholder || "98765 43210"}
+          placeholder={f.placeholder || "9054 88 33 88"}
         />
       </div>
     );

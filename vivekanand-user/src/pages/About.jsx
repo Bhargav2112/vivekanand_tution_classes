@@ -16,14 +16,16 @@ const VALUE_ICONS = { Heart, ShieldCheck, BookOpen, Lightbulb, Flag, Target };
 export default function About() {
   const [teachers, setTeachers] = useState([]);
   const [settings, setSettings] = useState(null);
+  const [shortVideos, setShortVideos] = useState([]);
   const [loadingTeachers, setLoadingTeachers] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [teacherRes, settingsRes] = await Promise.allSettled([
+        const [teacherRes, settingsRes, shortsRes] = await Promise.allSettled([
           apiClient.get('/teachers'),
-          apiClient.get('/settings')
+          apiClient.get('/settings'),
+          apiClient.get('/shortvideos')
         ]);
         if (teacherRes.status === 'fulfilled') {
           const data = Array.isArray(teacherRes.value.data) ? teacherRes.value.data : (teacherRes.value.data?.data || []);
@@ -32,6 +34,10 @@ export default function About() {
         if (settingsRes.status === 'fulfilled') {
           const data = Array.isArray(settingsRes.value.data) ? settingsRes.value.data : (settingsRes.value.data?.data || []);
           if (data && data.length > 0) setSettings(data[0]);
+        }
+        if (shortsRes.status === 'fulfilled') {
+          const data = Array.isArray(shortsRes.value.data) ? shortsRes.value.data : (shortsRes.value.data?.data || []);
+          setShortVideos(data.filter(v => v.isActive));
         }
       } catch (err) {
         console.error("Failed to fetch about data:", err);
@@ -101,6 +107,44 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {/* Shorts Videos */}
+      {shortVideos && shortVideos.length > 0 && (
+        <section className="bg-background py-16 lg:py-24 border-t border-border">
+          <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
+            <Reveal>
+              <SectionHeading label="શોર્ટ્સ વિડિઓ" title="અમારા શોર્ટ્સ વિડિઓ" subtitle="શિક્ષણ અને પ્રેરણાના ટૂંકા વિડિઓઝ નિહાળો." />
+            </Reveal>
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {shortVideos.map((video, i) => {
+                let embedUrl = video.youtube_url;
+                const ytId = String(embedUrl).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/|watch\?.+&v=))([\w-]{11})/);
+                if (ytId && ytId[1]) {
+                  embedUrl = `https://www.youtube.com/embed/${ytId[1]}?rel=0`;
+                }
+                return (
+                  <Reveal key={video._id || i} delay={i * 0.1}>
+                    <div className="card-hover border border-border bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
+                      <div className="aspect-[9/16] relative bg-black">
+                        <iframe
+                          src={embedUrl}
+                          title={video.title}
+                          className="absolute inset-0 w-full h-full border-0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                      <div className="p-4 bg-white flex-1 flex items-center">
+                        <h3 className="font-heading font-bold text-[16px] text-foreground line-clamp-2">{video.title}</h3>
+                      </div>
+                    </div>
+                  </Reveal>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Faculty - Right below Gujarat's Trusted Institution section */}
       <section className="bg-background py-20 lg:py-[120px]">

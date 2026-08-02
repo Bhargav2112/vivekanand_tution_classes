@@ -98,6 +98,7 @@ app.use('/api/v1/batches', require('./src/routes/batch.routes'));
 app.use('/api/v1/results', require('./src/routes/result.routes'));
 app.use('/api/v1/galleries', require('./src/routes/gallery.routes'));
 app.use('/api/v1/videos', require('./src/routes/video.routes'));
+app.use('/api/v1/shortvideos', require('./src/routes/shortVideo.routes'));
 app.use('/api/v1/testimonials', require('./src/routes/testimonial.routes'));
 app.use('/api/v1/events', require('./src/routes/event.routes'));
 app.use('/api/v1/notices', require('./src/routes/notice.routes'));

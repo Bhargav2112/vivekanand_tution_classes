@@ -13,6 +13,7 @@ const TITLES = {
   "/results": "પરિણામ",
   "/gallery": "ગેલેરી",
   "/videos": "વિડિઓ",
+  "/shortvideos": "શોર્ટ્સ વિડિઓ",
   "/notices": "જાહેરાતો",
   "/events": "કાર્યક્રમો",
   "/testimonials": "વાલીઓના અભિપ્રાય",
