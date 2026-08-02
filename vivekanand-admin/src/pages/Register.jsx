@@ -65,7 +65,8 @@ export default function Register() {
   };
 
   const handleGoogle = () => {
-    window.location.href = "http://localhost:5000/api/v1/auth/google";
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+    window.location.href = `${API_URL}/auth/google`;
   };
 
   if (showOtp) {
