@@ -21,8 +21,6 @@ import Courses from '@/pages/admin/Courses';
 import Batches from '@/pages/admin/Batches';
 import Results from '@/pages/admin/Results';
 import Gallery from '@/pages/admin/Gallery';
-import Videos from '@/pages/admin/Videos';
-import ShortVideos from '@/pages/admin/ShortVideos';
 import Notices from '@/pages/admin/Notices';
 import Events from '@/pages/admin/Events';
 import Testimonials from '@/pages/admin/Testimonials';
@@ -76,8 +74,6 @@ const AuthenticatedApp = () => {
           <Route path="/batches" element={<Batches />} />
           <Route path="/results" element={<Results />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/videos" element={<Videos />} />
-          <Route path="/shortvideos" element={<ShortVideos />} />
           <Route path="/notices" element={<Notices />} />
           <Route path="/events" element={<Events />} />
           <Route path="/testimonials" element={<Testimonials />} />
