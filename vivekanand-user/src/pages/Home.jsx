@@ -42,6 +42,7 @@ function getYouTubeDetails(url) {
 }
 
 export default function Home() {
+  const [courses, setCourses] = useState([]);
   const [notices, setNotices] = useState([]);
   const [photos, setPhotos] = useState([]);
   const [videos, setVideos] = useState([]);
