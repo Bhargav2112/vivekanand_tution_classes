@@ -3,8 +3,8 @@ import { X, Save, Loader2 } from "lucide-react";
 import FileUpload from "./FileUpload";
 
 export default function FormModal({ open, onClose, title, fields, initialValues, onSubmit }) {
-  const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({});
+  const [values, setValues] = useState(/** @type {Record<string, any>} */ ({}));
+  const [errors, setErrors] = useState(/** @type {Record<string, any>} */ ({}));
   const [saving, setSaving] = useState(false);
   const [uploadingFile, setUploadingFile] = useState(false);
 
@@ -87,6 +87,7 @@ export default function FormModal({ open, onClose, title, fields, initialValues,
     if (!validate()) return;
     setSaving(true);
     try {
+      /** @type {Record<string, any>} */
       const payload = { ...values };
       fields.forEach((f) => {
         if (typeof payload[f.key] === "string") {
