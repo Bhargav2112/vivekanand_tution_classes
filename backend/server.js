@@ -14,16 +14,22 @@ const cloudinary = require('cloudinary').v2;
 // Connect to Database
 connectDB();
 
-// Test Cloudinary Credentials
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET,
-});
+// Test Cloudinary Credentials only when all required variables are present
+const cloudinaryConfigured = Boolean(process.env.CLOUDINARY_NAME && process.env.CLOUDINARY_KEY && process.env.CLOUDINARY_SECRET);
 
-cloudinary.api.ping()
-  .then(() => console.log(`✅ Cloudinary Configured & Connected Successfully (Cloud: ${process.env.CLOUDINARY_NAME})`))
-  .catch((err) => console.error(`❌ Cloudinary Connection Error: ${err.message}`));
+if (cloudinaryConfigured) {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET,
+  });
+
+  cloudinary.api.ping()
+    .then(() => console.log(`✅ Cloudinary Configured & Connected Successfully (Cloud: ${process.env.CLOUDINARY_NAME})`))
+    .catch((err) => console.error(`❌ Cloudinary Connection Error: ${err.message}`));
+} else {
+  console.log('ℹ️ Cloudinary credentials not configured; skipping Cloudinary ping.');
+}
 
 const initYoutubeCron = require('./src/cron/youtube.cron');
 

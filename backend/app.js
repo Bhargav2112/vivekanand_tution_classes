@@ -46,7 +46,7 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
 };
-app.options('*', cors(corsOptions));
+app.options(/(.*)/, cors(corsOptions));
 app.use(cors(corsOptions));
 
 // Security Middlewares
