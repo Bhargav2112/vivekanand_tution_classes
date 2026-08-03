@@ -6,7 +6,7 @@ import {
   CalendarClock, MessageSquareHeart, HelpCircle, Mail, FileText,
   Search, Settings, ShieldCheck, LogOut, X, School, Youtube
 } from "lucide-react";
-import { api } from "@/api/axios";
+import { useAuth } from '@/lib/AuthContext';
 
 const NAV_ITEMS = [
   { to: "/", label: "ડેશબોર્ડ", icon: LayoutDashboard },
@@ -27,9 +27,12 @@ const NAV_ITEMS = [
 ];
 
 export default function Sidebar({ open, onClose }) {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
   const handleLogout = async () => {
-    try { await api.post('/auth/logout'); } catch(e){}
-    window.location.href = '/login';
+    await logout();
+    navigate('/login', { replace: true });
   };
 
   return (

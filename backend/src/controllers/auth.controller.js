@@ -175,16 +175,19 @@ exports.getMe = async (req, res, next) => {
 // @route   GET /api/v1/auth/logout
 // @access  Private
 exports.logout = async (req, res, next) => {
-  const cookieClearOptions = getCookieOptions(process.env.NODE_ENV === 'production', 10 * 1000);
+  const clearOptions = {
+    ...getCookieOptions(process.env.NODE_ENV === 'production', 0),
+    expires: new Date(0),
+  };
 
   res
-    .cookie('token', 'none', cookieClearOptions)
-    .cookie('refresh_token', 'none', cookieClearOptions)
+    .clearCookie('token', clearOptions)
+    .clearCookie('refresh_token', clearOptions)
     .status(200)
     .json({
       success: true,
       message: 'Logged out successfully',
-      data: {},
+      data: null,
       access_token: null,
       refresh_token: null,
     });

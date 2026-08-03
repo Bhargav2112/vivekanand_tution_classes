@@ -49,26 +49,27 @@ const corsOptions = {
 app.options(/(.*)/, cors(corsOptions));
 app.use(cors(corsOptions));
 
-// Security Middlewares
-const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 2000 // limit each IP to 2000 requests per windowMs (prevents rate limit issues during active usage/development)
-});
-app.use(limiter);
+// Security & Optimization Middlewares
 app.use(
   helmet({
     contentSecurityPolicy: false,
     crossOriginResourcePolicy: { policy: "cross-origin" },
   })
 );
-app.use(hpp());
+app.use(compression());
 
 // Parsing Middlewares
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(hpp());
 app.use(sanitizeRequestData);
-app.use(compression());
+
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 minutes
+  max: 2000 // limit each IP to 2000 requests per windowMs
+});
+app.use(limiter);
 
 // Logging Middleware
 if (process.env.NODE_ENV === 'development') {

@@ -1,96 +1,74 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { api } from '@/api/axios';
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
-  const [authError, setAuthError] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
 
-  useEffect(() => {
-    let isMounted = true;
-
-    const runCheck = async () => {
-      setAuthError(null);
-      setIsLoadingAuth(true);
-      try {
-        const res = await api.get('/auth/me');
-        if (!isMounted) return;
-        const currentUser = res?.data?.data || res?.data?.user || null;
-        const isValidAdmin = currentUser && ['Super Admin', 'Admin', 'Teacher'].includes(currentUser.role);
-        setUser(isValidAdmin ? currentUser : null);
-        setIsAuthenticated(Boolean(isValidAdmin));
-      } catch (error) {
-        if (!isMounted) return;
-        console.error('Auth check failed:', error);
-        setUser(null);
-        setIsAuthenticated(false);
-        setAuthError(null);
-      } finally {
-        if (isMounted) {
-          setIsLoadingAuth(false);
-          setAuthChecked(true);
-        }
-      }
-    };
-
-    runCheck();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  const checkAppState = useCallback(async () => {
-    setAuthError(null);
+  const checkAuth = useCallback(async () => {
     setIsLoadingAuth(true);
     try {
       const res = await api.get('/auth/me');
       const currentUser = res?.data?.data || res?.data?.user || null;
       const isValidAdmin = currentUser && ['Super Admin', 'Admin', 'Teacher'].includes(currentUser.role);
-      setUser(isValidAdmin ? currentUser : null);
-      setIsAuthenticated(Boolean(isValidAdmin));
+      if (isValidAdmin) {
+        setUser(currentUser);
+        setIsAuthenticated(true);
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
+      }
     } catch (error) {
-      console.error('Auth check failed:', error);
       setUser(null);
       setIsAuthenticated(false);
-      setAuthError(null);
     } finally {
       setIsLoadingAuth(false);
       setAuthChecked(true);
     }
   }, []);
 
-  const checkUserAuth = useCallback(async () => {
-    await checkAppState();
-  }, [checkAppState]);
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  const login = async (username, password) => {
+    const res = await api.post('/auth/login', { email: username, password });
+    if (res?.data?.success) {
+      await checkAuth();
+      return res.data;
+    }
+    throw new Error(res?.data?.message || 'Login failed');
+  };
 
   const logout = async () => {
     try {
       await api.post('/auth/logout');
     } catch (e) {
       console.error(e);
+    } finally {
+      setUser(null);
+      setIsAuthenticated(false);
+      setAuthChecked(true);
     }
-    setUser(null);
-    setIsAuthenticated(false);
-    setAuthError(null);
-    localStorage.removeItem('admin_token');
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      isAuthenticated, 
-      isLoadingAuth,
-      authError,
-      authChecked,
-      logout,
-      checkUserAuth,
-      checkAppState
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        authChecked,
+        loading: isLoadingAuth || !authChecked,
+        isLoadingAuth,
+        login,
+        logout,
+        checkAuth,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

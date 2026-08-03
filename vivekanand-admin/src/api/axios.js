@@ -12,22 +12,35 @@ export const api = axios.create({
 });
 
 api.interceptors.response.use(
-  (response) => {
-    const payload = response.data;
-    if (payload && typeof payload === 'object' && 'success' in payload) {
-      return { ...response, data: payload };
-    }
-
-    return response;
-  },
+  (response) => response,
   async (error) => {
-    const originalRequest = error.config || {};
-    const isAuthRequest = originalRequest.url?.includes('/auth/login') || originalRequest.url?.includes('/auth/refresh-token') || originalRequest.url?.includes('/auth/me');
-
-    if (error.response?.status === 401 && !originalRequest._retry && !isAuthRequest) {
-      return Promise.reject(error.response?.data || { success: false, message: error.message || 'Session expired' });
+    const originalRequest = error.config;
+    if (!originalRequest) {
+      return Promise.reject(
+        error.response?.data || { success: false, message: error.message || 'Request failed' }
+      );
     }
 
-    return Promise.reject(error.response?.data || { success: false, message: error.message || 'Request failed' });
+    const isAuthRoute =
+      originalRequest.url?.includes('/auth/login') ||
+      originalRequest.url?.includes('/auth/refresh-token');
+
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthRoute) {
+      originalRequest._retry = true;
+      try {
+        await api.post('/auth/refresh-token');
+        return api(originalRequest);
+      } catch (refreshError) {
+        return Promise.reject(
+          refreshError.response?.data || { success: false, message: 'Unauthenticated' }
+        );
+      }
+    }
+
+    return Promise.reject(
+      error.response?.data || { success: false, message: error.message || 'Request failed' }
+    );
   }
 );
+
+export const apiClient = api;
