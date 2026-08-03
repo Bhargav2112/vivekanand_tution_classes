@@ -1,9 +1,11 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '@/api/axios';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
@@ -11,10 +13,44 @@ export const AuthProvider = ({ children }) => {
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    checkAppState();
+    let isMounted = true;
+
+    const runCheck = async () => {
+      setAuthError(null);
+      setIsLoadingAuth(true);
+      try {
+        const res = await api.get('/auth/me');
+        if (!isMounted) return;
+        const currentUser = res?.data?.data || res?.data?.user || null;
+        setUser(currentUser);
+        setIsAuthenticated(Boolean(currentUser));
+      } catch (error) {
+        if (!isMounted) return;
+        console.error('Auth check failed:', error);
+        setUser(null);
+        setIsAuthenticated(false);
+        if (error?.status === 401 || error?.status === 403 || error?.success === false || error?.message) {
+          setAuthError({
+            type: 'auth_required',
+            message: error?.message || 'Authentication required'
+          });
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoadingAuth(false);
+          setAuthChecked(true);
+        }
+      }
+    };
+
+    runCheck();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const checkAppState = async () => {
+  const checkAppState = useCallback(async () => {
     setAuthError(null);
     setIsLoadingAuth(true);
     try {
@@ -36,11 +72,11 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingAuth(false);
       setAuthChecked(true);
     }
-  };
+  }, []);
 
-  const checkUserAuth = async () => {
-    checkAppState();
-  };
+  const checkUserAuth = useCallback(async () => {
+    await checkAppState();
+  }, [checkAppState]);
 
   const logout = async (shouldRedirect = true) => {
     try {
@@ -53,12 +89,12 @@ export const AuthProvider = ({ children }) => {
     setAuthError(null);
 
     if (shouldRedirect) {
-      window.location.href = '/login';
+      navigate('/login', { replace: true });
     }
   };
 
   const navigateToLogin = () => {
-    window.location.href = '/login';
+    navigate('/login', { replace: true });
   };
 
   return (

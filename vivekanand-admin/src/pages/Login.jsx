@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "@/api/axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +14,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   
   const returnTo = safeReturnTo();
 
@@ -24,7 +26,7 @@ export default function Login() {
     try {
       const res = await api.post("/auth/login", { email: username, password });
       if (res?.data?.success) {
-        window.location.href = returnTo === '/' ? '/' : returnTo;
+        navigate(returnTo === '/' ? '/' : returnTo, { replace: true });
         return;
       }
       setError(res?.data?.message || "Invalid credentials");
@@ -57,7 +59,7 @@ export default function Login() {
               type="text"
               autoComplete="username"
               autoFocus
-              placeholder="admin"
+              placeholder="Enter your username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="pl-10 h-12"

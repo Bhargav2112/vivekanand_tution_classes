@@ -1,9 +1,11 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '@/api/axios';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
@@ -11,10 +13,40 @@ export const AuthProvider = ({ children }) => {
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    checkAppState();
+    let isMounted = true;
+
+    const runCheck = async () => {
+      setAuthError(null);
+      setIsLoadingAuth(true);
+      try {
+        const res = await api.get('/auth/me');
+        if (!isMounted) return;
+        const currentUser = res?.data?.data || res?.data?.user || null;
+        const isValidAdmin = currentUser && ['Super Admin', 'Admin', 'Teacher'].includes(currentUser.role);
+        setUser(isValidAdmin ? currentUser : null);
+        setIsAuthenticated(Boolean(isValidAdmin));
+      } catch (error) {
+        if (!isMounted) return;
+        console.error('Auth check failed:', error);
+        setUser(null);
+        setIsAuthenticated(false);
+        setAuthError({ type: 'auth_required', message: error?.message || 'Authentication required' });
+      } finally {
+        if (isMounted) {
+          setIsLoadingAuth(false);
+          setAuthChecked(true);
+        }
+      }
+    };
+
+    runCheck();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const checkAppState = async () => {
+  const checkAppState = useCallback(async () => {
     setAuthError(null);
     setIsLoadingAuth(true);
     try {
@@ -32,11 +64,11 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingAuth(false);
       setAuthChecked(true);
     }
-  };
+  }, []);
 
-  const checkUserAuth = async () => {
-    checkAppState();
-  };
+  const checkUserAuth = useCallback(async () => {
+    await checkAppState();
+  }, [checkAppState]);
 
   const logout = async (shouldRedirect = true) => {
     try {
@@ -50,12 +82,12 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('admin_token');
 
     if (shouldRedirect) {
-      window.location.href = '/login';
+      navigate('/login', { replace: true });
     }
   };
 
   const navigateToLogin = () => {
-    window.location.href = '/login';
+    navigate('/login', { replace: true });
   };
 
   return (

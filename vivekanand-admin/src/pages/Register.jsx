@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "@/api/axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +19,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
   const [otpCode, setOtpCode] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +45,7 @@ export default function Register() {
     try {
       const res = await api.post("/auth/verify-otp", { email, otpCode });
       if (res?.data?.success) {
-        window.location.href = safeReturnTo();
+        navigate(safeReturnTo(), { replace: true });
         return;
       }
       setError(res?.data?.message || "Invalid verification code");
