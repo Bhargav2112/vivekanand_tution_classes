@@ -56,11 +56,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const isSuperAdmin = Boolean(
+    user && (
+      user.role === 'Super Admin' ||
+      user.username === 'admin1' ||
+      user.name === 'admin1' ||
+      user.email === 'admin1@vivekanand.com'
+    )
+  );
+
   return (
     <AuthContext.Provider
       value={{
         user,
         isAuthenticated,
+        isSuperAdmin,
         authChecked,
         loading: isLoadingAuth || !authChecked,
         isLoadingAuth,

@@ -51,11 +51,12 @@ const AuthenticatedApp = () => {
           <Route path="/youtube" element={<YoutubeDashboard />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/contact-enquiry" element={<ContactMessages />} />
-          <Route path="/banners" element={<Banners />} />
           <Route path="/pages" element={<WebsitePages />} />
           <Route path="/seo" element={<SEO />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/admin-users" element={<AdminUsers />} />
+          <Route element={<ProtectedRoute superAdminOnly={true} />}>
+            <Route path="/admin-users" element={<AdminUsers />} />
+          </Route>
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />

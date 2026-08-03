@@ -8,8 +8,8 @@ const DefaultFallback = () => (
   </div>
 );
 
-export default function ProtectedRoute({ fallback = <DefaultFallback />, unauthenticatedElement }) {
-  const { isAuthenticated, isLoadingAuth, authChecked } = useAuth();
+export default function ProtectedRoute({ superAdminOnly = false, fallback = <DefaultFallback />, unauthenticatedElement }) {
+  const { isAuthenticated, isSuperAdmin, isLoadingAuth, authChecked } = useAuth();
 
   if (isLoadingAuth || !authChecked) {
     return fallback;
@@ -17,6 +17,10 @@ export default function ProtectedRoute({ fallback = <DefaultFallback />, unauthe
 
   if (!isAuthenticated) {
     return unauthenticatedElement || <Navigate to="/login" replace />;
+  }
+
+  if (superAdminOnly && !isSuperAdmin) {
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

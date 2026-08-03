@@ -8,6 +8,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please add a name'],
     },
+    username: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+    },
     email: {
       type: String,
       required: [true, 'Please add an email'],
@@ -31,6 +37,10 @@ const userSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
     otpCode: {
       type: String,

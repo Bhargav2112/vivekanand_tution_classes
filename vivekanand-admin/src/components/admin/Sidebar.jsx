@@ -10,6 +10,7 @@ import { useAuth } from '@/lib/AuthContext';
 
 const NAV_ITEMS = [
   { to: "/", label: "ડેશબોર્ડ", icon: LayoutDashboard },
+  { to: "/admin-users", label: "એડમિન લિસ્ટ", icon: ShieldCheck, superAdminOnly: true },
   { to: "/admissions", label: "વિદ્યાર્થી પ્રવેશ", icon: UserPlus },
   { to: "/students", label: "વિદ્યાર્થીઓ", icon: Users },
   { to: "/teachers", label: "શિક્ષકો", icon: GraduationCap },
@@ -28,12 +29,16 @@ const NAV_ITEMS = [
 
 export default function Sidebar({ open, onClose }) {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, isSuperAdmin } = useAuth();
 
   const handleLogout = async () => {
     await logout();
     navigate('/login', { replace: true });
   };
+
+  const visibleNavItems = NAV_ITEMS.filter(
+    (item) => !item.superAdminOnly || isSuperAdmin
+  );
 
   return (
     <>
@@ -66,7 +71,7 @@ export default function Sidebar({ open, onClose }) {
 
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto py-3 sidebar-nav">
-          {NAV_ITEMS.map((item) => {
+          {visibleNavItems.map((item) => {
             const Icon = item.icon;
             return (
               <NavLink

@@ -7,19 +7,21 @@ const {
   deleteAdmin
 } = require('../controllers/admin.controller');
 
-const Admin = require('../models/Admin.model');
-const advancedResults = require('../middlewares/advancedResults');
 const { protect, authorize } = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
+// Apply protection and Super Admin authorization to all admin management routes
+router.use(protect);
+router.use(authorize('Super Admin'));
+
 router.route('/')
-  .get(advancedResults(Admin), getAdmins)
-  .post(protect, authorize('Super Admin', 'Admin'), createAdmin);
+  .get(getAdmins)
+  .post(createAdmin);
 
 router.route('/:id')
   .get(getAdmin)
-  .put(protect, authorize('Super Admin', 'Admin'), updateAdmin)
-  .delete(protect, authorize('Super Admin', 'Admin'), deleteAdmin);
+  .put(updateAdmin)
+  .delete(deleteAdmin);
 
 module.exports = router;

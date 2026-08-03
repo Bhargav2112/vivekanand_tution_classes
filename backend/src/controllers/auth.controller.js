@@ -129,12 +129,21 @@ exports.login = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Please provide an email and password', data: null, access_token: null, refresh_token: null });
     }
 
+    const cleanIdentifier = String(email).trim().toLowerCase();
     const user = await User.findOne({
-      $or: [{ email: email }, { name: email }]
+      $or: [
+        { email: new RegExp(`^${cleanIdentifier}$`, 'i') },
+        { username: new RegExp(`^${cleanIdentifier}$`, 'i') },
+        { name: new RegExp(`^${cleanIdentifier}$`, 'i') }
+      ]
     }).select('+password');
 
     if (!user) {
-      return res.status(401).json({ success: false, message: `User not found with identifier: ${email}`, data: null, access_token: null, refresh_token: null });
+      return res.status(401).json({ success: false, message: `Invalid username/email or password`, data: null, access_token: null, refresh_token: null });
+    }
+
+    if (user.isActive === false) {
+      return res.status(401).json({ success: false, message: 'Your account has been deactivated. Please contact Super Admin.', data: null, access_token: null, refresh_token: null });
     }
 
     const isMatch = await user.matchPassword(password);
