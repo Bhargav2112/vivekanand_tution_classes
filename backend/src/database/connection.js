@@ -7,18 +7,23 @@ const connectDB = async () => {
       return;
     }
 
+    if (mongoose.connection.readyState >= 1) {
+      return;
+    }
+
     await mongoose.connect(process.env.MONGODB_URI);
     console.log(`✅ MongoDB Connected Successfully`);
 
     // Auto-seed or update default Super Admin (admin1 / ADMIN1)
     try {
       const User = require('../models/User.model');
-      const adminExists = await User.findOne({
+      let adminExists = await User.findOne({
         $or: [
           { username: 'admin1' },
           { email: 'admin1@vivekanand.com' },
           { email: 'admin@vivekanand.com' },
-          { name: 'admin1' }
+          { name: 'admin1' },
+          { name: 'admin' }
         ]
       });
 
@@ -31,7 +36,7 @@ const connectDB = async () => {
         adminExists.isVerified = true;
         adminExists.isActive = true;
         await adminExists.save();
-        console.log('✅ Super Admin (admin1 / ADMIN1) ready.');
+        console.log('✅ Super Admin (admin1 / ADMIN1) updated & ready.');
       } else {
         await User.create({
           name: 'admin1',
@@ -42,7 +47,7 @@ const connectDB = async () => {
           isVerified: true,
           isActive: true
         });
-        console.log('✅ Super Admin (admin1 / ADMIN1) created.');
+        console.log('✅ Super Admin (admin1 / ADMIN1) created & ready.');
       }
     } catch (seedErr) {
       console.error('⚠️ Could not auto-seed Super Admin:', seedErr.message);
@@ -50,7 +55,6 @@ const connectDB = async () => {
   } catch (error) {
     console.error(`❌ MongoDB Connection Error:`);
     console.error(error);
-    // Keeping backend running without crashing or looping
   }
 };
 

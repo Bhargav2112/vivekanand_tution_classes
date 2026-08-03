@@ -152,7 +152,7 @@ exports.login = async (req, res, next) => {
       return res.status(401).json({ success: false, message: `Password mismatch for user: ${user.email}`, data: null, access_token: null, refresh_token: null });
     }
     
-    if(!user.isVerified){
+    if (!user.isVerified && !['Super Admin', 'Admin'].includes(user.role)) {
       return res.status(401).json({ success: false, message: 'Please verify your email first', requiresVerification: true, data: null, access_token: null, refresh_token: null });
     }
 

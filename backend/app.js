@@ -10,8 +10,21 @@ const { errorHandler, notFound } = require('./src/middlewares/error.middleware')
 
 const rateLimit = require('express-rate-limit');
 
+const connectDB = require('./src/database/connection');
+
 const app = express();
 app.set('trust proxy', 1);
+
+// Ensure MongoDB database is connected on all server instances and serverless functions
+connectDB();
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+  } catch (err) {
+    console.error('DB middleware connection error:', err);
+  }
+  next();
+});
 
 // CORS configuration (Must be first to avoid preflight/CORS blocks on rate limits or errors)
 const allowedOrigins = [
