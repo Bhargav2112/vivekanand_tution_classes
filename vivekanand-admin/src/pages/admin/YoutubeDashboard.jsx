@@ -28,7 +28,7 @@ export default function YoutubeDashboard() {
       if (channelRes && channelRes.success) setChannel(channelRes.data);
       setVideosCount(videosRes.count || 0);
       setShortsCount(shortsRes.count || 0);
-      setLogs(logsRes.data || []);
+      setLogs(Array.isArray(logsRes.data) ? logsRes.data : []);
       
     } catch (err) {
       console.error(err);

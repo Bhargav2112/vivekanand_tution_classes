@@ -4,7 +4,8 @@ const {
   getTestimonials,
   getTestimonial,
   updateTestimonial,
-  deleteTestimonial
+  deleteTestimonial,
+  submitTestimonial
 } = require('../controllers/testimonial.controller');
 
 const Testimonial = require('../models/Testimonial.model');
@@ -12,6 +13,8 @@ const advancedResults = require('../middlewares/advancedResults');
 const { protect, authorize } = require('../middlewares/auth.middleware');
 
 const router = express.Router();
+
+router.post('/submit', submitTestimonial);
 
 router.route('/')
   .get(advancedResults(Testimonial), getTestimonials)

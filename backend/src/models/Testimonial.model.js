@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 
 const testimonialSchema = new mongoose.Schema({
+  type: { type: String, enum: ['text', 'video'], default: 'video' },
   student_name: { type: String, required: true },
   parent_name: { type: String, default: '' },
+  mobile: { type: String, default: '' },
   photo_url: { type: String, default: '' },
+  video_url: { type: String, default: '' },
   course: { type: String, default: '' },
   rating: { type: Number, min: 1, max: 5, default: 5 },
   review: { type: String, required: true },

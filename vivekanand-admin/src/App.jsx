@@ -54,6 +54,7 @@ const AuthenticatedApp = () => {
           <Route path="/pages" element={<WebsitePages />} />
           <Route path="/seo" element={<SEO />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/banners" element={<Banners />} />
           <Route element={<ProtectedRoute superAdminOnly={true} />}>
             <Route path="/admin-users" element={<AdminUsers />} />
           </Route>

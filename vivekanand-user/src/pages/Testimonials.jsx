@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Play, X, ArrowRight, Video } from 'lucide-react';
+import { Play, X, ArrowRight, Video, MessageSquareQuote } from 'lucide-react';
 import PageHero from '@/components/site/PageHero';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Btn from '@/components/ui/Btn';
@@ -29,30 +29,61 @@ export default function Testimonials() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeVideoModal, setActiveVideoModal] = useState(null);
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
+  const [submitForm, setSubmitForm] = useState({ student_name: '', mobile: '', review: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const fetchTestimonialsAndResults = async () => {
+    try {
+      const [testimonialsRes, resultsRes] = await Promise.allSettled([
+        apiClient.get('/testimonials'),
+        apiClient.get('/results')
+      ]);
+      if (testimonialsRes.status === 'fulfilled') {
+        const data = Array.isArray(testimonialsRes.value.data) ? testimonialsRes.value.data : (testimonialsRes.value.data?.data || []);
+        setReviews(data.filter(d => d.status !== 'inactive'));
+      }
+      if (resultsRes.status === 'fulfilled') {
+        const data = Array.isArray(resultsRes.value.data) ? resultsRes.value.data : (resultsRes.value.data?.data || []);
+        setResults(data.filter(d => d.isActive !== false));
+      }
+    } catch (err) {
+      console.error("Failed to fetch testimonials and results:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchTestimonialsAndResults = async () => {
-      try {
-        const [testimonialsRes, resultsRes] = await Promise.allSettled([
-          apiClient.get('/testimonials'),
-          apiClient.get('/results')
-        ]);
-        if (testimonialsRes.status === 'fulfilled') {
-          const data = Array.isArray(testimonialsRes.value.data) ? testimonialsRes.value.data : (testimonialsRes.value.data?.data || []);
-          setReviews(data.filter(d => d.status !== 'inactive'));
-        }
-        if (resultsRes.status === 'fulfilled') {
-          const data = Array.isArray(resultsRes.value.data) ? resultsRes.value.data : (resultsRes.value.data?.data || []);
-          setResults(data.filter(d => d.isActive !== false));
-        }
-      } catch (err) {
-        console.error("Failed to fetch testimonials and results:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchTestimonialsAndResults();
   }, []);
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const res = await apiClient.post('/testimonials/submit', submitForm);
+      if (res.data?.success || res.status === 201) {
+        setSubmitSuccess(true);
+        setSubmitForm({ student_name: '', mobile: '', review: '' });
+        fetchTestimonialsAndResults(); // Refresh list to show new review
+        setTimeout(() => {
+          setIsSubmitModalOpen(false);
+          setSubmitSuccess(false);
+        }, 2000);
+      }
+    } catch (err) {
+      setSubmitError(err.response?.data?.message || "અભિપ્રાય મોકલવામાં ભૂલ થઈ. ફરી પ્રયાસ કરો.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const videoReviews = reviews.filter(r => r.type !== 'text');
+  const textReviews = reviews.filter(r => r.type === 'text');
 
   return (
     <>
@@ -62,13 +93,72 @@ export default function Testimonials() {
         breadcrumb={[{ label: 'અભિપ્રાય' }]}
       />
 
-      {/* Parents Testimonials Grid Section */}
+      {/* Parents Text Testimonials Section */}
+      <section className="bg-background py-20 lg:py-[120px]">
+        <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12">
+            <Reveal>
+              <SectionHeading
+                label="લેખિત અભિપ્રાય"
+                title="વાલીઓના શબ્દોમાં"
+                subtitle="અમારા શિક્ષણ અને વાતાવરણ વિશે વાલીઓના સાચા અનુભવો."
+                className="mb-0"
+              />
+            </Reveal>
+            <Reveal delay={0.1}>
+              <button 
+                onClick={() => setIsSubmitModalOpen(true)}
+                className="bg-accent text-white px-6 py-3 font-heading font-bold rounded shadow-md hover:bg-accent/90 transition-colors whitespace-nowrap"
+              >
+                તમારો અભિપ્રાય આપો
+              </button>
+            </Reveal>
+          </div>
+
+          <div>
+            {loading ? (
+              <div className="text-center text-muted-foreground py-16">લોડ થઈ રહ્યું છે...</div>
+            ) : textReviews.length === 0 ? (
+              <div className="text-center text-muted-foreground py-16">કોઈ લેખિત અભિપ્રાય ઉપલબ્ધ નથી.</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {textReviews.map((item, idx) => (
+                  <Reveal key={item._id || idx} delay={idx * 0.08}>
+                    <div className="bg-white border border-border p-8 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col rounded-xl">
+                      <div className="mb-6 flex justify-between items-start text-accent opacity-80">
+                        <MessageSquareQuote className="w-10 h-10" />
+                        <div className="flex gap-1">
+                          {[1,2,3,4,5].map(star => (
+                            <svg key={star} className={`w-4 h-4 ${star <= (item.rating || 5) ? 'text-amber-500 fill-amber-500' : 'text-gray-300'}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-muted-foreground mb-8 italic flex-grow">"{item.review}"</p>
+                      <div className="flex items-center gap-4 mt-auto">
+                        <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center text-accent font-bold text-lg font-heading">
+                          {item.student_name ? item.student_name.charAt(0).toUpperCase() : 'P'}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-foreground font-heading">{item.student_name || item.parent_name || 'વાલી'}</h4>
+                          {item.mobile && <p className="text-sm text-muted-foreground font-medium mt-0.5">{item.mobile}</p>}
+                        </div>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Parents Video Testimonials Grid Section */}
       <section className="bg-white py-20 lg:py-[120px]">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
             <SectionHeading
-              label="વાલીઓ"
-              title="વાલીઓના અનુભવો"
+              label="વિડિઓ"
+              title="વાલીઓના લાઈવ વિડિઓ"
               subtitle="વિવેકાનંદ ટ્યુશન ક્લાસીસ વિશે વાલીઓના લાઈવ વિડિઓ અભિપ્રાયો."
             />
           </Reveal>
@@ -76,11 +166,11 @@ export default function Testimonials() {
           <div className="mt-12">
             {loading ? (
               <div className="text-center text-muted-foreground py-16">લોડ થઈ રહ્યું છે...</div>
-            ) : reviews.length === 0 ? (
+            ) : videoReviews.length === 0 ? (
               <div className="text-center text-muted-foreground py-16">કોઈ વિડિઓ અભિપ્રાય ઉપલબ્ધ નથી.</div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {reviews.map((item, idx) => {
+                {videoReviews.map((item, idx) => {
                   const thumb = getYouTubeThumbnail(item.video_url, item.photo_url);
                   const embedUrl = getYouTubeEmbedUrl(item.video_url);
 
@@ -88,7 +178,7 @@ export default function Testimonials() {
                     <Reveal key={item._id || idx} delay={idx * 0.08}>
                       <div
                         onClick={() => setActiveVideoModal(embedUrl)}
-                        className="group relative bg-black border-2 border-[#7a1d1d]/30 overflow-hidden shadow-lg hover:shadow-2xl transition-all cursor-pointer flex flex-col h-full"
+                        className="group relative bg-black border-2 border-[#7a1d1d]/30 overflow-hidden shadow-lg hover:shadow-2xl transition-all cursor-pointer flex flex-col h-full rounded-lg"
                       >
                         {/* Video Thumbnail (Vertical 9:16 Shorts ratio) */}
                         <div className="relative aspect-[9/16] w-full bg-slate-900 overflow-hidden">
@@ -117,7 +207,7 @@ export default function Testimonials() {
 
                           {/* Top Badge */}
                           <div className="absolute top-3 left-3 bg-[#7a1d1d] text-white text-[11px] font-extrabold px-2.5 py-1 rounded shadow">
-                            વાલીઓ
+                            વિડિઓ રિવ્યૂ
                           </div>
                         </div>
 
@@ -215,6 +305,84 @@ export default function Testimonials() {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
+          </div>
+        </div>
+      )}
+
+      {/* ===== SUBMIT REVIEW MODAL ===== */}
+      {isSubmitModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="relative w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="bg-accent text-white p-4 flex justify-between items-center">
+              <h3 className="font-heading font-bold text-xl">તમારો અભિપ્રાય આપો</h3>
+              <button onClick={() => setIsSubmitModalOpen(false)} className="hover:bg-white/20 p-1.5 rounded-full transition">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="p-6">
+              {submitSuccess ? (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  </div>
+                  <h4 className="font-bold text-xl mb-2 text-foreground">આભાર!</h4>
+                  <p className="text-muted-foreground">તમારો અભિપ્રાય સફળતાપૂર્વક મોકલવામાં આવ્યો છે.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleReviewSubmit} className="space-y-4">
+                  {submitError && (
+                    <div className="bg-red-50 text-red-600 p-3 rounded text-sm mb-4 border border-red-100">
+                      {submitError}
+                    </div>
+                  )}
+                  
+                  <div>
+                    <label className="block text-sm font-bold text-foreground mb-1.5">તમારું નામ <span className="text-red-500">*</span></label>
+                    <input 
+                      type="text" 
+                      required 
+                      placeholder="દા.ત. રાહુલ ભાઈ" 
+                      className="w-full border border-border rounded px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-accent/50"
+                      value={submitForm.student_name}
+                      onChange={e => setSubmitForm({...submitForm, student_name: e.target.value})}
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-bold text-foreground mb-1.5">મોબાઈલ નંબર <span className="text-muted-foreground font-normal">(અન્ય વાલીઓ માટે)</span></label>
+                    <input 
+                      type="text" 
+                      placeholder="દા.ત. 9876543210" 
+                      className="w-full border border-border rounded px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-accent/50"
+                      value={submitForm.mobile}
+                      onChange={e => setSubmitForm({...submitForm, mobile: e.target.value})}
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">તમારો મોબાઈલ નંબર અન્ય વાલીઓને માર્ગદર્શન માટે બતાવવામાં આવશે.</p>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-bold text-foreground mb-1.5">તમારો અભિપ્રાય <span className="text-red-500">*</span></label>
+                    <textarea 
+                      required 
+                      rows={4}
+                      placeholder="અમારા ટ્યુશન વિશે તમારા વિચારો અહીં લખો..." 
+                      className="w-full border border-border rounded px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none"
+                      value={submitForm.review}
+                      onChange={e => setSubmitForm({...submitForm, review: e.target.value})}
+                    ></textarea>
+                  </div>
+                  
+                  <button 
+                    type="submit" 
+                    disabled={submitting}
+                    className="w-full bg-accent text-white font-bold py-3 rounded shadow hover:bg-accent/90 transition-colors disabled:opacity-70 mt-2"
+                  >
+                    {submitting ? 'મોકલી રહ્યા છે...' : 'અભિપ્રાય સબમિટ કરો'}
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       )}

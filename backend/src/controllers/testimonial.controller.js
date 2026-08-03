@@ -6,6 +6,21 @@ exports.createTestimonial = asyncHandler(async (req, res, next) => {
   res.status(201).json({ success: true, data: doc });
 });
 
+exports.submitTestimonial = asyncHandler(async (req, res, next) => {
+  const { student_name, mobile, review } = req.body;
+  if (!student_name || !review) {
+    return res.status(400).json({ success: false, message: 'Please provide name and review' });
+  }
+  const doc = await Testimonial.create({
+    type: 'text',
+    student_name,
+    mobile: mobile || '',
+    review,
+    status: 'active'
+  });
+  res.status(201).json({ success: true, data: doc });
+});
+
 exports.getTestimonials = asyncHandler(async (req, res, next) => {
   res.status(200).json(res.advancedResults);
 });
