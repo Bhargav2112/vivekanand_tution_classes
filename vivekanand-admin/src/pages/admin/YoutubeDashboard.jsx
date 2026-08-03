@@ -25,10 +25,12 @@ export default function YoutubeDashboard() {
         api.get('/youtube/logs').catch(e => ({ data: [] }))
       ]);
 
-      if (channelRes && channelRes.success) setChannel(channelRes.data);
-      setVideosCount(videosRes.count || 0);
-      setShortsCount(shortsRes.count || 0);
-      setLogs(Array.isArray(logsRes.data) ? logsRes.data : []);
+      if (channelRes && channelRes.data && channelRes.data.success) {
+        setChannel(channelRes.data.data);
+      }
+      setVideosCount(videosRes.data?.count || 0);
+      setShortsCount(shortsRes.data?.count || 0);
+      setLogs(Array.isArray(logsRes.data?.data) ? logsRes.data.data : []);
       
     } catch (err) {
       console.error(err);
@@ -51,8 +53,8 @@ export default function YoutubeDashboard() {
       setSyncSuccess("");
       
       const res = await api.post('/youtube/sync');
-      if (res.success) {
-        setSyncSuccess(`સિંક સફળ! ${res.data.videosAdded} નવા વિડિઓ અને ${res.data.shortsAdded} નવા શોર્ટ્સ ઉમેરાયા.`);
+      if (res.data?.success) {
+        setSyncSuccess(`સિંક સફળ! ${res.data.data.videosAdded} નવા વિડિઓ અને ${res.data.data.shortsAdded} નવા શોર્ટ્સ ઉમેરાયા.`);
         fetchData(); // Refresh data
       }
     } catch (err) {
