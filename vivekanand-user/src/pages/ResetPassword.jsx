@@ -27,7 +27,7 @@ export default function ResetPassword() {
     setLoading(true);
     try {
       await api.put(`/auth/reset-password/${resetToken}`, { password: newPassword });
-      navigate("/login", { replace: true });
+      navigate("/", { replace: true });
     } catch (err) {
       setError(err.message || "Failed to reset password");
     } finally {

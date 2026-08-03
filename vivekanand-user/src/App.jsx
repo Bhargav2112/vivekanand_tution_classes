@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
@@ -19,10 +19,6 @@ import Admission from '@/pages/Admission';
 import Contact from '@/pages/Contact';
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import Terms from '@/pages/Terms';
-import Login from '@/pages/Login';
-import Register from '@/pages/Register';
-import ForgotPassword from '@/pages/ForgotPassword';
-import ResetPassword from '@/pages/ResetPassword';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -37,23 +33,16 @@ const AuthenticatedApp = () => {
     );
   }
 
-  // Handle authentication errors
+  // Handle authentication errors without forcing redirects during startup
   if (authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      return <Navigate to="/login" replace />;
     }
   }
 
   // Render the main app
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password/:token" element={<ResetPassword />} />
-      
       <Route element={<SiteLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
@@ -45,12 +45,10 @@ const AuthenticatedApp = () => {
     );
   }
 
-  // Handle authentication errors
+  // Handle authentication errors without forcing redirects during startup
   if (authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      return <Navigate to="/login" replace />;
     }
   }
 
@@ -62,7 +60,7 @@ const AuthenticatedApp = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password/:token" element={<ResetPassword />} />
       
-      <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
+      <Route element={<ProtectedRoute unauthenticatedElement={<Login />} />}>
         <Route element={<AdminLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/admissions" element={<Admissions />} />

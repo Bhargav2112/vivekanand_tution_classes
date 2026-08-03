@@ -22,21 +22,10 @@ api.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config || {};
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest.url?.includes('/auth/login') &&
-      !originalRequest.url?.includes('/auth/refresh-token')
-    ) {
-      originalRequest._retry = true;
-      try {
-        const refreshResponse = await axios.post(`${baseURL}/auth/refresh-token`, {}, { withCredentials: true });
-        if (refreshResponse?.data?.success) {
-          return api(originalRequest);
-        }
-      } catch (refreshError) {
-        return Promise.reject(refreshError?.response?.data || { success: false, message: 'Session expired' });
-      }
+    const isAuthRequest = originalRequest.url?.includes('/auth/login') || originalRequest.url?.includes('/auth/refresh-token') || originalRequest.url?.includes('/auth/me');
+
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthRequest) {
+      return Promise.reject(error.response?.data || { success: false, message: error.message || 'Session expired' });
     }
 
     return Promise.reject(error.response?.data || { success: false, message: error.message || 'Request failed' });

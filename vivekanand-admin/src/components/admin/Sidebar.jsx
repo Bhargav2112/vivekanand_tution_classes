@@ -27,11 +27,9 @@ const NAV_ITEMS = [
 ];
 
 export default function Sidebar({ open, onClose }) {
-  const navigate = useNavigate();
-
   const handleLogout = async () => {
     try { await api.post('/auth/logout'); } catch(e){}
-    navigate("/login");
+    window.location.href = '/login';
   };
 
   return (

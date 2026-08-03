@@ -1,11 +1,9 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { api } from '@/api/axios';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
@@ -30,7 +28,7 @@ export const AuthProvider = ({ children }) => {
         console.error('Auth check failed:', error);
         setUser(null);
         setIsAuthenticated(false);
-        setAuthError({ type: 'auth_required', message: error?.message || 'Authentication required' });
+        setAuthError(null);
       } finally {
         if (isMounted) {
           setIsLoadingAuth(false);
@@ -59,7 +57,7 @@ export const AuthProvider = ({ children }) => {
       console.error('Auth check failed:', error);
       setUser(null);
       setIsAuthenticated(false);
-      setAuthError({ type: 'auth_required', message: error?.message || 'Authentication required' });
+      setAuthError(null);
     } finally {
       setIsLoadingAuth(false);
       setAuthChecked(true);
@@ -70,7 +68,7 @@ export const AuthProvider = ({ children }) => {
     await checkAppState();
   }, [checkAppState]);
 
-  const logout = async (shouldRedirect = true) => {
+  const logout = async () => {
     try {
       await api.post('/auth/logout');
     } catch (e) {
@@ -80,14 +78,6 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     setAuthError(null);
     localStorage.removeItem('admin_token');
-
-    if (shouldRedirect) {
-      navigate('/login', { replace: true });
-    }
-  };
-
-  const navigateToLogin = () => {
-    navigate('/login', { replace: true });
   };
 
   return (
@@ -98,7 +88,6 @@ export const AuthProvider = ({ children }) => {
       authError,
       authChecked,
       logout,
-      navigateToLogin,
       checkUserAuth,
       checkAppState
     }}>
