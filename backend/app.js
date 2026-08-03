@@ -44,6 +44,11 @@ const corsOptions = {
       return callback(null, true);
     }
 
+    // Allow any origin in development to make local testing easier
+    if (process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+
     const normalizedOrigin = origin.replace(/\/$/, '');
     if (allowedOrigins.includes(normalizedOrigin)) {
       return callback(null, true);

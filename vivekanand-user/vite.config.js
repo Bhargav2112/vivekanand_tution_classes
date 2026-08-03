@@ -14,7 +14,19 @@ export default defineConfig({
     },
   },
   plugins: [
-
     react(),
-  ]
+  ],
+  server: {
+    host: true, // Listen on all local IPs
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
+      '/public': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      }
+    }
+  }
 });
