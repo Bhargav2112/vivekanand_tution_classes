@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "@/api/axios";
+import { useAuth } from "@/lib/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,6 +15,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
   
   const returnTo = safeReturnTo();
 
@@ -24,12 +25,8 @@ export default function Login() {
     setLoading(true);
     
     try {
-      const res = await api.post("/auth/login", { email: username, password });
-      if (res?.data?.success) {
-        navigate(returnTo === '/' ? '/' : returnTo, { replace: true });
-        return;
-      }
-      setError(res?.data?.message || "Invalid credentials");
+      await login(username, password);
+      navigate(returnTo === '/' ? '/' : returnTo, { replace: true });
     } catch (err) {
       setError(err?.message || "Invalid credentials");
     } finally {
