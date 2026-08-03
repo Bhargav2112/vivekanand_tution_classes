@@ -14,7 +14,7 @@ export default function FormModal({ open, onClose, title, fields, initialValues,
         if (Object.keys(prev).length > 0) return prev;
         const init = {};
         fields.forEach((f) => {
-          init[f.key] = initialValues?.[f.key] ?? f.default ?? (f.type === "object" ? {} : "");
+          init[f.key] = initialValues?.[f.key] ?? f.default ?? (f.type === "object" ? {} : (f.type === "boolean" ? false : ""));
         });
         return init;
       });
@@ -95,6 +95,8 @@ export default function FormModal({ open, onClose, title, fields, initialValues,
         }
         if (f.type === "select" && payload[f.key] === "") delete payload[f.key];
         if (f.type === "number" && payload[f.key] === "") delete payload[f.key];
+        if (f.type === "boolean" && payload[f.key] === "") payload[f.key] = false;
+        if (f.type === "boolean") payload[f.key] = Boolean(payload[f.key]);
         if ((f.key.includes("name") || f.key.includes("title")) && typeof payload[f.key] === "string") {
           payload[f.key] = payload[f.key].replace(/\b\w/g, l => l.toUpperCase());
         }
