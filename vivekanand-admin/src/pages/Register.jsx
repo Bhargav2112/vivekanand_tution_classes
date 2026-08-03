@@ -42,7 +42,7 @@ export default function Register() {
     setError("");
     setLoading(true);
     try {
-      await api.post("/auth/verify-otp", { email, otp: otpCode });
+      await api.post("/auth/verify-otp", { email, otpCode });
       window.location.href = safeReturnTo();
     } catch (err) {
       setError(err.message || "Invalid verification code");

@@ -1,0 +1,404 @@
+You are a Senior MERN Stack Architect and Security Engineer.
+
+Analyze the ENTIRE project (Backend, Admin Panel, and User Panel) before making any changes.
+
+Project Stack:
+- Backend: Node.js, Express.js, MongoDB (Mongoose)
+- Frontend: React + Vite
+- Deployment:
+  - Backend: Render
+  - Admin: Vercel
+  - User Panel: Vercel
+
+Current Production URLs:
+
+Backend:
+https://vivekanand-tution-classes.onrender.com
+
+Admin:
+https://vivekanand-tution-admin.vercel.app
+
+User:
+https://vivekanand-tution-classes.vercel.app
+
+======================================================
+MAIN GOAL
+======================================================
+
+Do NOT rewrite the project.
+
+Only fix existing production issues while keeping all current functionality working.
+
+Scan every backend and frontend file before making changes.
+
+======================================================
+FIX ALL OF THESE
+======================================================
+
+1.
+Fix complete JWT Authentication flow.
+
+✔ Login
+✔ Logout
+✔ Protected Routes
+✔ Refresh Token
+✔ Auto Login
+✔ Token Validation
+
+2.
+
+Fix Cookies.
+
+Cookies must work properly between
+
+Admin (Vercel)
+
+↓
+
+Backend (Render)
+
+Requirements
+
+httpOnly
+
+Secure
+
+SameSite=None
+
+withCredentials=true
+
+Cross-Origin compatible
+
+Production compatible
+
+3.
+
+Fix Refresh Token Flow.
+
+Current issue:
+
+Login succeeds
+
+↓
+
+/auth/me fails
+
+↓
+
+refresh-token fails
+
+↓
+
+User is redirected to Login
+
+Find root cause.
+
+Fix it permanently.
+
+4.
+
+Verify protect middleware.
+
+Make sure it correctly reads token from
+
+Authorization Header
+
+OR
+
+Cookies
+
+without failing.
+
+5.
+
+Verify JWT generation.
+
+Check
+
+generateToken()
+
+generateRefreshToken()
+
+JWT_SECRET
+
+JWT_REFRESH_SECRET
+
+Expiration
+
+Verification
+
+6.
+
+Verify auth.controller.js
+
+Check
+
+sendTokenResponse()
+
+login()
+
+logout()
+
+refreshToken()
+
+getMe()
+
+Verify cookies are actually sent.
+
+Verify cookies are read correctly.
+
+7.
+
+Verify axios.
+
+Check
+
+baseURL
+
+withCredentials
+
+Interceptors
+
+Refresh Token Retry
+
+Error Handling
+
+No duplicate axios instances.
+
+Use one common API client.
+
+8.
+
+Verify AuthContext.
+
+Fix
+
+checkAppState()
+
+checkUserAuth()
+
+logout()
+
+isAuthenticated
+
+Loading
+
+Current User
+
+Make sure user stays logged in after refresh.
+
+9.
+
+Fix Production CORS.
+
+Allow only
+
+https://vivekanand-tution-admin.vercel.app
+
+https://vivekanand-tution-classes.vercel.app
+
+localhost development
+
+OPTIONS requests
+
+Credentials
+
+Headers
+
+Methods
+
+10.
+
+Verify Environment Variables.
+
+Render
+
+JWT_SECRET
+
+JWT_REFRESH_SECRET
+
+MONGODB_URI
+
+FRONTEND_ADMIN_URL
+
+FRONTEND_USER_URL
+
+NODE_ENV
+
+PORT
+
+Vercel
+
+VITE_API_URL
+
+No hardcoded localhost anywhere.
+
+11.
+
+Scan the ENTIRE project for
+
+localhost:5000
+
+localhost:5173
+
+localhost:5174
+
+localhost:5175
+
+Replace correctly using environment variables.
+
+12.
+
+Check every API request.
+
+Make sure
+
+/api/v1
+
+is added only once.
+
+No duplicated
+
+/api/v1/api/v1
+
+No missing prefixes.
+
+13.
+
+Verify Express Routes.
+
+Check
+
+/api/v1/auth/login
+
+/api/v1/auth/me
+
+/api/v1/auth/logout
+
+/api/v1/auth/refresh-token
+
+All routes must work.
+
+14.
+
+Fix any issue causing
+
+401
+
+403
+
+404
+
+Network Error
+
+Cookie Rejected
+
+Invalid Token
+
+Refresh Failure
+
+15.
+
+Verify Browser Cookie Compatibility.
+
+Chrome
+
+Edge
+
+Firefox
+
+Safari
+
+Cross-Origin
+
+16.
+
+Improve production security.
+
+Helmet
+
+Rate Limit
+
+Cookie Security
+
+JWT validation
+
+Input Sanitization
+
+17.
+
+Remove duplicate code.
+
+Remove duplicated axios logic.
+
+Remove duplicated auth logic.
+
+Keep project clean.
+
+18.
+
+Fix deployment configuration.
+
+Render
+
+Vercel
+
+Environment Variables
+
+Build
+
+Start
+
+Production
+
+======================================================
+DO NOT
+======================================================
+
+Do NOT break existing UI.
+
+Do NOT remove features.
+
+Do NOT rewrite project structure.
+
+Do NOT change database schema unless required.
+
+Do NOT remove existing APIs.
+
+======================================================
+AFTER FIXING
+======================================================
+
+Give a report.
+
+Changed Files
+
+Why changed
+
+Issue Fixed
+
+Before
+
+After
+
+Remaining Issues (if any)
+
+Deployment Steps
+
+Testing Steps
+
+======================================================
+IMPORTANT
+======================================================
+
+Think first.
+
+Analyze complete project.
+
+Then modify files.
+
+Do not guess.
+
+Find the root cause before editing anything.
+
+The final result must allow login from ANY browser and ANY device with persistent authentication working correctly in production.

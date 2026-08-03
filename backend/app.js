@@ -34,6 +34,7 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 };
+app.options('*', cors(corsOptions)); // handle preflight requests for all routes
 app.use(cors(corsOptions));
 
 // Security Middlewares

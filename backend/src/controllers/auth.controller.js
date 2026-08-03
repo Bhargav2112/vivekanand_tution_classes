@@ -2,6 +2,7 @@ const User = require('../models/User.model');
 const { generateToken, generateRefreshToken } = require('../utils/jwt.util');
 const sendEmail = require('../services/email.service');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 // @desc    Register user
 // @route   POST /api/v1/auth/register
@@ -168,15 +169,21 @@ exports.getMe = async (req, res, next) => {
 // @route   GET /api/v1/auth/logout
 // @access  Private
 exports.logout = async (req, res, next) => {
-  res.cookie('token', 'none', {
+  const cookieClearOptions = {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
-  });
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  };
 
-  res.status(200).json({
-    success: true,
-    data: {},
-  });
+  res
+    .cookie('token', 'none', cookieClearOptions)
+    .cookie('refresh_token', 'none', cookieClearOptions)
+    .status(200)
+    .json({
+      success: true,
+      data: {},
+    });
 };
 
 // @desc    Forgot password
@@ -193,10 +200,8 @@ exports.forgotPassword = async (req, res, next) => {
     const resetToken = user.getResetPasswordToken();
     await user.save({ validateBeforeSave: false });
 
-    // Create reset url (this should point to frontend route)
-    const resetUrl = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`;
-    // In reality, this should be your frontend URL
-    // const resetUrl = `${process.env.FRONTEND_USER_URL}/reset-password/${resetToken}`;
+    // Create reset url pointing to the user-facing frontend
+    const resetUrl = `${process.env.FRONTEND_USER_URL}/reset-password/${resetToken}`;
 
     const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
 
@@ -286,12 +291,8 @@ const sendTokenResponse = (user, statusCode, res) => {
     ),
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
   };
-
-  if (process.env.NODE_ENV === 'production') {
-    options.secure = true;
-  }
 
   res
     .status(statusCode)
