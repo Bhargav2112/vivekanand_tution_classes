@@ -19,20 +19,17 @@ export const AuthProvider = ({ children }) => {
     setIsLoadingAuth(true);
     try {
       const res = await api.get('/auth/me');
-      const currentUser = res.data;
-      if (currentUser) {
-        setUser(currentUser);
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
+      const currentUser = res?.data?.data || res?.data?.user || null;
+      setUser(currentUser);
+      setIsAuthenticated(Boolean(currentUser));
     } catch (error) {
       console.error('Auth check failed:', error);
+      setUser(null);
       setIsAuthenticated(false);
-      if (error?.status === 401 || error?.status === 403) {
+      if (error?.status === 401 || error?.status === 403 || error?.success === false || error?.message) {
         setAuthError({
           type: 'auth_required',
-          message: 'Authentication required'
+          message: error?.message || 'Authentication required'
         });
       }
     } finally {
@@ -47,13 +44,14 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async (shouldRedirect = true) => {
     try {
-      await api.get('/auth/logout');
+      await api.post('/auth/logout');
     } catch (e) {
       console.error(e);
     }
     setUser(null);
     setIsAuthenticated(false);
-    
+    setAuthError(null);
+
     if (shouldRedirect) {
       window.location.href = '/login';
     }

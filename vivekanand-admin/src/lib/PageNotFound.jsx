@@ -12,8 +12,8 @@ export default function PageNotFound({}) {
         queryFn: async () => {
             try {
                 const res = await api.get('/auth/me');
-                const user = res.data?.data || res.data;
-                return { user, isAuthenticated: true };
+                const user = res?.data?.data || res?.data?.user || null;
+                return { user, isAuthenticated: Boolean(user) };
             } catch (error) {
                 return { user: null, isAuthenticated: false };
             }

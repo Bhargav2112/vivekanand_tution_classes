@@ -24,9 +24,14 @@ export default function Login() {
     
     try {
       const res = await api.post("/auth/login", { email: username, password });
-      window.location.href = returnTo === '/' ? '/' : returnTo;
+      if (res?.data?.success) {
+        window.location.href = returnTo === '/' ? '/' : returnTo;
+        return;
+      }
+      setError(res?.data?.message || "Invalid credentials");
     } catch (err) {
-      setError(err.message || "Invalid credentials");
+      setError(err?.message || "Invalid credentials");
+    } finally {
       setLoading(false);
     }
   };

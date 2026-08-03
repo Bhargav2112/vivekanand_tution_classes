@@ -42,10 +42,14 @@ export default function Register() {
     setError("");
     setLoading(true);
     try {
-      await api.post("/auth/verify-otp", { email, otpCode });
-      window.location.href = safeReturnTo();
+      const res = await api.post("/auth/verify-otp", { email, otpCode });
+      if (res?.data?.success) {
+        window.location.href = safeReturnTo();
+        return;
+      }
+      setError(res?.data?.message || "Invalid verification code");
     } catch (err) {
-      setError(err.message || "Invalid verification code");
+      setError(err?.message || "Invalid verification code");
     } finally {
       setLoading(false);
     }
@@ -65,8 +69,7 @@ export default function Register() {
   };
 
   const handleGoogle = () => {
-    const envUrl = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'development' ? 'http://localhost:5000' : '');
-    const API_URL = envUrl ? `${envUrl.replace(/\/api\/v1\/?$/, '').replace(/\/$/, '')}/api/v1` : '/api/v1';
+    const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL.replace(/\/api\/v1\/?$/, '').replace(/\/$/, '')}/api/v1` : '/api/v1';
     window.location.href = `${API_URL}/auth/google`;
   };
 

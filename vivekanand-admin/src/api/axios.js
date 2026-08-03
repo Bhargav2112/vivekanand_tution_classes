@@ -1,37 +1,44 @@
 import axios from 'axios';
+import { getApiBaseUrl } from '@/api/config';
 
-const envUrl = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'development' ? 'http://localhost:5000' : '');
-const baseURL = envUrl ? `${envUrl.replace(/\/api\/v1\/?$/, '').replace(/\/$/, '')}/api/v1` : '/api/v1';
+const baseURL = getApiBaseUrl();
 
 export const api = axios.create({
   baseURL,
-  withCredentials: true, // Send cookies for JWT auth
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-// Add interceptors
 api.interceptors.response.use(
-  (response) => response.data,
+  (response) => {
+    const payload = response.data;
+    if (payload && typeof payload === 'object' && 'success' in payload) {
+      return { ...response, data: payload };
+    }
+
+    return response;
+  },
   async (error) => {
-    const originalRequest = error.config;
-    // If it's a 401 and we haven't retried yet, and it's not the login or refresh endpoints itself
+    const originalRequest = error.config || {};
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url.includes('/auth/login') &&
-      !originalRequest.url.includes('/auth/refresh-token')
+      !originalRequest.url?.includes('/auth/login') &&
+      !originalRequest.url?.includes('/auth/refresh-token')
     ) {
       originalRequest._retry = true;
       try {
-        // Attempt to refresh the token using the refresh_token cookie
-        await axios.post(`${baseURL}/auth/refresh-token`, {}, { withCredentials: true });
-        // Retry the original request
-        return api(originalRequest);
+        const refreshResponse = await axios.post(`${baseURL}/auth/refresh-token`, {}, { withCredentials: true });
+        if (refreshResponse?.data?.success) {
+          return api(originalRequest);
+        }
       } catch (refreshError) {
-        // Refresh failed, let the error fall through (will trigger logout in AuthContext if needed)
-        return Promise.reject(error.response?.data || { message: error.message });
+        return Promise.reject(refreshError?.response?.data || { success: false, message: 'Session expired' });
       }
     }
-    
-    return Promise.reject(error.response?.data || { message: error.message });
+
+    return Promise.reject(error.response?.data || { success: false, message: error.message || 'Request failed' });
   }
 );

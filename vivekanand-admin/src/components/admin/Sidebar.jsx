@@ -30,7 +30,7 @@ export default function Sidebar({ open, onClose }) {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    try { await api.get('/auth/logout'); } catch(e){}
+    try { await api.post('/auth/logout'); } catch(e){}
     navigate("/login");
   };
 

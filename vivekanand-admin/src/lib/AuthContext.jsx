@@ -18,18 +18,16 @@ export const AuthProvider = ({ children }) => {
     setAuthError(null);
     setIsLoadingAuth(true);
     try {
-      // Authentication state check uses HttpOnly cookie
       const res = await api.get('/auth/me');
-      const currentUser = res.data;
-      if (currentUser && ['Super Admin', 'Admin', 'Teacher'].includes(currentUser.role)) {
-        setUser(currentUser);
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
+      const currentUser = res?.data?.data || res?.data?.user || null;
+      const isValidAdmin = currentUser && ['Super Admin', 'Admin', 'Teacher'].includes(currentUser.role);
+      setUser(isValidAdmin ? currentUser : null);
+      setIsAuthenticated(Boolean(isValidAdmin));
     } catch (error) {
       console.error('Auth check failed:', error);
+      setUser(null);
       setIsAuthenticated(false);
+      setAuthError({ type: 'auth_required', message: error?.message || 'Authentication required' });
     } finally {
       setIsLoadingAuth(false);
       setAuthChecked(true);
@@ -42,14 +40,15 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async (shouldRedirect = true) => {
     try {
-      await api.get('/auth/logout');
+      await api.post('/auth/logout');
     } catch (e) {
       console.error(e);
     }
     setUser(null);
     setIsAuthenticated(false);
+    setAuthError(null);
     localStorage.removeItem('admin_token');
-    
+
     if (shouldRedirect) {
       window.location.href = '/login';
     }

@@ -24,18 +24,21 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      await api.post("/auth/login", { email, password });
-      window.location.href = returnTo;
+      const res = await api.post("/auth/login", { email, password });
+      if (res?.data?.success) {
+        window.location.href = returnTo;
+        return;
+      }
+      setError(res?.data?.message || "Invalid email or password");
     } catch (err) {
-      setError(err.message || "Invalid email or password");
+      setError(err?.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }
   };
 
   const handleGoogle = () => {
-    const envUrl = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'development' ? 'http://localhost:5000' : '');
-    const API_URL = envUrl ? `${envUrl.replace(/\/api\/v1\/?$/, '').replace(/\/$/, '')}/api/v1` : '/api/v1';
+    const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL.replace(/\/api\/v1\/?$/, '').replace(/\/$/, '')}/api/v1` : '/api/v1';
     window.location.href = `${API_URL}/auth/google`;
   };
 
