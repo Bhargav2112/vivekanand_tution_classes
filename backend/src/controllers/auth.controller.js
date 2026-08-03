@@ -276,7 +276,7 @@ exports.resetPassword = async (req, res, next) => {
 // @access  Public
 exports.refreshToken = async (req, res, next) => {
   try {
-    const { refresh_token } = req.cookies;
+    const refresh_token = req.cookies?.refresh_token || req.body?.refresh_token;
     
     if (!refresh_token) {
       return res.status(401).json({ success: false, message: 'No refresh token provided', data: null, access_token: null, refresh_token: null });

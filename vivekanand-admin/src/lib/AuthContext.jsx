@@ -38,6 +38,12 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     const res = await api.post('/auth/login', { email: username, password });
     if (res?.data?.success) {
+      if (res.data.access_token) {
+        localStorage.setItem('access_token', res.data.access_token);
+      }
+      if (res.data.refresh_token) {
+        localStorage.setItem('refresh_token', res.data.refresh_token);
+      }
       await checkAuth();
       return res.data;
     }
@@ -50,6 +56,8 @@ export const AuthProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     } finally {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
       setUser(null);
       setIsAuthenticated(false);
       setAuthChecked(true);
