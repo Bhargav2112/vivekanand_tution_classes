@@ -4,7 +4,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
-const mongoSanitize = require('express-mongo-sanitize');
+// const mongoSanitize = require('express-mongo-sanitize');
 const hpp = require('hpp');
 const { errorHandler, notFound } = require('./src/middlewares/error.middleware');
 
