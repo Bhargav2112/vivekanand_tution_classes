@@ -2,8 +2,12 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-/** @type {any} */
-const Input = React.forwardRef(({ className, type, ...props }, ref) => {
+const Input = React.forwardRef(
+  /**
+   * @param {any} props
+   * @param {any} ref
+   */
+  ({ className, type, ...props }, ref) => {
   return (
     (<input
       type={type}
