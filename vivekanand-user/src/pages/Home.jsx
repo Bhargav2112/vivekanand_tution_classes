@@ -42,10 +42,10 @@ function getYouTubeDetails(url) {
 }
 
 export default function Home() {
-  const [courses, setCourses] = useState([]);
   const [notices, setNotices] = useState([]);
   const [photos, setPhotos] = useState([]);
   const [videos, setVideos] = useState([]);
+  const [results, setResults] = useState([]);
   const [banners, setBanners] = useState([]);
   const [activeBanner, setActiveBanner] = useState(0);
   const [settings, setSettings] = useState(null);
@@ -82,13 +82,14 @@ export default function Home() {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const [courseRes, noticeRes, photoRes, videoRes, settingsRes, bannersRes] = await Promise.allSettled([
+        const [courseRes, noticeRes, photoRes, videoRes, settingsRes, bannersRes, resultsRes] = await Promise.allSettled([
           apiClient.get('/courses'),
           apiClient.get('/notices'),
           apiClient.get('/galleries'),
           apiClient.get('/youtube/videos'),
           apiClient.get('/settings'),
-          apiClient.get('/banners')
+          apiClient.get('/banners'),
+          apiClient.get('/results')
         ]);
         
         if (courseRes.status === 'fulfilled') {
@@ -122,6 +123,11 @@ export default function Home() {
           const data = Array.isArray(bannersRes.value.data) ? bannersRes.value.data : (bannersRes.value.data?.data || []);
           setBanners(data.filter(b => b.isActive !== false));
         }
+
+        if (resultsRes.status === 'fulfilled') {
+          const data = Array.isArray(resultsRes.value.data) ? resultsRes.value.data : (resultsRes.value.data?.data || []);
+          setResults(data);
+        }
       } catch (err) {
         console.error("Home data fetch error:", err);
         setCourses(FALLBACK_COURSES);
@@ -142,6 +148,11 @@ export default function Home() {
   const marqueeItems = notices.length > 0
     ? notices.map(n => n.title)
     : ['પ્રવેશ શરૂ 2026-27', 'જવાહર નવોદય બેચ શરૂ', 'સ્કોલરશિપ પરીક્ષા', 'નવો બેચ જાન્યુઆરીમાં', 'મફત ડેમો ક્લાસ ઉપલબ્ધ'];
+
+  const yearsAvailable = [...new Set(results.map(r => r.year).filter(Boolean))].sort((a, b) => b.localeCompare(a));
+  const latestYear = yearsAvailable.length > 0 ? yearsAvailable[0] : '2024';
+  const latestResults = results.filter(r => r.year === latestYear);
+  const latestExams = [...new Set(latestResults.map(r => r.exam || r.category || 'અન્ય'))];
 
   return (
     <>
@@ -522,6 +533,60 @@ export default function Home() {
               );
             })}
           </div>
+
+          {/* Results Preview for the latest year */}
+          {latestExams.length > 0 && (
+            <div className="mt-16 text-left space-y-12">
+              <Reveal>
+                <div className="flex flex-col items-center justify-center mb-8">
+                  <h3 className="font-heading font-black text-3xl md:text-4xl text-golden">{latestYear} ના શાનદાર પરિણામો</h3>
+                  <div className="h-1 w-20 bg-golden mt-4 rounded-full"></div>
+                </div>
+              </Reveal>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-10">
+                {latestExams.slice(0, 3).map((examType, idx) => {
+                  const examResults = latestResults.filter(r => (r.exam || r.category || 'અન્ય') === examType).slice(0, 4);
+                  return (
+                    <Reveal key={examType} delay={idx * 0.1}>
+                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-5 rounded-2xl h-full flex flex-col">
+                        <div className="flex items-center justify-between border-b border-white/20 pb-3 mb-4">
+                          <h4 className="font-heading font-bold text-xl text-white flex items-center gap-2">
+                            <Award className="w-5 h-5 text-golden" /> {examType}
+                          </h4>
+                          <Link to={`/results?year=${latestYear}&exam=${examType}`} className="text-xs text-golden hover:text-white font-semibold flex items-center gap-1 transition-colors">
+                            વધુ જુઓ <ArrowRight className="w-3 h-3" />
+                          </Link>
+                        </div>
+                        <div className="flex-1 space-y-3">
+                          {examResults.map((r, i) => (
+                            <div key={r._id || i} className="flex items-center gap-3 bg-white/5 p-2 rounded-lg hover:bg-white/10 transition-colors">
+                              {r.photo_url ? (
+                                <img src={r.photo_url} alt={r.student_name} className="w-12 h-12 rounded-full object-cover border border-white/30 shrink-0" />
+                              ) : (
+                                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/30">
+                                  <UserCheck className="w-5 h-5 text-white/50" />
+                                </div>
+                              )}
+                              <div className="min-w-0 flex-1">
+                                <div className="font-heading font-semibold text-[15px] text-white truncate">{r.student_name}</div>
+                                <div className="font-body text-xs text-white/70 truncate">{r.school || r.achievement || 'મેરિટ'}</div>
+                              </div>
+                              <div className="shrink-0 text-right">
+                                <div className="font-heading font-extrabold text-[#FFD54F]">{r.marks ? `${r.marks}` : `${r.percentage}%`}</div>
+                                {r.rank && <div className="text-[10px] text-white/80 font-bold bg-white/10 px-1.5 rounded">Rank #{r.rank}</div>}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </Reveal>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           <Reveal>
             <div className="mt-12">
               <Btn to="/results" variant="golden" size="md" iconRight={ArrowRight}>

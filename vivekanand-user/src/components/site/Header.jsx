@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Phone, Mail, MapPin, Menu, X, Instagram, Youtube, Facebook } from 'lucide-react';
+import { Phone, Mail, MapPin, Menu, X, Instagram, Youtube, Facebook, ChevronDown, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SITE, SOCIAL as FALLBACK_SOCIAL, NAV_ITEMS } from '@/data/site';
 import Logo from './Logo';
@@ -12,6 +12,8 @@ const SOCIAL_ICONS = { Instagram, Youtube, Facebook };
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [activeSubDropdown, setActiveSubDropdown] = useState(null);
   const [settings, setSettings] = useState(null);
   const location = useLocation();
 
@@ -38,6 +40,9 @@ export default function Header() {
     { name: "YouTube", url: settings?.social_links?.youtube || FALLBACK_SOCIAL[1].url, icon: "Youtube" },
     { name: "Facebook", url: settings?.social_links?.facebook || FALLBACK_SOCIAL[2].url, icon: "Facebook" },
   ];
+
+  const YEARS = Array.from({length: 10}, (_, i) => String(2026 - i));
+  const EXAMS = ['ધોરણ 10', 'ધોરણ 12', 'જવાહર નવોદય', 'જ્ઞાન શક્તિ', 'CET', 'ધોરણ 6-9', 'અન્ય'];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -116,23 +121,84 @@ export default function Header() {
           <nav className="hidden lg:flex items-center gap-1">
             {NAV_ITEMS.map((item) => {
               const active = location.pathname === item.path;
+              const hasDropdown = item.label === "પરિણામ";
+
               return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={cn(
-                    'relative px-3.5 py-2 font-heading text-[18px] font-semibold tracking-[0.3px] transition-colors duration-250 group',
-                    active ? 'text-accent' : 'text-foreground hover:text-accent'
-                  )}
+                <div 
+                  key={item.path} 
+                  className="relative group"
+                  onMouseEnter={() => hasDropdown && setActiveDropdown(item.label)}
+                  onMouseLeave={() => {
+                    setActiveDropdown(null);
+                    setActiveSubDropdown(null);
+                  }}
                 >
-                  {item.label}
-                  <span
+                  <Link
+                    to={item.path}
                     className={cn(
-                      'absolute bottom-0 left-0 right-0 h-[2px] bg-accent transition-all duration-250',
-                      active ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'
+                      'relative px-3.5 py-2 font-heading text-[18px] font-semibold tracking-[0.3px] transition-colors duration-250 flex items-center gap-1',
+                      active ? 'text-accent' : 'text-foreground hover:text-accent'
                     )}
-                  />
-                </Link>
+                  >
+                    {item.label}
+                    {hasDropdown && <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />}
+                    <span
+                      className={cn(
+                        'absolute bottom-0 left-0 right-0 h-[2px] bg-accent transition-all duration-250',
+                        active ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'
+                      )}
+                    />
+                  </Link>
+
+                  {/* Level 1 Dropdown (Years) */}
+                  {hasDropdown && (
+                    <div 
+                      className={cn(
+                        "absolute top-full left-0 mt-0 w-48 bg-white border border-border shadow-xl rounded-b-md overflow-hidden transition-all duration-200 transform origin-top-left z-50",
+                        activeDropdown === item.label ? "opacity-100 scale-y-100 pointer-events-auto visible" : "opacity-0 scale-y-0 pointer-events-none invisible"
+                      )}
+                    >
+                      <div className="py-2 h-[320px] overflow-y-auto no-scrollbar">
+                        {YEARS.map(year => (
+                          <div 
+                            key={year}
+                            className="relative group/sub"
+                            onMouseEnter={() => setActiveSubDropdown(year)}
+                          >
+                            <Link 
+                              to={`/results?year=${year}`}
+                              className="flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-accent/10 hover:text-accent transition-colors"
+                            >
+                              <span>{year} ના પરિણામો</span>
+                              <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                            </Link>
+
+                            {/* Level 2 Dropdown (Exams) */}
+                            <div 
+                              className={cn(
+                                "absolute top-0 left-full ml-0 w-48 bg-white border border-border shadow-xl rounded-md overflow-hidden transition-all duration-200 transform origin-top-left z-50",
+                                activeSubDropdown === year ? "opacity-100 scale-100 pointer-events-auto visible" : "opacity-0 scale-95 pointer-events-none invisible"
+                              )}
+                            >
+                              <div className="py-2">
+                                <div className="px-4 py-1.5 text-xs font-bold text-muted-foreground uppercase tracking-wider border-b border-border mb-1">{year} પરીક્ષાઓ</div>
+                                {EXAMS.map(exam => (
+                                  <Link 
+                                    key={`${year}-${exam}`}
+                                    to={`/results?year=${year}&exam=${exam}`}
+                                    className="block px-4 py-2 text-sm font-semibold text-foreground hover:bg-accent/10 hover:text-accent transition-colors"
+                                  >
+                                    {exam}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               );
             })}
           </nav>

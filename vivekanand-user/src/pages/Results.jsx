@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Star, ArrowRight, Trophy, Award, TrendingUp, Users } from 'lucide-react';
 import PageHero from '@/components/site/PageHero';
 import SectionHeading from '@/components/ui/SectionHeading';
@@ -13,10 +14,13 @@ import { cn } from '@/lib/utils';
 const TABS = ['બધા', 'જવાહર નવોદય', 'જ્ઞાન શક્તિ', 'CET', 'ધોરણ 6-10'];
 
 export default function Results() {
-  const [activeTab, setActiveTab] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState(null);
+
+  const urlYear = searchParams.get('year');
+  const urlExam = searchParams.get('exam');
 
   const displayStats = settings ? [
     {
@@ -67,8 +71,31 @@ export default function Results() {
     fetchData();
   }, []);
 
-  const activeCategory = TABS[activeTab];
-  const filteredResults = activeCategory === 'બધા' ? results : results.filter(r => r.category === activeCategory || r.course === activeCategory);
+  const yearsAvailable = useMemo(() => {
+    const years = [...new Set(results.map(r => r.year).filter(Boolean))];
+    return years.sort((a, b) => b.localeCompare(a));
+  }, [results]);
+
+  const activeYear = urlYear || (yearsAvailable.length > 0 ? yearsAvailable[0] : '2024');
+
+  const filteredResultsByYear = useMemo(() => {
+    return results.filter(r => r.year === activeYear);
+  }, [results, activeYear]);
+
+  const examsAvailableForYear = useMemo(() => {
+    return [...new Set(filteredResultsByYear.map(r => r.exam || r.category || 'અન્ય'))];
+  }, [filteredResultsByYear]);
+
+  // Group by exam for rendering
+  const groupedResults = useMemo(() => {
+    const groups = {};
+    filteredResultsByYear.forEach(r => {
+      const exam = r.exam || r.category || 'અન્ય';
+      if (!groups[exam]) groups[exam] = [];
+      groups[exam].push(r);
+    });
+    return groups;
+  }, [filteredResultsByYear]);
 
   return (
     <>
@@ -106,61 +133,83 @@ export default function Results() {
             <SectionHeading label="ટોપર્સ" title="અમારા મેરિટ વિદ્યાર્થીઓ" subtitle="દર વર્ષે ઉત્તમ પરિણામોની પરંપરા." />
           </Reveal>
 
-          {/* Filter Tabs */}
+          {/* Year Filter Tabs */}
           <Reveal>
             <div className="mt-10 flex flex-wrap justify-center gap-3">
-              {TABS.map((tab, i) => (
+              {yearsAvailable.map((year) => (
                 <button
-                  key={tab}
-                  onClick={() => setActiveTab(i)}
+                  key={year}
+                  onClick={() => setSearchParams({ year, ...(urlExam ? {exam: urlExam} : {}) })}
                   className={cn(
-                    'px-6 py-3 font-heading font-bold text-[15px] border-2 transition-all duration-250',
-                    activeTab === i
-                      ? 'bg-accent text-white border-accent'
+                    'px-6 py-2.5 font-heading font-bold text-[16px] border-2 rounded-full transition-all duration-250',
+                    activeYear === year
+                      ? 'bg-accent text-white border-accent shadow-md'
                       : 'bg-white text-foreground border-border hover:border-accent hover:text-accent'
                   )}
                 >
-                  {tab}
+                  {year}
                 </button>
               ))}
+              {yearsAvailable.length === 0 && (
+                <div className="text-muted-foreground">કોઈ વર્ષના પરિણામો ઉપલબ્ધ નથી.</div>
+              )}
             </div>
           </Reveal>
 
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Render Groups */}
+          <div className="mt-14 space-y-16">
             {loading ? (
-               <div className="col-span-full py-10 text-center text-muted-foreground">લોડ થઈ રહ્યું છે...</div>
-            ) : filteredResults.length === 0 ? (
-               <div className="col-span-full py-10 text-center text-muted-foreground">કોઈ પરિણામ મળ્યું નથી.</div>
+               <div className="py-10 text-center text-muted-foreground">લોડ થઈ રહ્યું છે...</div>
+            ) : filteredResultsByYear.length === 0 ? (
+               <div className="py-10 text-center text-muted-foreground">{activeYear} ના કોઈ પરિણામ મળ્યું નથી.</div>
             ) : (
-              filteredResults.map((t, i) => (
-                <Reveal key={t._id || i} delay={i * 0.08}>
-                  <div className="card-hover group border border-border bg-white overflow-hidden h-full flex flex-col">
-                    <div className="relative">
-                      {t.photo_url ? (
-                         <img src={t.photo_url} alt={t.student_name} className="w-full aspect-square object-cover border-0 group-hover:scale-105 transition-transform duration-500" />
-                      ) : (
-                         <ImgPlaceholder label="વિદ્યાર્થી છબી" ratio="1/1" className="border-0 group-hover:scale-105 transition-transform duration-500" showLabel={false} />
-                      )}
-                      {t.rank && (
-                        <div className="absolute top-3 right-3 bg-golden text-white w-12 h-12 flex flex-col items-center justify-center">
-                          <Trophy className="w-4 h-4" strokeWidth={2} />
-                          <span className="font-heading font-extrabold text-[13px] !leading-[1.4] mt-0.5">#{t.rank}</span>
+              (urlExam && groupedResults[urlExam] ? [urlExam] : examsAvailableForYear).map((examType) => (
+                <div key={examType}>
+                  <Reveal>
+                    <div className="flex items-center gap-4 mb-8 border-b-2 border-border/60 pb-2">
+                      <h3 className="font-heading font-extrabold text-2xl text-[#7a1d1d]">{examType} પરિણામો</h3>
+                      <div className="flex-1 border-b border-dashed border-border/80"></div>
+                      <span className="font-semibold text-accent bg-accent/10 px-3 py-1 rounded-full text-sm">
+                        {groupedResults[examType]?.length || 0} વિદ્યાર્થીઓ
+                      </span>
+                    </div>
+                  </Reveal>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {groupedResults[examType]?.map((t, i) => (
+                      <Reveal key={t._id || i} delay={i * 0.08}>
+                        <div className="card-hover group border border-border bg-white overflow-hidden h-full flex flex-col shadow-sm rounded-lg">
+                          <div className="relative">
+                            {t.photo_url ? (
+                               <img src={t.photo_url} alt={t.student_name} className="w-full aspect-square object-cover border-0 group-hover:scale-105 transition-transform duration-500" />
+                            ) : (
+                               <ImgPlaceholder label="વિદ્યાર્થી છબી" ratio="1/1" className="border-0 group-hover:scale-105 transition-transform duration-500" showLabel={false} />
+                            )}
+                            {t.rank && (
+                              <div className="absolute top-3 right-3 bg-golden text-white w-12 h-12 flex flex-col items-center justify-center rounded-full shadow-lg border-2 border-white">
+                                <Trophy className="w-4 h-4" strokeWidth={2} />
+                                <span className="font-heading font-extrabold text-[13px] !leading-[1.4] mt-0.5">#{t.rank}</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="p-6 text-center flex-grow flex flex-col bg-slate-50/50">
+                            <h3 className="font-heading font-bold text-[20px] text-foreground mb-1">{t.student_name}</h3>
+                            <div className="mt-3 mb-4">
+                              <div className="inline-block bg-[#7a1d1d] text-white px-5 py-1.5 rounded-full font-heading font-extrabold text-[20px] shadow-sm">
+                                {t.marks ? `${t.marks} માર્ક્સ` : `${t.percentage}%`}
+                              </div>
+                            </div>
+                            {t.school && <p className="font-body text-[14px] text-muted-foreground mt-auto">{t.school}</p>}
+                            <div className="mt-4 pt-4 border-t border-border flex items-center justify-center gap-2">
+                              <Award className="w-5 h-5 text-golden" strokeWidth={2} />
+                              <span className="font-body text-[15px] font-bold text-foreground">{t.achievement || t.category || 'મેરિટ સ્ટુડન્ટ'}</span>
+                            </div>
+                          </div>
                         </div>
-                      )}
-                    </div>
-                    <div className="p-6 text-center flex-grow flex flex-col">
-                      <h3 className="font-heading font-bold text-[20px] text-foreground">{t.student_name}</h3>
-                      <div className="mt-auto mb-4">
-                        <div className="mt-2 inline-block bg-accent/10 text-accent px-4 py-1 font-heading font-extrabold text-[22px]">{t.marks || t.percentage}</div>
-                      </div>
-                      {t.school && <p className="font-body text-[14px] text-muted-foreground">{t.school}</p>}
-                      <div className="mt-2 flex items-center justify-center gap-1.5">
-                        <Award className="w-4 h-4 text-golden" strokeWidth={1.8} />
-                        <span className="font-body text-[14px] font-semibold text-foreground">{t.achievement || t.category || 'મેરિટ'}</span>
-                      </div>
-                    </div>
+                      </Reveal>
+                    ))}
                   </div>
-                </Reveal>
+                </div>
               ))
             )}
           </div>
