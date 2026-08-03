@@ -4,7 +4,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
-// const mongoSanitize = require('express-mongo-sanitize');
+const sanitizeRequestData = require('./src/middlewares/sanitize.middleware');
 const hpp = require('hpp');
 const { errorHandler, notFound } = require('./src/middlewares/error.middleware');
 
@@ -67,7 +67,7 @@ app.use(hpp());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(mongoSanitize());
+app.use(sanitizeRequestData);
 app.use(compression());
 
 // Logging Middleware
