@@ -23,12 +23,13 @@ export default function FileUpload({ value, onChange, onUploadingChange, accept 
         }
       });
       
-      // The backend returns data.url for Cloudinary url
-      if (res.data?.url) {
-        onChange(res.data.url);
+      // The backend returns data.url for Cloudinary url within its own data wrapper
+      const uploadedUrl = res.data?.data?.url || res.data?.url;
+      if (uploadedUrl) {
+        onChange(uploadedUrl);
         toast({ title: "ફાઈલ અપલોડ સફળ રહી" });
       } else {
-         throw new Error("અપલોડ નિષ્ફળ");
+         throw new Error("અપલોડ નિષ્ફળ: URL મળ્યું નથી");
       }
     } catch (err) {
       console.error(err);
