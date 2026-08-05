@@ -19,19 +19,31 @@ export default function Header() {
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState(null);
   const [settings, setSettings] = useState(null);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+  const [dynamicCourses, setDynamicCourses] = useState([]);
   const location = useLocation();
 
   useEffect(() => {
-    const fetchSettings = async () => {
+    const fetchSettingsAndCourses = async () => {
       try {
-        const res = await apiClient.get('/settings');
-        const data = Array.isArray(res.data) ? res.data[0] : (res.data?.data?.[0] || res.data?.data || null);
-        if (data) setSettings(data);
+        const [settingsRes, coursesRes] = await Promise.allSettled([
+          apiClient.get('/settings'),
+          apiClient.get('/courses')
+        ]);
+        
+        if (settingsRes.status === 'fulfilled') {
+          const data = Array.isArray(settingsRes.value.data) ? settingsRes.value.data[0] : (settingsRes.value.data?.data?.[0] || settingsRes.value.data?.data || null);
+          if (data) setSettings(data);
+        }
+        
+        if (coursesRes.status === 'fulfilled') {
+          const data = Array.isArray(coursesRes.value.data) ? coursesRes.value.data : (coursesRes.value.data?.data || []);
+          setDynamicCourses(data.filter(c => c.isActive !== false));
+        }
       } catch (e) {
-        console.error("Failed to fetch settings:", e);
+        console.error("Failed to fetch header data:", e);
       }
     };
-    fetchSettings();
+    fetchSettingsAndCourses();
   }, []);
 
   const phone = settings?.phone || SITE.phone;
@@ -165,7 +177,17 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-1 h-full">
-            {NAV_ITEMS.map((item) => {
+            {NAV_ITEMS.map((baseItem) => {
+              // Override courses dropdown with dynamic courses
+              let item = { ...baseItem };
+              if (item.path === '/courses' && dynamicCourses.length > 0) {
+                item.dropdown = dynamicCourses.map(c => ({
+                  label: c.name, 
+                  path: `/courses#${c.slug || c._id}`,
+                  isDynamic: true
+                }));
+              }
+              
               const active = location.pathname.startsWith(item.path) && (item.path !== '/' || location.pathname === '/');
               const hasDropdown = Boolean(item.dropdown);
 
@@ -211,7 +233,7 @@ export default function Header() {
                               onClick={() => setActiveDropdown(null)}
                               className="px-5 py-3 text-[15px] font-semibold text-foreground hover:bg-accent/5 hover:text-accent transition-colors border-b border-border/40 last:border-0"
                             >
-                              {t(dropItem.label)}
+                              {dropItem.isDynamic ? dropItem.label : t(dropItem.label)}
                             </Link>
                           ))}
                         </div>
@@ -279,7 +301,16 @@ export default function Header() {
             </button>
           </div>
           <nav className="flex-1 overflow-y-auto p-4 space-y-2">
-            {NAV_ITEMS.map((item) => {
+            {NAV_ITEMS.map((baseItem) => {
+              let item = { ...baseItem };
+              if (item.path === '/courses' && dynamicCourses.length > 0) {
+                item.dropdown = dynamicCourses.map(c => ({
+                  label: c.name, 
+                  path: `/courses#${c.slug || c._id}`,
+                  isDynamic: true
+                }));
+              }
+              
               const active = location.pathname.startsWith(item.path) && (item.path !== '/' || location.pathname === '/');
               const hasDropdown = Boolean(item.dropdown);
               const isExpanded = mobileExpandedMenu === item.label;

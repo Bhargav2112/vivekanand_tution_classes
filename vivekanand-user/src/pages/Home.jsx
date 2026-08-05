@@ -17,6 +17,7 @@ import InstagramFeed from '@/components/site/InstagramFeed';
 import { SITE, STATS, WHY_CHOOSE_US, COURSES as FALLBACK_COURSES } from '@/data/site';
 import { apiClient } from '@/api/apiClient';
 import FaqSection from '@/components/site/FaqSection';
+import { useTranslation } from 'react-i18next';
 
 const ICONS = {
   Users, TrendingUp, Award, Star, GraduationCap, Lightbulb, Brain, BookOpen,
@@ -44,6 +45,7 @@ function getYouTubeDetails(url) {
 }
 
 export default function Home() {
+  const { t } = useTranslation();
   const [courses, setCourses] = useState([]);
   const [notices, setNotices] = useState([]);
   const [photos, setPhotos] = useState([]);
@@ -59,25 +61,25 @@ export default function Home() {
     {
       value: settings.stats_students_value !== undefined ? settings.stats_students_value : 5000,
       suffix: settings.stats_students_suffix || "+",
-      label: settings.stats_students_label || "વિદ્યાર્થીઓ",
+      label: settings.stats_students_label || t("home.stats_students"),
       icon: "Users"
     },
     {
       value: settings.stats_results_value !== undefined ? settings.stats_results_value : 98,
       suffix: settings.stats_results_suffix || "%",
-      label: settings.stats_results_label || "પરિણામ",
+      label: settings.stats_results_label || t("home.stats_results"),
       icon: "TrendingUp"
     },
     {
       value: settings.stats_experience_value !== undefined ? settings.stats_experience_value : 15,
       suffix: settings.stats_experience_suffix || "+",
-      label: settings.stats_experience_label || "વર્ષનો અનુભવ",
+      label: settings.stats_experience_label || t("home.stats_experience"),
       icon: "Award"
     },
     {
       value: settings.stats_merit_value !== undefined ? settings.stats_merit_value : 500,
       suffix: settings.stats_merit_suffix || "+",
-      label: settings.stats_merit_label || "મેરિટ વિદ્યાર્થીઓ",
+      label: settings.stats_merit_label || t("home.stats_merit"),
       icon: "Star"
     }
   ] : STATS;
@@ -168,25 +170,25 @@ export default function Home() {
             <Reveal>
               <div className="inline-block mb-2">
                 <span className="font-heading text-[32px] sm:text-[46px] lg:text-[56px] font-black uppercase tracking-wider text-white">
-                  ADMISSION <span className="text-[#FF6600]">OPEN</span>
+                  {t("home.hero_admission").split(' ')[0]} <span className="text-[#FF6600]">{t("home.hero_admission").split(' ').slice(1).join(' ')}</span>
                 </span>
                 <span className="block font-heading text-[48px] sm:text-[68px] lg:text-[80px] font-black text-[#FFD54F] !leading-[1.4] mt-1 pb-1">
-                  2026-27
+                  {t("home.hero_year")}
                 </span>
               </div>
               <h1 className="font-heading font-extrabold text-[28px] sm:text-[36px] lg:text-[42px] !leading-[1.45] text-[#FFE082] mt-3 pb-1">
-                આજનું યોગ્ય માર્ગદર્શન,
-                <span className="block text-white">આવતીકાલનું ઉજ્જવળ ભવિષ્ય.</span>
+                {t("home.hero_title1")}
+                <span className="block text-white">{t("home.hero_title2")}</span>
               </h1>
               <p className="mt-4 max-w-[600px] font-body text-[16px] lg:text-[18px] leading-[1.7] text-white/90">
-                અનુભવી શિક્ષકો, ગુણવત્તાસભર અભ્યાસ, નિયમિત પરીક્ષણ અને વ્યક્તિગત માર્ગદર્શન સાથે હજારો વિદ્યાર્થીઓના વિશ્વાસનું નામ — વિવેકાનંદ ટ્યુશન ક્લાસીસ.
+                {t("home.hero_desc")}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Btn to="/admission" className="bg-[#FF6600] text-white hover:bg-[#E65100] text-base font-bold px-8 py-3.5 shadow-lg flex items-center gap-2">
-                  <Check className="w-5 h-5" /> આજે જ પ્રવેશ લો
+                  <Check className="w-5 h-5" /> {t("home.btn_admission")}
                 </Btn>
                 <Btn href={`https://wa.me/${SITE.whatsapp}`} className="bg-[#420405] text-white border border-white/30 hover:bg-[#58070A] text-base font-bold px-8 py-3.5 flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-[#25D366]" /> વોટ્સએપ પર સંપર્ક કરો
+                  <MessageCircle className="w-5 h-5 text-[#25D366]" /> {t("home.btn_whatsapp")}
                 </Btn>
               </div>
             </Reveal>

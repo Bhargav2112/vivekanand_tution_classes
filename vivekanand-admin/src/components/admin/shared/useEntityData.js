@@ -21,7 +21,10 @@ const entityToEndpoint = {
   FAQ: "faqs",
   WebsitePage: "websitepages",
   Setting: "settings",
-  ContactMessage: "contactenquiries"
+  ContactMessage: "contactenquiries",
+  BookCategory: "bookcategories",
+  Book: "books",
+  Topper: "toppers"
 };
 
 export function useEntityData(entityName) {

@@ -44,6 +44,19 @@ exports.getShorts = async (req, res) => {
   }
 };
 
+// @desc    Get all youtube live streams
+// @route   GET /api/v1/youtube/live
+// @access  Public
+exports.getLiveVideos = async (req, res) => {
+  try {
+    const live = await YoutubeVideo.find({ type: 'live', isActive: true })
+      .sort({ publishedAt: -1 });
+    res.status(200).json({ success: true, count: live.length, data: live });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // @desc    Trigger a manual sync
 // @route   POST /api/v1/youtube/sync
 // @access  Private/Admin

@@ -19,7 +19,7 @@ export default function YoutubeDashboard() {
       setLoading(true);
       setError("");
       
-      const [channelRes, videosRes, shortsRes, logsRes] = await Promise.all([
+      const [channelRes, videosRes, shortsRes, liveRes, logsRes] = await Promise.all([
         api.get('/youtube/channel').catch(e => null),
         api.get('/youtube/videos').catch(e => ({ count: 0 })),
         api.get('/youtube/shorts').catch(e => ({ count: 0 })),

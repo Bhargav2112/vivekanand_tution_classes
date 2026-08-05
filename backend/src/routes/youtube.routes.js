@@ -3,6 +3,7 @@ const {
   getChannel,
   getVideos,
   getShorts,
+  getLiveVideos,
   triggerSync,
   getSyncLogs,
   youtubeWebhook
@@ -15,6 +16,7 @@ const router = express.Router();
 router.get('/channel', getChannel);
 router.get('/videos', getVideos);
 router.get('/shorts', getShorts);
+router.get('/live', getLiveVideos);
 
 // Webhook route (must accept GET for challenge, POST for data)
 router.route('/webhook')

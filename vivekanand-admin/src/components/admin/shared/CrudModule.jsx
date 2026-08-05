@@ -16,6 +16,8 @@ export default function CrudModule({
   exportColumns,
   rowActions = ["edit", "delete"],
   extraActions,
+  filter = {},
+  defaultValues = {},
 }) {
   const { items, loading, create, update, remove, bulkDelete, bulkUpdate } = useEntityData(entityName);
   const [search, setSearch] = useState("");
@@ -27,12 +29,20 @@ export default function CrudModule({
   const [viewing, setViewing] = useState(null);
 
   const filtered = useMemo(() => {
-    if (!search) return items;
+    let result = items;
+    // Apply hard filter
+    if (Object.keys(filter).length > 0) {
+      result = result.filter(item => {
+        return Object.entries(filter).every(([k, v]) => item[k] === v);
+      });
+    }
+    
+    if (!search) return result;
     const q = search.toLowerCase();
-    return items.filter((it) =>
+    return result.filter((it) =>
       searchFields.some((f) => String(it[f] ?? "").toLowerCase().includes(q))
     );
-  }, [items, search, searchFields]);
+  }, [items, search, searchFields, filter]);
 
   const toggleSelect = (id) =>
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -55,12 +65,14 @@ export default function CrudModule({
   };
 
   const handleSubmit = async (values) => {
+    const finalValues = { ...defaultValues, ...values };
     const targetId = editing ? (editing.id || editing._id) : null;
     if (targetId) {
-      await update(targetId, values);
+      await update(targetId, finalValues);
     } else {
-      await create(values);
+      await create(finalValues);
     }
+    setModalOpen(false);
   };
 
   const handleRowAction = (action, row) => {

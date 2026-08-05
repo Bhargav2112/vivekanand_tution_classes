@@ -16,7 +16,7 @@ exports.submitTestimonial = asyncHandler(async (req, res, next) => {
     student_name,
     mobile: mobile || '',
     review,
-    status: 'active'
+    status: 'inactive' // Requires admin approval
   });
   res.status(201).json({ success: true, data: doc });
 });

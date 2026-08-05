@@ -30,5 +30,22 @@
   "results_menu": {
     "board": "Board Results",
     "competitive": "Competitive Results"
+  },
+  "home": {
+    "hero_admission": "ADMISSION OPEN",
+    "hero_year": "2026-27",
+    "hero_title1": "Right Guidance Today,",
+    "hero_title2": "Bright Future Tomorrow.",
+    "hero_desc": "With experienced teachers, quality education, regular testing, and personalized guidance, Vivekanand Tuition Classes is a name trusted by thousands of students.",
+    "btn_admission": "Take Admission Today",
+    "btn_whatsapp": "Contact on WhatsApp",
+    "stats_students": "Students",
+    "stats_results": "Results",
+    "stats_experience": "Years Experience",
+    "stats_merit": "Merit Students",
+    "why_choose_us": "Why Choose Us?",
+    "courses_title": "Our Courses",
+    "courses_desc": "Select the best course for your child's bright future",
+    "view_all": "View All"
   }
 }
