@@ -185,7 +185,7 @@ export default function Gallery() {
       <section id="photos" className="bg-white py-20 lg:py-[120px] scroll-mt-20">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
-            <SectionHeading label="ફોટો ગેલેરી" title="યાદગાર ક્ષણો" />
+            <SectionHeading label="ફોટો ગેલેરી" title="યાદગાર ક્ષણો" subtitle="" />
           </Reveal>
 
           {/* Categories */}
