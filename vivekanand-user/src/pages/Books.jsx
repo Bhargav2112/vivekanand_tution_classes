@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { apiClient } from '@/api/apiClient';
 import PageHero from '@/components/site/PageHero';
-import { Search, Filter, BookOpen, Download } from 'lucide-react';
+import { Search, Filter, BookOpen, Download, ShoppingCart } from 'lucide-react';
 import Btn from '@/components/ui/Btn';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Books() {
+  const { t } = useTranslation();
   const [books, setBooks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -125,17 +128,25 @@ export default function Books() {
                         )}
                       </div>
                       
-                      {book.pdf_preview_url && (
-                        <a 
-                          href={book.pdf_preview_url} 
-                          target="_blank" 
-                          rel="noreferrer"
-                          className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
-                          title="PDF Preview"
+                      <div className="flex items-center gap-2">
+                        {book.pdf_preview_url && (
+                          <a 
+                            href={book.pdf_preview_url} 
+                            target="_blank" 
+                            rel="noreferrer"
+                            className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
+                            title="PDF Preview"
+                          >
+                            <Download className="w-4 h-4" />
+                          </a>
+                        )}
+                        <Link
+                          to={`/contact?subject=Book Inquiry: ${encodeURIComponent(book.title)}`}
+                          className="px-4 py-2 bg-[#FF6600] text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-[#E65100] transition-colors"
                         >
-                          <Download className="w-4 h-4" />
-                        </a>
-                      )}
+                          <ShoppingCart className="w-4 h-4" /> {t("home.buy_now")}
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </motion.div>

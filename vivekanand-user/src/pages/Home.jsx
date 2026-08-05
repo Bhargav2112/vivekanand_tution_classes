@@ -4,7 +4,7 @@ import {
   Check, Phone, MessageCircle, ArrowRight, Users, TrendingUp, Award, Star,
   GraduationCap, Lightbulb, Brain, BookOpen, ShieldCheck, Target, Building2,
   BookMarked, MessageSquare, UserCheck, Users2, ClipboardCheck, Eye, Flag,
-  Play, X, Bell
+  Play, X, Bell, ShoppingCart, Download
 } from 'lucide-react';
 import Btn from '@/components/ui/Btn';
 import ImgPlaceholder from '@/components/ui/ImgPlaceholder';
@@ -51,6 +51,7 @@ export default function Home() {
   const [photos, setPhotos] = useState([]);
   const [videos, setVideos] = useState([]);
   const [results, setResults] = useState([]);
+  const [books, setBooks] = useState([]);
   const [banners, setBanners] = useState([]);
   const [activeBanner, setActiveBanner] = useState(0);
   const [settings, setSettings] = useState(null);
@@ -87,14 +88,15 @@ export default function Home() {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const [courseRes, noticeRes, photoRes, videoRes, settingsRes, bannersRes, resultsRes] = await Promise.allSettled([
+        const [courseRes, noticeRes, photoRes, videoRes, settingsRes, bannersRes, resultsRes, booksRes] = await Promise.allSettled([
           apiClient.get('/courses'),
           apiClient.get('/notices'),
           apiClient.get('/galleries'),
           apiClient.get('/youtube/videos'),
           apiClient.get('/settings'),
           apiClient.get('/banners'),
-          apiClient.get('/results')
+          apiClient.get('/results'),
+          apiClient.get('/books')
         ]);
         
         if (courseRes.status === 'fulfilled') {
@@ -132,6 +134,11 @@ export default function Home() {
         if (resultsRes.status === 'fulfilled') {
           const data = Array.isArray(resultsRes.value.data) ? resultsRes.value.data : (resultsRes.value.data?.data || []);
           setResults(data);
+        }
+
+        if (booksRes.status === 'fulfilled') {
+          const data = Array.isArray(booksRes.value.data) ? booksRes.value.data : (booksRes.value.data?.data || []);
+          setBooks(data);
         }
       } catch (err) {
         console.error("Home data fetch error:", err);
@@ -259,9 +266,9 @@ export default function Home() {
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
             <SectionHeading
-              label="વિડિઓ ગેલેરી"
-              title="અમારા ખાસ વિડિઓઝ"
-              subtitle="વિવેકાનંદ ટ્યુશન ક્લાસીસના યુટ્યુબ વિડિઓઝ જુઓ."
+              label={t("home.video_gallery_label")}
+              title={t("home.video_gallery_title")}
+              subtitle={t("home.video_gallery_desc")}
             />
           </Reveal>
           <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -304,14 +311,99 @@ export default function Home() {
               })
             ) : (
               <div className="col-span-full py-8 text-center text-muted-foreground font-body">
-                કોઈ વિડિયોઝ હાલ ઉપલબ્ધ નથી.
+                {t("home.no_videos")}
               </div>
             )}
           </div>
           <Reveal>
             <div className="mt-8 text-center">
               <Btn to="/gallery" variant="primary" size="md" iconRight={ArrowRight}>
-                વધુ વિડિઓઝ જુઓ
+                {t("home.view_more_videos")}
+              </Btn>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ===== BOOKS SECTION PREVIEW ===== */}
+      <section className="bg-slate-50 py-16 lg:py-[90px] border-t border-border">
+        <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
+          <Reveal>
+            <SectionHeading
+              label={t("home.books_label")}
+              title={t("home.books_title")}
+              subtitle={t("home.books_desc")}
+            />
+          </Reveal>
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {books.length > 0 ? (
+              // Sort by best seller first, then slice top 4
+              [...books].sort((a, b) => (b.isBestSeller ? 1 : 0) - (a.isBestSeller ? 1 : 0)).slice(0, 4).map((book, i) => (
+                <Reveal key={book._id || i} delay={i * 0.1}>
+                  <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group flex flex-col h-full border border-border">
+                    <div className="aspect-[3/4] bg-gray-100 relative overflow-hidden">
+                      {book.thumbnail_url ? (
+                        <img src={book.thumbnail_url} alt={book.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-300">
+                          <BookOpen className="w-16 h-16" />
+                        </div>
+                      )}
+                      {book.isBestSeller && (
+                        <div className="absolute top-4 left-4 bg-[#FF6600] text-white text-xs font-bold px-3 py-1 rounded-full">Best Seller</div>
+                      )}
+                    </div>
+                    <div className="p-5 flex flex-col flex-1">
+                      <div className="text-xs text-muted-foreground font-semibold mb-2 uppercase tracking-wider">{book.category?.name || 'Book'}</div>
+                      <h3 className="font-heading font-bold text-lg leading-tight mb-2 line-clamp-2">{book.title}</h3>
+                      {book.author && <p className="text-sm text-muted-foreground mb-4">{book.author}</p>}
+                      
+                      <div className="mt-auto pt-4 border-t border-border flex items-center justify-between">
+                        <div>
+                          {book.discount_price ? (
+                            <div className="flex items-center gap-2">
+                              <span className="font-display font-bold text-accent text-xl">₹{book.discount_price}</span>
+                              <span className="text-muted-foreground line-through text-sm">₹{book.price}</span>
+                            </div>
+                          ) : (
+                            <span className="font-display font-bold text-accent text-xl">₹{book.price}</span>
+                          )}
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                          {book.pdf_preview_url && (
+                            <a 
+                              href={book.pdf_preview_url} 
+                              target="_blank" 
+                              rel="noreferrer"
+                              className="w-8 h-8 rounded-full bg-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
+                              title="PDF Preview"
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                          <Link
+                            to={`/contact?subject=Book Inquiry: ${encodeURIComponent(book.title)}`}
+                            className="px-3 py-1.5 bg-[#FF6600] text-white rounded-md text-xs font-bold flex items-center gap-1.5 hover:bg-[#E65100] transition-colors"
+                          >
+                            <ShoppingCart className="w-3.5 h-3.5" /> {t("home.buy_now")}
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
+              ))
+            ) : (
+              <div className="col-span-full py-8 text-center text-muted-foreground font-body">
+                No books available at the moment.
+              </div>
+            )}
+          </div>
+          <Reveal>
+            <div className="mt-8 text-center">
+              <Btn to="/books" variant="outline" size="md" iconRight={ArrowRight}>
+                {t("home.view_all_books")}
               </Btn>
             </div>
           </Reveal>
@@ -346,19 +438,19 @@ export default function Home() {
             </Reveal>
             <Reveal delay={0.15}>
               <SectionHeading
-                label="અમારા વિશે"
+                label={t("home.about_label")}
                 align="left"
-                title="ગુજરાતની વિશ્વાસપાત્ર શૈક્ષણિક સંસ્થા"
+                title={t("home.about_title")}
                 subtitle=""
               />
               <p className="mt-5 font-body text-[18px] leading-[1.8] text-muted-foreground">
-                વિવેકાનંદ ટ્યુશન ક્લાસીસ માત્ર ટ્યુશન સંસ્થા નથી, પરંતુ વિદ્યાર્થીઓના સર્વાંગી વિકાસ માટે પ્રતિબદ્ધ એક શૈક્ષણિક પરિવાર છે. વર્ષોના અનુભવ, ગુણવત્તાસભર શિક્ષણ, અનુભવી શિક્ષકો અને પરિણામકેન્દ્રિત અભ્યાસક્રમ દ્વારા અમે વિદ્યાર્થીઓને સફળતાની દિશામાં આગળ વધારીએ છીએ.
+                {t("home.about_desc")}
               </p>
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {[
-                  { icon: BookOpen, title: 'અનુભવી શિક્ષકો', desc: 'વિષય નિષ્ણાત શિક્ષકો.' },
-                  { icon: Award, title: 'શ્રેષ્ઠ પરિણામો', desc: 'દર વર્ષે ઉત્તમ પરિણામ.' },
-                  { icon: UserCheck, title: 'વ્યક્તિગત માર્ગદર્શન', desc: 'દરેક વિદ્યાર્થી પર ખાસ ધ્યાન.' },
+                  { icon: BookOpen, title: t("home.about_f1_title"), desc: t("home.about_f1_desc") },
+                  { icon: Award, title: t("home.about_f2_title"), desc: t("home.about_f2_desc") },
+                  { icon: UserCheck, title: t("home.about_f3_title"), desc: t("home.about_f3_desc") },
                 ].map((f, i) => (
                   <Reveal key={f.title} delay={0.2 + i * 0.1}>
                     <div className="card-hover border border-border p-5 h-full">
@@ -371,7 +463,7 @@ export default function Home() {
               </div>
               <div className="mt-8">
                 <Btn to="/about" variant="primary" size="md" iconRight={ArrowRight}>
-                  વધુ જાણો
+                  {t("home.read_more")}
                 </Btn>
               </div>
             </Reveal>
@@ -384,9 +476,9 @@ export default function Home() {
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
             <SectionHeading
-              label="અમારી ખાસિયતો"
-              title="શા માટે પસંદ કરો વિવેકાનંદ ટ્યુશન ક્લાસીસ?"
-              subtitle="ગુણવત્તાસભર શિક્ષણ અને વ્યક્તિગત માર્ગદર્શન સાથે વિદ્યાર્થીઓના ઉજ્જવળ ભવિષ્ય માટે પ્રતિબદ્ધ."
+              label={t("home.why_choose_us")}
+              title={t("home.why_choose_title")}
+              subtitle={t("home.why_choose_desc")}
             />
           </Reveal>
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -399,8 +491,8 @@ export default function Home() {
                       {Icon && <Icon className="w-9 h-9 text-accent transition-transform duration-300 group-hover:rotate-6" strokeWidth={1.8} />}
                       <span className="font-display font-extrabold text-2xl text-border">{item.num}</span>
                     </div>
-                    <h3 className="font-heading font-bold text-[18px] text-foreground mb-2">{item.title}</h3>
-                    <p className="font-body text-[14px] text-muted-foreground leading-relaxed">{item.desc}</p>
+                    <h3 className="font-heading font-bold text-[18px] text-foreground mb-2">{t(`home.${item.title_key}`) || item.title}</h3>
+                    <p className="font-body text-[14px] text-muted-foreground leading-relaxed">{t(`home.${item.desc_key}`) || item.desc}</p>
                   </div>
                 </Reveal>
               );
@@ -414,9 +506,9 @@ export default function Home() {
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
             <SectionHeading
-              label="અભ્યાસક્રમો"
-              title="અમારા અભ્યાસક્રમો"
-              subtitle="દરેક વિદ્યાર્થી માટે યોગ્ય માર્ગદર્શન અને પરિણામ આધારિત અભ્યાસ."
+              label={t("home.courses_label")}
+              title={t("home.courses_main_title")}
+              subtitle={t("home.courses_main_desc")}
             />
           </Reveal>
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -457,8 +549,8 @@ export default function Home() {
 
                       <div>
                         <div className="pt-3 border-t border-border/80 text-[12px] text-muted-foreground space-y-1 mb-4">
-                          <div>📅 સમયગાળો: <span className="font-semibold text-foreground">{course.duration}</span></div>
-                          <div>🏫 ક્લાસ: <span className="font-semibold text-foreground">{course.classes}</span></div>
+                          <div>📅 {t("home.duration")}: <span className="font-semibold text-foreground">{course.duration}</span></div>
+                          <div>🏫 {t("home.classes")}: <span className="font-semibold text-foreground">{course.classes}</span></div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-2">
@@ -466,13 +558,13 @@ export default function Home() {
                             to="/courses"
                             className="bg-[#FF6600] hover:bg-[#E65100] text-white font-heading font-bold text-xs py-2.5 text-center shadow transition-colors"
                           >
-                            વધુ માહિતી
+                            {t("home.more_info")}
                           </Link>
                           <Link
                             to="/admission"
                             className="border border-border text-foreground hover:bg-muted font-heading font-bold text-xs py-2.5 text-center transition-colors"
                           >
-                            પ્રવેશ લો
+                            {t("home.take_admission")}
                           </Link>
                         </div>
                       </div>
@@ -485,7 +577,7 @@ export default function Home() {
           <Reveal>
             <div className="mt-10 text-center">
               <Btn to="/courses" variant="outline" size="md" iconRight={ArrowRight}>
-                બધા અભ્યાસક્રમો જુઓ
+                {t("home.view_all_courses")}
               </Btn>
             </div>
           </Reveal>
@@ -500,9 +592,9 @@ export default function Home() {
               <div className="bg-primary text-white p-10 lg:p-12 h-full relative overflow-hidden">
                 <Target className="absolute top-6 right-6 w-24 h-24 text-white/5" strokeWidth={1} />
                 <Target className="w-12 h-12 text-golden mb-5" strokeWidth={1.8} />
-                <h3 className="font-heading font-extrabold text-3xl mb-4">અમારું ધ્યેય</h3>
+                <h3 className="font-heading font-extrabold text-3xl mb-4">{t("home.mission")}</h3>
                 <p className="font-body text-[18px] leading-[1.8] text-white/85">
-                  દરેક વિદ્યાર્થીમાં જ્ઞાન, શિસ્ત, આત્મવિશ્વાસ અને જવાબદારીનો વિકાસ કરીને તેને ઉજ્જવળ ભવિષ્ય માટે તૈયાર કરવો.
+                  {t("home.mission_desc")}
                 </p>
               </div>
             </Reveal>
@@ -510,9 +602,9 @@ export default function Home() {
               <div className="bg-secondary text-white p-10 lg:p-12 h-full relative overflow-hidden">
                 <Eye className="absolute top-6 right-6 w-24 h-24 text-white/5" strokeWidth={1} />
                 <Eye className="w-12 h-12 text-golden mb-5" strokeWidth={1.8} />
-                <h3 className="font-heading font-extrabold text-3xl mb-4">અમારું વિઝન</h3>
+                <h3 className="font-heading font-extrabold text-3xl mb-4">{t("home.vision")}</h3>
                 <p className="font-body text-[18px] leading-[1.8] text-white/85">
-                  ગુજરાતની સૌથી વિશ્વાસપાત્ર અને પરિણામકેન્દ્રિત શૈક્ષણિક સંસ્થા તરીકે વિદ્યાર્થીઓ અને વાલીઓનો પ્રથમ વિશ્વાસ બનવો.
+                  {t("home.vision_desc")}
                 </p>
               </div>
             </Reveal>
@@ -526,9 +618,9 @@ export default function Home() {
         <div className="relative z-10 max-w-[1320px] mx-auto px-4 lg:px-8 text-center">
           <Reveal>
             <SectionHeading
-              label="પરિણામો"
-              title="અમારા ગૌરવપૂર્ણ પરિણામો"
-              subtitle="અમારા વિદ્યાર્થીઓની સફળતા અમારી સૌથી મોટી ઓળખ છે."
+              label={t("home.results_label")}
+              title={t("home.results_title")}
+              subtitle={t("home.results_desc")}
               light
             />
           </Reveal>
@@ -554,7 +646,7 @@ export default function Home() {
             <div className="mt-16 text-left space-y-12">
               <Reveal>
                 <div className="flex flex-col items-center justify-center mb-8">
-                  <h3 className="font-heading font-black text-3xl md:text-4xl text-golden">{latestYear} ના શાનદાર પરિણામો</h3>
+                  <h3 className="font-heading font-black text-3xl md:text-4xl text-golden">{latestYear} {t("home.excellent_results")}</h3>
                   <div className="h-1 w-20 bg-golden mt-4 rounded-full"></div>
                 </div>
               </Reveal>
@@ -570,7 +662,7 @@ export default function Home() {
                             <Award className="w-5 h-5 text-golden" /> {examType}
                           </h4>
                           <Link to={`/results?year=${latestYear}&exam=${examType}`} className="text-xs text-golden hover:text-white font-semibold flex items-center gap-1 transition-colors">
-                            વધુ જુઓ <ArrowRight className="w-3 h-3" />
+                            {t("home.view_more")} <ArrowRight className="w-3 h-3" />
                           </Link>
                         </div>
                         <div className="flex-1 space-y-3">
@@ -605,7 +697,7 @@ export default function Home() {
           <Reveal>
             <div className="mt-12">
               <Btn to="/results" variant="golden" size="md" iconRight={ArrowRight}>
-                બધા પરિણામો જુઓ
+                {t("home.view_all_results")}
               </Btn>
             </div>
           </Reveal>
@@ -617,9 +709,9 @@ export default function Home() {
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
             <SectionHeading
-              label="ગેલેરી"
-              title="અમારી પ્રવૃત્તિઓ"
-              subtitle="વર્ગખંડથી લઈને સફળતા સુધીની યાદગાર ક્ષણો."
+              label={t("home.gallery_label")}
+              title={t("home.gallery_title")}
+              subtitle={t("home.gallery_desc")}
             />
           </Reveal>
           <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-4">

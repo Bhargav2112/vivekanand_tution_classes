@@ -31,20 +31,27 @@ export default function Gallery() {
   const [activeCat, setActiveCat] = useState('બધા');
   const [photos, setPhotos] = useState([]);
   const [videos, setVideos] = useState([]);
+  const [shorts, setShorts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeVideoModal, setActiveVideoModal] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [photoRes, videoRes] = await Promise.all([
+        const [photoRes, videoRes, shortsRes] = await Promise.all([
           apiClient.get('/galleries'),
-          apiClient.get('/youtube/videos')
+          apiClient.get('/youtube/videos'),
+          apiClient.get('/youtube/shorts')
         ]);
         const photoData = Array.isArray(photoRes.data) ? photoRes.data : (photoRes.data?.data || []);
         const videoData = Array.isArray(videoRes.data) ? videoRes.data : (videoRes.data?.data || []);
+        const shortsData = Array.isArray(shortsRes.data) ? shortsRes.data : (shortsRes.data?.data || []);
+        
         setPhotos(photoData);
-        setVideos(videoData);
+        // Ensure videos don't include shorts if they were mixed, though they are separate endpoints.
+        setVideos(videoData.filter(v => v.isActive !== false));
+        // We'll append shorts to the videos section or handle them separately, but the prompt says: "and shorts ma click karu to ema thavu joiae" so let's separate them.
+        setShorts(shortsData.filter(s => s.isActive !== false));
       } catch (err) {
         console.error("Failed to fetch gallery:", err);
       } finally {
@@ -56,6 +63,18 @@ export default function Gallery() {
 
   const filteredPhotos = activeCat === 'બધા' ? photos : photos.filter((p) => p.category === activeCat);
 
+  useEffect(() => {
+    if (!loading && window.location.hash) {
+      const id = window.location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [loading, window.location.hash]);
+
   return (
     <>
       <PageHero
@@ -65,7 +84,7 @@ export default function Gallery() {
       />
 
       {/* Video Gallery - Right below Header/PageHero */}
-      <section className="bg-background py-20 lg:py-[120px]">
+      <section id="videos" className="bg-background py-20 lg:py-[120px] scroll-mt-20">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
             <SectionHeading label="વિડિયો ગેલેરી" title="વિડિયો જુઓ" subtitle="વિદ્યાર્થીઓ અને વાલીઓના અનુભવો અને વિશેષ ક્લાસરૂમ વિડિઓઝ." />
@@ -116,8 +135,54 @@ export default function Gallery() {
         </div>
       </section>
 
+      {/* Shorts Gallery */}
+      <section id="shorts" className="bg-slate-50 py-20 lg:py-[120px] scroll-mt-20 border-t border-border">
+        <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
+          <Reveal>
+            <SectionHeading label="શોર્ટ્સ" title="શોર્ટ્સ જુઓ" subtitle="ટૂંકા અને માહિતીસભર વિડિઓઝ." />
+          </Reveal>
+          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 lg:gap-6">
+            {loading ? (
+               <div className="col-span-full py-12 text-center text-muted-foreground">લોડ થઈ રહ્યું છે...</div>
+            ) : shorts.length === 0 ? (
+               <div className="col-span-full py-12 text-center text-muted-foreground">કોઈ શોર્ટ્સ ઉપલબ્ધ નથી.</div>
+            ) : (
+              shorts.map((v, i) => {
+                const details = getYouTubeDetails(v.youtube_url);
+                const thumb = v.thumbnailUrl || v.thumbnail_url || details.thumbnailUrl;
+                const embed = v.embedUrl || details.embedUrl;
+                return (
+                  <Reveal key={v._id || i} delay={i * 0.1}>
+                    <div
+                      onClick={() => setActiveVideoModal(embed)}
+                      className="block card-hover group bg-white overflow-hidden h-full cursor-pointer rounded-xl border border-border shadow-sm"
+                    >
+                      <div className="relative aspect-[9/16] bg-slate-900 overflow-hidden">
+                        {thumb ? (
+                          <img src={thumb} alt={v.title} referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        ) : (
+                          <ImgPlaceholder label="શોર્ટ્સ" ratio="9/16" className="border-0 group-hover:scale-105 transition-transform duration-500" showLabel={false} />
+                        )}
+                        <div className="absolute inset-0 flex items-center justify-center bg-primary/10 group-hover:bg-primary/40 transition-colors">
+                          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-600 text-white shadow-lg group-hover:scale-110 transition-transform">
+                            <Play className="w-5 h-5 ml-1" fill="white" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-3">
+                        <h3 className="font-heading font-bold text-[13px] text-foreground line-clamp-2">{v.title}</h3>
+                      </div>
+                    </div>
+                  </Reveal>
+                );
+              })
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* Photo Gallery */}
-      <section className="bg-white py-20 lg:py-[120px]">
+      <section id="photos" className="bg-white py-20 lg:py-[120px] scroll-mt-20">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
             <SectionHeading label="ફોટો ગેલેરી" title="યાદગાર ક્ષણો" />
