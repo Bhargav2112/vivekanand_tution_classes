@@ -18,14 +18,14 @@ const SIZES = {
 
 export default function Btn({
   children,
-  to,
-  href,
-  onClick,
+  to = undefined,
+  href = undefined,
+  onClick = undefined,
   variant = 'primary',
   size = 'md',
   className = '',
-  icon: Icon,
-  iconRight: IconRight,
+  icon: Icon = undefined,
+  iconRight: IconRight = undefined,
   fullWidth = false,
   ...props
 }) {

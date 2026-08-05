@@ -221,7 +221,7 @@ export default function Home() {
                       src={settings?.hero_banner_url || "/swami-vivekanand-hero.png"}
                       alt="સંસ્થા મુખ્ય ચિત્ર"
                       className="w-full h-full object-cover"
-                      onError={(e) => { e.target.onerror = null; e.target.src = '/swami-vivekanand-hero.png'; }}
+                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/swami-vivekanand-hero.png'; }}
                     />
                   )}
                   
@@ -327,7 +327,7 @@ export default function Home() {
                     src={settings.classroom_img_url || settings.about_banner_url || settings.hero_banner_url}
                     alt="ક્લાસરૂમ અને કેમ્પસ છબી"
                     className="w-full aspect-[4/5] object-cover border-4 border-[#7a1d1d] shadow-2xl"
-                    onError={(e) => { e.target.onerror = null; e.target.src = '/swami-vivekanand-hero.png'; }}
+                    onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/swami-vivekanand-hero.png'; }}
                   />
                 ) : (
                   <img
@@ -347,6 +347,7 @@ export default function Home() {
                 label="અમારા વિશે"
                 align="left"
                 title="ગુજરાતની વિશ્વાસપાત્ર શૈક્ષણિક સંસ્થા"
+                subtitle=""
               />
               <p className="mt-5 font-body text-[18px] leading-[1.8] text-muted-foreground">
                 વિવેકાનંદ ટ્યુશન ક્લાસીસ માત્ર ટ્યુશન સંસ્થા નથી, પરંતુ વિદ્યાર્થીઓના સર્વાંગી વિકાસ માટે પ્રતિબદ્ધ એક શૈક્ષણિક પરિવાર છે. વર્ષોના અનુભવ, ગુણવત્તાસભર શિક્ષણ, અનુભવી શિક્ષકો અને પરિણામકેન્દ્રિત અભ્યાસક્રમ દ્વારા અમે વિદ્યાર્થીઓને સફળતાની દિશામાં આગળ વધારીએ છીએ.

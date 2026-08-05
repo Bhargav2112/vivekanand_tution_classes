@@ -25,6 +25,8 @@ export default function BookCategories() {
         { key: "image_url", label: "Cover Image", type: "file", accept: "image/*" },
         { key: "status", label: "Status", type: "select", options: STATUS_OPTS },
       ]}
+      exportColumns={[]}
+      extraActions={[]}
     />
   );
 }

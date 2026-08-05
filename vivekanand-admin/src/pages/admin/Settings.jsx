@@ -224,7 +224,7 @@ export default function Settings() {
             </div>
             <div className="sm:col-span-2">
               <label className="block text-xs font-semibold mb-1">સંસ્થાનો લોગો</label>
-              <FileUpload value={values.logo_url} onChange={(url) => setField("logo_url", url)} />
+              <FileUpload value={values.logo_url} onChange={(url) => setField("logo_url", url)} onUploadingChange={() => {}} />
             </div>
           </div>
         </div>
@@ -238,19 +238,19 @@ export default function Settings() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="block text-xs font-semibold mb-1">હોમ પેજ મેઈન પિક્ચર (Hero Banner)</label>
-              <FileUpload value={values.hero_banner_url} onChange={(url) => setField("hero_banner_url", url)} />
+              <FileUpload value={values.hero_banner_url} onChange={(url) => setField("hero_banner_url", url)} onUploadingChange={() => {}} />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">ક્લાસરૂમ / કેમ્પસ ચિત્ર (Classroom Picture)</label>
-              <FileUpload value={values.classroom_img_url} onChange={(url) => setField("classroom_img_url", url)} />
+              <FileUpload value={values.classroom_img_url} onChange={(url) => setField("classroom_img_url", url)} onUploadingChange={() => {}} />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">અમારા વિશે પેજ બેનર (About Page Banner)</label>
-              <FileUpload value={values.about_banner_url} onChange={(url) => setField("about_banner_url", url)} />
+              <FileUpload value={values.about_banner_url} onChange={(url) => setField("about_banner_url", url)} onUploadingChange={() => {}} />
             </div>
             <div>
               <label className="block text-xs font-semibold mb-1">સ્થાપક છબી (Founder Picture)</label>
-              <FileUpload value={values.founder_img_url} onChange={(url) => setField("founder_img_url", url)} />
+              <FileUpload value={values.founder_img_url} onChange={(url) => setField("founder_img_url", url)} onUploadingChange={() => {}} />
             </div>
           </div>
         </div>

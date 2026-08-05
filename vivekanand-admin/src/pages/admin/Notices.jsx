@@ -49,6 +49,8 @@ export default function Notices() {
         { key: "pinned", label: "પિન કરો", type: "boolean", checkLabel: "ટોપ પર પિન કરો" },
         { key: "status", label: "સ્ટેટસ", type: "select", options: STATUS_OPTS },
       ]}
+      exportColumns={[]}
+      extraActions={[]}
     />
   );
 }
