@@ -29,6 +29,10 @@ import Settings from '@/pages/admin/Settings';
 import AdminUsers from '@/pages/admin/AdminUsers';
 import Banners from '@/pages/admin/Banners';
 import YoutubeDashboard from '@/pages/admin/YoutubeDashboard';
+import BookCategories from '@/pages/admin/BookCategories';
+import Books from '@/pages/admin/Books';
+import Toppers from '@/pages/admin/Toppers';
+import PushDashboard from '@/pages/admin/PushDashboard';
 
 const AuthenticatedApp = () => {
   return (
@@ -55,6 +59,10 @@ const AuthenticatedApp = () => {
           <Route path="/seo" element={<SEO />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/banners" element={<Banners />} />
+          <Route path="/book-categories" element={<BookCategories />} />
+          <Route path="/books" element={<Books />} />
+          <Route path="/toppers" element={<Toppers />} />
+          <Route path="/push" element={<PushDashboard />} />
           <Route element={<ProtectedRoute superAdminOnly={true} />}>
             <Route path="/admin-users" element={<AdminUsers />} />
           </Route>

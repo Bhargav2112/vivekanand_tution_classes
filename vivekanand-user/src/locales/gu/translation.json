@@ -1,0 +1,34 @@
+{
+  "header": {
+    "call_now": "હમણાં કોલ કરો",
+    "admission_open": "ADMISSION OPEN",
+    "menu_open": "મેનુ ખોલો",
+    "menu_close": "મેનુ બંધ કરો",
+    "admission_started": "પ્રવેશ શરૂ"
+  },
+  "nav": {
+    "home": "હોમ",
+    "about": "અમારા વિશે",
+    "courses": "કોર્સ",
+    "results": "પરિણામ",
+    "gallery": "ગેલેરી",
+    "videos": "વિડિયો",
+    "contact": "સંપર્ક"
+  },
+  "courses": {
+    "std_1_5": "ધોરણ 1-5",
+    "std_6_8": "ધોરણ 6-8",
+    "std_9_10": "ધોરણ 9-10",
+    "science": "વિજ્ઞાન પ્રવાહ",
+    "commerce": "સામાન્ય પ્રવાહ"
+  },
+  "gallery_menu": {
+    "photos": "ફોટાઓ",
+    "videos": "વિડિયોઝ",
+    "shorts": "શોર્ટ્સ"
+  },
+  "results_menu": {
+    "board": "બોર્ડ પરિણામો",
+    "competitive": "સ્પર્ધાત્મક પરિણામો"
+  }
+}

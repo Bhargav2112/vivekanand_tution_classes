@@ -19,6 +19,7 @@ import Admission from '@/pages/Admission';
 import Contact from '@/pages/Contact';
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import Terms from '@/pages/Terms';
+import Books from '@/pages/Books';
 
 const MainApp = () => {
   return (
@@ -36,6 +37,7 @@ const MainApp = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/books" element={<Books />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

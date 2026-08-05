@@ -1,0 +1,34 @@
+{
+  "header": {
+    "call_now": "Call Now",
+    "admission_open": "ADMISSION OPEN",
+    "menu_open": "Open Menu",
+    "menu_close": "Close Menu",
+    "admission_started": "Admission Started"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "courses": "Courses",
+    "results": "Results",
+    "gallery": "Gallery",
+    "videos": "Videos",
+    "contact": "Contact"
+  },
+  "courses": {
+    "std_1_5": "Std 1-5",
+    "std_6_8": "Std 6-8",
+    "std_9_10": "Std 9-10",
+    "science": "Science",
+    "commerce": "Commerce"
+  },
+  "gallery_menu": {
+    "photos": "Photos",
+    "videos": "Videos",
+    "shorts": "Shorts"
+  },
+  "results_menu": {
+    "board": "Board Results",
+    "competitive": "Competitive Results"
+  }
+}

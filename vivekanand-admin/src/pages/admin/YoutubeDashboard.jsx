@@ -6,6 +6,7 @@ export default function YoutubeDashboard() {
   const [channel, setChannel] = useState(null);
   const [videosCount, setVideosCount] = useState(0);
   const [shortsCount, setShortsCount] = useState(0);
+  const [liveCount, setLiveCount] = useState(0);
   const [logs, setLogs] = useState([]);
   
   const [loading, setLoading] = useState(true);
@@ -22,6 +23,7 @@ export default function YoutubeDashboard() {
         api.get('/youtube/channel').catch(e => null),
         api.get('/youtube/videos').catch(e => ({ count: 0 })),
         api.get('/youtube/shorts').catch(e => ({ count: 0 })),
+        api.get('/youtube/live').catch(e => ({ count: 0 })),
         api.get('/youtube/logs').catch(e => ({ data: [] }))
       ]);
 
@@ -30,6 +32,7 @@ export default function YoutubeDashboard() {
       }
       setVideosCount(videosRes.data?.count || 0);
       setShortsCount(shortsRes.data?.count || 0);
+      setLiveCount(liveRes.data?.count || 0);
       setLogs(Array.isArray(logsRes.data?.data) ? logsRes.data.data : []);
       
     } catch (err) {
@@ -157,7 +160,7 @@ export default function YoutubeDashboard() {
           </div>
 
           {/* Stats Cards */}
-          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="bg-card rounded-xl border border-border p-6 flex flex-col justify-center items-center shadow-sm">
               <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600 mb-4">
                 <Video className="w-6 h-6" />
@@ -171,7 +174,15 @@ export default function YoutubeDashboard() {
                 <Film className="w-6 h-6" />
               </div>
               <div className="text-4xl font-bold font-heading mb-1">{shortsCount}</div>
-              <div className="text-muted-foreground">યુટ્યુબ શોર્ટ્સ (YouTube Shorts)</div>
+              <div className="text-muted-foreground text-center">યુટ્યુબ શોર્ટ્સ (Shorts)</div>
+            </div>
+
+            <div className="bg-card rounded-xl border border-border p-6 flex flex-col justify-center items-center shadow-sm">
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600 mb-4 animate-pulse">
+                <Youtube className="w-6 h-6" />
+              </div>
+              <div className="text-4xl font-bold font-heading mb-1">{liveCount}</div>
+              <div className="text-muted-foreground text-center">લાઈવ વિડિઓ (Live)</div>
             </div>
           </div>
         </div>

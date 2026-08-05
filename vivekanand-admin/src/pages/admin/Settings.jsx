@@ -255,6 +255,102 @@ export default function Settings() {
           </div>
         </div>
 
+        {/* Instagram Settings */}
+        <div className="admin-card">
+          <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">
+            <ImageIcon className="w-5 h-5 text-[#7a1d1d]" />
+            <h3 className="font-bold text-[#7a1d1d] text-base">Instagram Feed Settings</h3>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs font-semibold mb-1">Instagram Username</label>
+              <input
+                value={values.instagram_username || ""}
+                onChange={(e) => setField("instagram_username", e.target.value)}
+                className={inputCls}
+                placeholder="vivekanand_tution_classes"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-semibold mb-1">Instagram Graph API Token (Long Lived)</label>
+              <input
+                type="password"
+                value={values.instagram_token || ""}
+                onChange={(e) => setField("instagram_token", e.target.value)}
+                className={inputCls}
+                placeholder="IGQWR..."
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold mb-1">Post Count</label>
+              <input
+                type="number"
+                value={values.instagram_post_count || 8}
+                onChange={(e) => setField("instagram_post_count", parseInt(e.target.value) || 8)}
+                className={inputCls}
+              />
+            </div>
+            <div className="flex items-center gap-2 mt-6">
+              <input
+                type="checkbox"
+                checked={values.instagram_feed_enabled || false}
+                onChange={(e) => setField("instagram_feed_enabled", e.target.checked)}
+                id="ig_enabled"
+                className="w-4 h-4"
+              />
+              <label htmlFor="ig_enabled" className="text-sm font-semibold cursor-pointer">Enable Instagram Feed on Homepage</label>
+            </div>
+          </div>
+        </div>
+
+        {/* Push Notification VAPID Settings */}
+        <div className="admin-card">
+          <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">
+            <BarChart3 className="w-5 h-5 text-[#7a1d1d]" />
+            <h3 className="font-bold text-[#7a1d1d] text-base">Push Notifications (VAPID) Settings</h3>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold mb-1">VAPID Public Key</label>
+              <input
+                type="password"
+                value={values.vapid_public_key || ""}
+                onChange={(e) => setField("vapid_public_key", e.target.value)}
+                className={inputCls}
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold mb-1">VAPID Private Key</label>
+              <input
+                type="password"
+                value={values.vapid_private_key || ""}
+                onChange={(e) => setField("vapid_private_key", e.target.value)}
+                className={inputCls}
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold mb-1">Contact Email</label>
+              <input
+                type="email"
+                value={values.vapid_email || ""}
+                onChange={(e) => setField("vapid_email", e.target.value)}
+                className={inputCls}
+                placeholder="mailto:vivekanandclasses@gmail.com"
+              />
+            </div>
+            <div className="flex items-center gap-2 mt-6">
+              <input
+                type="checkbox"
+                checked={values.push_enabled || false}
+                onChange={(e) => setField("push_enabled", e.target.checked)}
+                id="push_enabled"
+                className="w-4 h-4"
+              />
+              <label htmlFor="push_enabled" className="text-sm font-semibold cursor-pointer">Enable Browser Push Notifications</label>
+            </div>
+          </div>
+        </div>
+
         {/* Statistics Settings */}
         <div className="admin-card">
           <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">

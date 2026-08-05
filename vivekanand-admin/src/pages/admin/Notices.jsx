@@ -5,6 +5,7 @@ const TYPE_OPTS = [
   { value: "normal", label: "સામાન્ય" },
   { value: "scrolling", label: "સ્ક્રોલિંગ" },
   { value: "popup", label: "પોપઅપ" },
+  { value: "ticker", label: "Ticker" },
 ];
 const PRIORITY_OPTS = [
   { value: "high", label: "ઊંચી" },
@@ -36,7 +37,14 @@ export default function Notices() {
         { key: "content", label: "વિગત", required: true, fullWidth: true, type: "textarea" },
         { key: "type", label: "પ્રકાર", type: "select", options: TYPE_OPTS },
         { key: "priority", label: "પ્રાથમિકતા", type: "select", options: PRIORITY_OPTS },
+        { key: "color", label: "Ticker Color", type: "color", defaultValue: "#000000" },
+        { key: "link", label: "Link URL (optional)" },
+        { key: "animationSpeed", label: "Animation Speed", type: "number", defaultValue: 20 },
+        { key: "order", label: "Display Order", type: "number", defaultValue: 0 },
+        { key: "startDate", label: "Start Date", type: "date" },
+        { key: "endDate", label: "End Date", type: "date" },
         { key: "expiry_date", label: "સમાપ્તિ તારીખ", type: "date" },
+        { key: "autoExpire", label: "Auto Expire", type: "boolean" },
         { key: "attachment_url", label: "અટેચમેન્ટ", type: "file", accept: "application/pdf,image/*" },
         { key: "pinned", label: "પિન કરો", type: "boolean", checkLabel: "ટોપ પર પિન કરો" },
         { key: "status", label: "સ્ટેટસ", type: "select", options: STATUS_OPTS },

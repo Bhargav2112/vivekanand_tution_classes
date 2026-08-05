@@ -2,6 +2,8 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import FloatingButtons from './FloatingButtons';
+import AnnouncementTicker from './AnnouncementTicker';
+import PushNotificationPrompt from './PushNotificationPrompt';
 
 export default function SiteLayout() {
   return (
@@ -34,11 +36,13 @@ export default function SiteLayout() {
       </div>
 
       <Header />
-      <main className="flex-1 relative">
+      <AnnouncementTicker />
+      <main className="flex-1 relative pt-[10px]">
         <Outlet />
       </main>
       <Footer />
       <FloatingButtons />
+      <PushNotificationPrompt />
     </div>
   );
 }

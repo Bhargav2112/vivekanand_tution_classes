@@ -19,13 +19,37 @@ export const SOCIAL = [
 ];
 
 export const NAV_ITEMS = [
-  { label: "મુખ્ય પૃષ્ઠ", path: "/" },
-  { label: "અમારા વિશે", path: "/about" },
-  { label: "અભ્યાસક્રમ", path: "/courses" },
-  { label: "પરિણામ", path: "/results" },
-  { label: "ગેલેરી", path: "/gallery" },
-  { label: "અભિપ્રાય", path: "/testimonials" },
-  { label: "સંપર્ક", path: "/contact" },
+  { label: "nav.home", path: "/" },
+  { label: "nav.about", path: "/about" },
+  { 
+    label: "nav.courses", 
+    path: "/courses",
+    dropdown: [
+      { label: "courses.std_1_5", path: "/courses#std-1-5" },
+      { label: "courses.std_6_8", path: "/courses#std-6-8" },
+      { label: "courses.std_9_10", path: "/courses#std-9-10" },
+      { label: "courses.science", path: "/courses#science" },
+      { label: "courses.commerce", path: "/courses#commerce" }
+    ]
+  },
+  { 
+    label: "nav.results", 
+    path: "/results",
+    dropdown: [
+      { label: "results_menu.board", path: "/results?type=board" },
+      { label: "results_menu.competitive", path: "/results?type=competitive" }
+    ]
+  },
+  { 
+    label: "nav.gallery", 
+    path: "/gallery",
+    dropdown: [
+      { label: "gallery_menu.photos", path: "/gallery#photos" },
+      { label: "gallery_menu.videos", path: "/gallery#videos" },
+      { label: "gallery_menu.shorts", path: "/gallery#shorts" }
+    ]
+  },
+  { label: "nav.contact", path: "/contact" },
 ];
 
 export const COURSES = [

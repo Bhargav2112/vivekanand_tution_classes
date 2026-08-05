@@ -138,8 +138,8 @@ exports.syncVideos = async (uploadsPlaylistId) => {
     
     const videoIds = data.items.map(item => item.contentDetails.videoId);
     
-    // Fetch video details (duration, stats) using videos endpoint
-    const videosUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoIds.join(',')}&key=${apiKey}`;
+    // Fetch video details (duration, stats, live status) using videos endpoint
+    const videosUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics,liveStreamingDetails&id=${videoIds.join(',')}&key=${apiKey}`;
     const videosResponse = await fetch(videosUrl);
     const videosData = await videosResponse.json();
     
@@ -176,7 +176,9 @@ exports.syncVideos = async (uploadsPlaylistId) => {
           likeCount: vData.statistics.likeCount || '0',
           commentCount: vData.statistics.commentCount || '0',
           embedUrl: `https://www.youtube.com/embed/${videoId}`,
-          watchUrl: `https://www.youtube.com/watch?v=${videoId}`
+          watchUrl: `https://www.youtube.com/watch?v=${videoId}`,
+          liveBroadcastContent: vData.snippet.liveBroadcastContent || 'none',
+          scheduledStartTime: vData.liveStreamingDetails?.scheduledStartTime ? new Date(vData.liveStreamingDetails.scheduledStartTime) : undefined
         });
         
         if (isShort) shortsAdded++;
@@ -189,7 +191,9 @@ exports.syncVideos = async (uploadsPlaylistId) => {
           likeCount: vData.statistics.likeCount || '0',
           commentCount: vData.statistics.commentCount || '0',
           title: vData.snippet.title, // In case title changed
-          thumbnailUrl: vData.snippet.thumbnails?.high?.url || vData.snippet.thumbnails?.medium?.url || vData.snippet.thumbnails?.default?.url
+          thumbnailUrl: vData.snippet.thumbnails?.high?.url || vData.snippet.thumbnails?.medium?.url || vData.snippet.thumbnails?.default?.url,
+          liveBroadcastContent: vData.snippet.liveBroadcastContent || 'none',
+          scheduledStartTime: vData.liveStreamingDetails?.scheduledStartTime ? new Date(vData.liveStreamingDetails.scheduledStartTime) : undefined
         });
       }
     }

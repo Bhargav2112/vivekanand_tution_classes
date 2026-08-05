@@ -26,6 +26,12 @@ const settingSchema = new mongoose.Schema({
   about_banner_url: { type: String },
   founder_img_url: { type: String },
   
+  // Instagram Feed Settings
+  instagram_username: { type: String },
+  instagram_token: { type: String },
+  instagram_feed_enabled: { type: Boolean, default: false },
+  instagram_post_count: { type: Number, default: 6 },
+  
   // Statistics fields
   stats_students_value: { type: Number, default: 5000 },
   stats_students_suffix: { type: String, default: "+" },

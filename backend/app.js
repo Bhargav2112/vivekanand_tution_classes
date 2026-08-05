@@ -146,6 +146,11 @@ app.use('/api/v1/newsletters', require('./src/routes/newsletter.routes'));
 app.use('/api/v1/downloads', require('./src/routes/download.routes'));
 app.use('/api/v1/upload', require('./src/routes/upload.routes'));
 app.use('/api/v1/youtube', require('./src/routes/youtube.routes'));
+app.use('/api/v1/books', require('./src/routes/book.routes'));
+app.use('/api/v1/bookcategories', require('./src/routes/bookCategory.routes'));
+app.use('/api/v1/toppers', require('./src/routes/topper.routes'));
+app.use('/api/v1/instagram', require('./src/routes/instagram.routes'));
+app.use('/api/v1/push', require('./src/routes/push.routes'));
 
 // Error Handling Middlewares
 app.use(notFound);

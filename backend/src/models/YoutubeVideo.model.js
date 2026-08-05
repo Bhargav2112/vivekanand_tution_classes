@@ -14,6 +14,8 @@ const youtubeVideoSchema = new mongoose.Schema({
   commentCount: { type: String, default: '0' },
   embedUrl: { type: String, default: '' },
   watchUrl: { type: String, default: '' },
+  liveBroadcastContent: { type: String, enum: ['none', 'upcoming', 'live', 'completed'], default: 'none' },
+  scheduledStartTime: { type: Date },
   isActive: { type: Boolean, default: true }
 }, { timestamps: true });
 

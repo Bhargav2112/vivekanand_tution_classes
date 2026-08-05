@@ -4,7 +4,7 @@ import {
   LayoutDashboard, UserPlus, Users, GraduationCap, BookOpen,
   CalendarDays, Trophy, Image as ImageIcon, Video, Megaphone,
   CalendarClock, MessageSquareHeart, HelpCircle, Mail, FileText,
-  Search, Settings, ShieldCheck, LogOut, X, School, Youtube
+  Search, Settings, ShieldCheck, LogOut, X, School, Youtube, Book, Library, Star, BellRing
 } from "lucide-react";
 import { useAuth } from '@/lib/AuthContext';
 
@@ -18,11 +18,15 @@ const NAV_ITEMS = [
   { to: "/batches", label: "બેચ", icon: CalendarDays },
   { to: "/results", label: "પરિણામ", icon: Trophy },
   { to: "/gallery", label: "ગેલેરી", icon: ImageIcon },
+  { to: "/toppers", label: "Toppers", icon: Star },
   { to: "/youtube", label: "યુટ્યુબ સિંક", icon: Youtube },
   { to: "/notices", label: "જાહેરાતો", icon: Megaphone },
+  { to: "/book-categories", label: "Book Categories", icon: Library },
+  { to: "/books", label: "Online Store Books", icon: Book },
   { to: "/testimonials", label: "વાલીઓના અભિપ્રાય", icon: MessageSquareHeart },
   { to: "/faq", label: "FAQ", icon: HelpCircle },
   { to: "/contact-enquiry", label: "ઈન્ક્વાયરી / સંપર્ક", icon: Mail },
+  { to: "/push", label: "Push Notifications", icon: BellRing },
   { to: "/banners", label: "હોમ બેનર સ્લાઇડર", icon: ImageIcon },
   { to: "/settings", label: "Settings", icon: Settings },
 ];

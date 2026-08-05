@@ -12,6 +12,8 @@ import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/site/Reveal';
 import StatCounter from '@/components/site/StatCounter';
 import Marquee from '@/components/site/Marquee';
+import TopperSlider from '@/components/site/TopperSlider';
+import InstagramFeed from '@/components/site/InstagramFeed';
 import { SITE, STATS, WHY_CHOOSE_US, COURSES as FALLBACK_COURSES } from '@/data/site';
 import { apiClient } from '@/api/apiClient';
 import FaqSection from '@/components/site/FaqSection';
@@ -247,6 +249,9 @@ export default function Home() {
       {/* ===== NOTICE MARQUEE ===== */}
       <Marquee items={marqueeItems} />
 
+      {/* ===== TOPPER SLIDER ===== */}
+      <TopperSlider />
+
       {/* ===== YOUTUBE VIDEOS PREVIEW (HEADER BELO) ===== */}
       <section className="bg-background py-16 lg:py-[90px]">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
@@ -280,6 +285,12 @@ export default function Home() {
                             <Play className="w-6 h-6 ml-1" fill="white" />
                           </div>
                         </div>
+                        {v.isLive && (
+                          <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow-md flex items-center gap-1 animate-pulse">
+                            <span className="w-2 h-2 bg-white rounded-full inline-block animate-ping"></span>
+                            LIVE
+                          </div>
+                        )}
                       </div>
                       <div className="p-4">
                         <h3 className="font-heading font-bold text-[16px] text-foreground line-clamp-2">{v.title}</h3>
@@ -646,6 +657,9 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
+
+      {/* ===== INSTAGRAM FEED ===== */}
+      <InstagramFeed />
 
       {/* ===== NOTICES & ANNOUNCEMENTS SECTION ===== */}
       {notices.length > 0 && (
