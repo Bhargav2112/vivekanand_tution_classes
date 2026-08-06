@@ -91,5 +91,388 @@
     "books_desc": "Prepare for your exams with our premium materials.",
     "view_all_books": "View All Books",
     "buy_now": "Buy Now"
+  },
+  "site_info": {
+    "name": "Vivekanand Tuition Classes",
+    "address": "3, Greenpark Resi., Opp Royal Society, Canal Road, Kamrej, Surat",
+    "city": "Surat, Gujarat"
+  },
+  "courses_data": [
+    {
+      "id": "navodaya",
+      "name": "Jawahar Navodaya Entrance Exam",
+      "short": "JNVST",
+      "badge": "Most Popular",
+      "description": "Complete preparation for Jawahar Navodaya Vidyalaya entrance exam for Std 5 students.",
+      "features": [
+        "Complete Syllabus Covered",
+        "Weekly Test System",
+        "OMR Practice",
+        "Past Papers Study",
+        "Merit Guidance",
+        "Personal Attention"
+      ],
+      "duration": "1 Year",
+      "classes": "5 Days a Week",
+      "grade": "Std 5",
+      "icon": "GraduationCap"
+    },
+    {
+      "id": "gyanshakti",
+      "name": "Gyan Shakti",
+      "short": "Gyan Shakti",
+      "badge": "Talent Exam",
+      "description": "Special guidance for success in state-level talent exams.",
+      "features": [
+        "Weekly Tests",
+        "Printed Notes",
+        "Practice Papers",
+        "Scholarship Guidance",
+        "Doubt Solving",
+        "Merit Preparation"
+      ],
+      "duration": "1 Year",
+      "classes": "6 Days a Week",
+      "grade": "Std 5-8",
+      "icon": "Lightbulb"
+    },
+    {
+      "id": "cet",
+      "name": "CET Preparation",
+      "short": "CET",
+      "badge": "Common Entrance Test",
+      "description": "Strong and complete preparation for Gujarat Common Entrance Test.",
+      "features": [
+        "Complete Syllabus",
+        "Mock Test Series",
+        "Subject-wise Guidance",
+        "Past Papers",
+        "Speed Improvement Training",
+        "Result Analysis"
+      ],
+      "duration": "1 Year",
+      "classes": "6 Days a Week",
+      "grade": "Std 11-12",
+      "icon": "Brain"
+    },
+    {
+      "id": "school",
+      "name": "Std 6 to 10",
+      "short": "School Tuition",
+      "badge": "Regular Study",
+      "description": "Gujarat Board, NCERT, Foundation, Olympiad and School Support guidance.",
+      "features": [
+        "Gujarat Board Syllabus",
+        "NCERT Based",
+        "Foundation Preparation",
+        "Olympiad Guidance",
+        "School Exam Support",
+        "Subject-wise Teachers"
+      ],
+      "duration": "Full Year",
+      "classes": "6 Days a Week",
+      "grade": "Std 6-10",
+      "icon": "BookOpen"
+    }
+  ],
+  "stats_data": [
+    {
+      "value": 5000,
+      "suffix": "+",
+      "label": "Students",
+      "icon": "Users"
+    },
+    {
+      "value": 98,
+      "suffix": "%",
+      "label": "Result",
+      "icon": "TrendingUp"
+    },
+    {
+      "value": 15,
+      "suffix": "+",
+      "label": "Years Experience",
+      "icon": "Award"
+    },
+    {
+      "value": 500,
+      "suffix": "+",
+      "label": "Merit Students",
+      "icon": "Star"
+    }
+  ],
+  "why_choose_us_data": [
+    {
+      "num": "01",
+      "title": "Experienced Teachers",
+      "desc": "Subject expert and experienced teaching staff.",
+      "icon": "Users"
+    },
+    {
+      "num": "02",
+      "title": "Regular Exams",
+      "desc": "Weekly and monthly examination system.",
+      "icon": "ClipboardCheck"
+    },
+    {
+      "num": "03",
+      "title": "Personal Guidance",
+      "desc": "Special attention to every student.",
+      "icon": "UserCheck"
+    },
+    {
+      "num": "04",
+      "title": "Small Batches",
+      "desc": "Small batches for quality education.",
+      "icon": "Users2"
+    },
+    {
+      "num": "05",
+      "title": "Modern Classrooms",
+      "desc": "Classrooms equipped with modern facilities.",
+      "icon": "Building2"
+    },
+    {
+      "num": "06",
+      "title": "Study Material",
+      "desc": "Printed notebooks and practice books.",
+      "icon": "BookMarked"
+    },
+    {
+      "num": "07",
+      "title": "Parents Meeting",
+      "desc": "Regular contact with parents.",
+      "icon": "MessageSquare"
+    },
+    {
+      "num": "08",
+      "title": "100% Result Oriented",
+      "desc": "Complete focus on results.",
+      "icon": "Target"
+    }
+  ],
+  "faqs_data": [
+    {
+      "q": "Who can apply for Jawahar Navodaya?",
+      "a": "All students studying in Std 5 can apply for the Jawahar Navodaya entrance exam."
+    },
+    {
+      "q": "What is the fee?",
+      "a": "Fees vary according to the course and standard. Contact us for detailed information or fill out the admission form."
+    },
+    {
+      "q": "Are free demo classes available?",
+      "a": "Yes, free demo classes are available for selected courses. Contact us to book a demo class."
+    },
+    {
+      "q": "When does the batch start?",
+      "a": "New batches start in April and June. Special batches also start in January."
+    },
+    {
+      "q": "Are notebooks provided?",
+      "a": "Yes, printed notebooks, practice books, and question banks are available for each course."
+    },
+    {
+      "q": "Are there online classes?",
+      "a": "Yes, online class facilities are available for certain courses. Contact us for details."
+    }
+  ],
+  "batch_timings_data": [
+    {
+      "name": "Morning Batch",
+      "time": "7:00 AM — 10:00 AM",
+      "desc": "Study with a fresh mind",
+      "icon": "Sunrise"
+    },
+    {
+      "name": "Afternoon Batch",
+      "time": "2:00 PM — 5:00 PM",
+      "desc": "After school study",
+      "icon": "Sun"
+    },
+    {
+      "name": "Evening Batch",
+      "time": "5:00 PM — 8:00 PM",
+      "desc": "Activity filled session",
+      "icon": "Sunset"
+    },
+    {
+      "name": "Weekend Batch",
+      "time": "Sat-Sun 9:00 AM — 12:00 PM",
+      "desc": "Special preparation",
+      "icon": "Calendar"
+    }
+  ],
+  "values_data": [
+    {
+      "title": "Honesty",
+      "desc": "Honest and transparent dealing with every student.",
+      "icon": "Heart"
+    },
+    {
+      "title": "Discipline",
+      "desc": "Discipline is the foundation of success.",
+      "icon": "ShieldCheck"
+    },
+    {
+      "title": "Knowledge",
+      "desc": "Attainment of quality knowledge.",
+      "icon": "BookOpen"
+    },
+    {
+      "title": "Innovation",
+      "desc": "Embracing modern teaching methods.",
+      "icon": "Lightbulb"
+    },
+    {
+      "title": "Leadership",
+      "desc": "Development of leadership qualities in students.",
+      "icon": "Flag"
+    },
+    {
+      "title": "Patriotism",
+      "desc": "Love and responsibility towards the nation.",
+      "icon": "Flag"
+    }
+  ],
+  "footer": {
+    "watermark": "Vivekanand Tuition Classes",
+    "desc": "Quality education and trusted guidance for students' bright future.",
+    "quick_links": "Quick Links",
+    "our_courses": "Our Courses",
+    "contact": "Contact",
+    "email_placeholder": "Your email address",
+    "rights": "All rights reserved.",
+    "made_with": "Made with ❤ for students' success",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions"
+  },
+  "about": {
+    "hero_subtitle": "Vivekanand Tuition Classes — An educational family committed to the holistic development of students.",
+    "mission_desc_2": "Our main purpose is not just to pass exams, but to develop self-confidence, discipline, thinking ability, and the capacity to succeed in life.",
+    "shorts_label": "Shorts Video",
+    "shorts_title": "Our Shorts Videos",
+    "shorts_desc": "Watch short videos of education and inspiration.",
+    "faculty_label": "Faculty",
+    "faculty_title": "Our Teaching Staff",
+    "faculty_desc": "Subject experts and experienced teachers.",
+    "loading": "Loading...",
+    "no_teachers": "No teacher details are currently available.",
+    "msg_label": "Message",
+    "msg_title": "Founder's Message",
+    "founder_msg": "\"Our institution's main goal is not just to prepare students for marks but to give them good values, self-confidence, and preparation for success in life.\"",
+    "founder_name": "— Founder, Vivekanand Tuition Classes",
+    "values_label": "Our Values",
+    "values_title": "Our Principles",
+    "values_desc": "The values that guide us in every decision.",
+    "cta_title": "Start your child's bright future today."
+  },
+  "courses_page": {
+    "hero_subtitle": "Find the perfect course for your child's bright future.",
+    "timings_label": "Timings",
+    "timings_title": "Batch Timings",
+    "timings_desc": "Convenient batch timings for every student.",
+    "view_schedule": "View Schedule",
+    "cta_title": "Ready to take admission?"
+  },
+  "admission": {
+    "hero_subtitle": "Join Vivekanand Tuition Classes and step towards success.",
+    "steps_label": "Process",
+    "steps_title": "Admission Process",
+    "steps_desc": "Simple and transparent admission process.",
+    "form_label": "Admission Form",
+    "form_title": "Apply for Admission",
+    "form_desc": "Fill out the form below to secure your admission.",
+    "s1_title": "Inquiry",
+    "s1_desc": "Contact us to learn about courses.",
+    "s2_title": "Counseling",
+    "s2_desc": "Proper guidance for the student.",
+    "s3_title": "Form Fillup",
+    "s3_desc": "Fill out the admission form with documents.",
+    "s4_title": "Confirmation",
+    "s4_desc": "Admission confirmed after fee payment.",
+    "fname": "Student Full Name",
+    "pname": "Parent Name",
+    "phone": "WhatsApp Number",
+    "alt_phone": "Alternate Mobile Number",
+    "course": "Select Course",
+    "school": "Current School Name",
+    "address": "Full Address",
+    "submit": "Submit Application",
+    "submitting": "Submitting...",
+    "success": "Application submitted successfully! We will contact you soon.",
+    "error": "Failed to submit application. Please try again."
+  },
+  "contact": {
+    "hero_subtitle": "We are always ready to help you.",
+    "info_label": "Contact Info",
+    "info_title": "Get in Touch",
+    "info_desc": "Visit our branch or contact us via phone/email.",
+    "form_label": "Inquiry",
+    "form_title": "Send a Message",
+    "form_desc": "Fill out the form below to ask any questions.",
+    "name": "Your Name",
+    "email": "Email Address (Optional)",
+    "phone": "Mobile Number",
+    "subject": "Subject",
+    "message": "Your Message",
+    "submit": "Send Message",
+    "submitting": "Sending...",
+    "success": "Message sent successfully! We will contact you soon.",
+    "error": "Failed to send message. Please try again.",
+    "quick_contact": "Quick Contact",
+    "quick_desc": "Use the options below for immediate information.",
+    "call_now": "Call Now",
+    "whatsapp_now": "WhatsApp Us",
+    "time": "Hours",
+    "mon_fri": "Mon - Fri",
+    "sat": "Sat",
+    "sun": "Sun",
+    "closed": "Closed",
+    "follow_us": "Follow Us",
+    "follow_desc": "Connect with us on social media.",
+    "address_label": "Address",
+    "phone_label": "Phone"
+  },
+  "gallery_page": {
+    "hero_subtitle": "Memorable moments from classrooms to success.",
+    "all_photos": "All Photos",
+    "no_photos": "No photos available.",
+    "pictures": "Pictures",
+    "pictures_desc": "A glimpse of the educational journey.",
+    "hero_title": "Our Activities",
+    "video_label": "Video Gallery",
+    "video_title": "Watch Videos",
+    "video_desc": "Experiences of students and parents and special classroom videos.",
+    "no_videos": "No videos available.",
+    "shorts_label": "Shorts",
+    "shorts_title": "Watch Shorts",
+    "shorts_desc": "Short and informative videos.",
+    "no_shorts": "No shorts available.",
+    "photo_label": "Photo Gallery",
+    "photo_title": "Memorable Moments"
+  },
+  "results_page": {
+    "hero_subtitle": "Proud results of our brilliant students.",
+    "board": "Board Exam Results",
+    "competitive": "Competitive Exam Results",
+    "filter_all": "All Years",
+    "filter_exam": "All Exams",
+    "toppers_label": "Toppers",
+    "toppers_title": "Our Merit Students",
+    "toppers_desc": "A tradition of excellent results every year.",
+    "no_years": "No results available for any year.",
+    "no_results": "No results found for",
+    "students": "Students",
+    "student_img": "Student Image",
+    "marks": "Marks",
+    "merit_student": "Merit Student",
+    "cta_title": "Take your child to the peak of success."
+  },
+  "header_misc": {
+    "dark_mode": "Dark Mode",
+    "light_mode": "Light Mode",
+    "call_us": "Call Us",
+    "admin_login": "Admin Login"
   }
 }

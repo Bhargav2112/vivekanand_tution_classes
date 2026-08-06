@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Youtube, Facebook, Mail, MapPin, Send, ChevronRight } from 'lucide-react';
+import { Send, ChevronRight } from 'lucide-react';
 import { CallIcon } from '@/components/ui/CustomIcons';
-import { SITE, NAV_ITEMS, COURSES } from '@/data/site';
+import { SITE, NAV_ITEMS } from '@/data/site';
 import Logo from './Logo';
 import { apiClient } from '@/api/apiClient';
-
-const SOCIAL_ICONS = { Instagram, Youtube, Facebook };
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
+  const { t } = useTranslation();
   const [settings, setSettings] = useState(null);
+  const COURSES = t("courses_data", { returnObjects: true });
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -27,13 +28,13 @@ export default function Footer() {
   const phone = settings?.phone || SITE.phone;
   const phoneRaw = settings?.phone ? settings.phone.replace(/[^0-9]/g, '') : SITE.phoneRaw;
   const email = settings?.email || SITE.email;
-  const address = settings?.address || SITE.address;
-  const name = settings?.institute_name || SITE.name;
+  const address = settings?.address || t("site_info.address");
+  const name = settings?.institute_name || t("site_info.name");
 
   const socialLinks = [
-    { name: "Instagram", url: settings?.social_links?.instagram || "https://instagram.com", icon: "Instagram" },
-    { name: "YouTube", url: settings?.social_links?.youtube || "https://youtube.com", icon: "Youtube" },
-    { name: "Facebook", url: settings?.social_links?.facebook || "https://facebook.com", icon: "Facebook" }
+    { name: "Instagram", url: settings?.social_links?.instagram || "https://instagram.com", icon: "/icons/instagram.png" },
+    { name: "YouTube", url: settings?.social_links?.youtube || "https://youtube.com", icon: "/icons/youtube.png" },
+    { name: "Facebook", url: settings?.social_links?.facebook || "https://facebook.com", icon: "/icons/facebook.png" }
   ];
 
   return (
@@ -44,7 +45,7 @@ export default function Footer() {
         aria-hidden="true"
       >
         <span className="font-heading font-extrabold text-[24px] sm:text-[45px] md:text-[60px] lg:text-[72px] text-white/[0.05] leading-[1.3] whitespace-nowrap transform -rotate-[12deg] tracking-wider">
-          વિવેકાનંદ ટ્યુશન ક્લાસીસ
+          {t("footer.watermark")}
         </span>
       </div>
 
@@ -56,31 +57,28 @@ export default function Footer() {
               <Logo light />
             </div>
             <p className="font-body text-[15px] leading-[1.8] text-white/75 mb-6">
-              વિદ્યાર્થીઓના ઉજ્જવળ ભવિષ્ય માટે ગુણવત્તાસભર શિક્ષણ અને વિશ્વાસપાત્ર માર્ગદર્શન.
+              {t("footer.desc")}
             </p>
-            <div className="flex items-center gap-3">
-              {socialLinks.map((s) => {
-                const Icon = SOCIAL_ICONS[s.icon];
-                return Icon ? (
+            <div className="flex items-center gap-4">
+              {socialLinks.map((s) => (
                   <a
                     key={s.name}
                     href={s.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={s.name}
-                    className="flex items-center justify-center w-10 h-10 border border-white/20 hover:border-golden hover:bg-golden transition-all duration-250"
+                    className="flex items-center justify-center w-11 h-11 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 transition-all duration-300 hover:scale-110"
                   >
-                    <Icon className="w-4 h-4 text-golden" strokeWidth={1.8} />
+                    <img src={s.icon} alt={s.name} className="w-5 h-5 object-contain" />
                   </a>
-                ) : null;
-              })}
+              ))}
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
             <h3 className="font-heading font-bold text-[18px] text-golden mb-6 tracking-wide">
-              ઝડપી લિંક્સ
+              {t("footer.quick_links")}
             </h3>
             <ul className="space-y-3">
               {NAV_ITEMS.map((item) => (
@@ -90,7 +88,7 @@ export default function Footer() {
                     className="flex items-center gap-2 font-body text-[15px] text-white/75 hover:text-golden transition-colors group"
                   >
                     <ChevronRight className="w-4 h-4 text-accent group-hover:translate-x-1 transition-transform" />
-                    {item.label}
+                    {t(item.label)}
                   </Link>
                 </li>
               ))}
@@ -100,10 +98,10 @@ export default function Footer() {
           {/* Courses */}
           <div>
             <h3 className="font-heading font-bold text-[18px] text-golden mb-6 tracking-wide">
-              અમારા કોર્સ
+              {t("footer.our_courses")}
             </h3>
             <ul className="space-y-3">
-              {COURSES.map((c) => (
+              {Array.isArray(COURSES) && COURSES.map((c) => (
                 <li key={c.id}>
                   <Link
                     to="/courses"
@@ -120,22 +118,22 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h3 className="font-heading font-bold text-[18px] text-golden mb-6 tracking-wide">
-              સંપર્ક
+              {t("footer.contact")}
             </h3>
             <ul className="space-y-4 mb-6">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" strokeWidth={1.8} />
+                <img src="/icons/location.png" alt="Location" className="w-6 h-6 object-contain flex-shrink-0 mt-0.5" />
                 <span className="font-body text-[15px] text-white/75 leading-relaxed">{address}</span>
               </li>
               <li>
                 <a href={`tel:${phoneRaw}`} className="flex items-center gap-3 text-white/75 hover:text-golden transition-colors">
-                  <CallIcon className="w-5 h-5 flex-shrink-0" />
+                  <CallIcon className="w-6 h-6 flex-shrink-0" />
                   <span className="font-display text-[15px]">{phone}</span>
                 </a>
               </li>
               <li>
                 <a href={`mailto:${email}`} className="flex items-center gap-3 text-white/75 hover:text-golden transition-colors">
-                  <Mail className="w-5 h-5 text-accent flex-shrink-0" strokeWidth={1.8} />
+                  <img src="/icons/mail.png" alt="Email" className="w-6 h-6 object-contain flex-shrink-0" />
                   <span className="font-body text-[15px]">{email}</span>
                 </a>
               </li>
@@ -144,10 +142,10 @@ export default function Footer() {
             <div className="flex items-center border border-white/20">
               <input
                 type="email"
-                placeholder="તમારું ઇમેઇલ સરનામું"
+                placeholder={t("footer.email_placeholder")}
                 className="flex-1 bg-transparent px-4 py-3 text-[14px] text-white placeholder:text-white/40 outline-none font-body"
               />
-              <button className="flex items-center justify-center w-12 h-12 bg-accent hover:bg-[#D96D00] transition-colors flex-shrink-0" aria-label="સબ્સ્ક્રાઈબ">
+              <button className="flex items-center justify-center w-12 h-12 bg-accent hover:bg-[#D96D00] transition-colors flex-shrink-0" aria-label={t("footer.quick_links")}>
                 <Send className="w-4 h-4 text-white" strokeWidth={2} />
               </button>
             </div>
@@ -157,17 +155,17 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-14 pt-7 border-t border-white/15 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <p className="font-body text-[14px] text-white/60">
-            © 2025 {name}. સર્વાધિકાર સુરક્ષિત.
+            © {new Date().getFullYear()} {name}. {t("footer.rights")}
           </p>
           <p className="font-body text-[14px] text-white/60">
-            વિદ્યાર્થીઓની સફળતા માટે ❤ સાથે બનાવેલ
+            {t("footer.made_with")}
           </p>
           <div className="flex items-center gap-5">
             <Link to="/privacy-policy" className="font-body text-[14px] text-white/60 hover:text-golden transition-colors">
-              ગોપનીયતા નીતિ
+              {t("footer.privacy")}
             </Link>
             <Link to="/terms" className="font-body text-[14px] text-white/60 hover:text-golden transition-colors">
-              નિયમો અને શરતો
+              {t("footer.terms")}
             </Link>
           </div>
         </div>

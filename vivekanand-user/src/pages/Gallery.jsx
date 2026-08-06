@@ -7,6 +7,7 @@ import ImgPlaceholder from '@/components/ui/ImgPlaceholder';
 import Reveal from '@/components/site/Reveal';
 import { apiClient } from '@/api/apiClient';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 const CATEGORIES = ['બધા', 'વર્ગખંડ', 'પ્રવૃત્તિઓ', 'પારિતોષિક વિતરણ', 'વાલી મીટિંગ', 'નવોદય'];
 
@@ -28,6 +29,7 @@ function getYouTubeDetails(url) {
 }
 
 export default function Gallery() {
+  const { t } = useTranslation();
   const [activeCat, setActiveCat] = useState('બધા');
   const [photos, setPhotos] = useState([]);
   const [videos, setVideos] = useState([]);
@@ -78,22 +80,22 @@ export default function Gallery() {
   return (
     <>
       <PageHero
-        title="અમારી પ્રવૃત્તિઓ"
-        subtitle="વર્ગખંડથી લઈને સફળતા સુધીની યાદગાર ક્ષણો."
-        breadcrumb={[{ label: 'ગેલેરી' }]}
+        title={t("gallery_page.hero_title")}
+        subtitle={t("gallery_page.hero_subtitle")}
+        breadcrumb={[{ label: t("nav.gallery") }]}
       />
 
       {/* Video Gallery - Right below Header/PageHero */}
       <section id="videos" className="bg-background py-20 lg:py-[120px] scroll-mt-20">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
-            <SectionHeading label="વિડિયો ગેલેરી" title="વિડિયો જુઓ" subtitle="વિદ્યાર્થીઓ અને વાલીઓના અનુભવો અને વિશેષ ક્લાસરૂમ વિડિઓઝ." />
+            <SectionHeading label={t("gallery_page.video_label")} title={t("gallery_page.video_title")} subtitle={t("gallery_page.video_desc")} />
           </Reveal>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {loading ? (
-               <div className="col-span-full py-12 text-center text-muted-foreground">લોડ થઈ રહ્યું છે...</div>
+               <div className="col-span-full py-12 text-center text-muted-foreground">{t("about.loading")}</div>
             ) : videos.length === 0 ? (
-               <div className="col-span-full py-12 text-center text-muted-foreground">કોઈ વિડિયો ઉપલબ્ધ નથી.</div>
+               <div className="col-span-full py-12 text-center text-muted-foreground">{t("gallery_page.no_videos")}</div>
             ) : (
               videos.map((v, i) => {
                 const details = getYouTubeDetails(v.youtube_url);
@@ -139,13 +141,13 @@ export default function Gallery() {
       <section id="shorts" className="bg-slate-50 py-20 lg:py-[120px] scroll-mt-20 border-t border-border">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
-            <SectionHeading label="શોર્ટ્સ" title="શોર્ટ્સ જુઓ" subtitle="ટૂંકા અને માહિતીસભર વિડિઓઝ." />
+            <SectionHeading label={t("gallery_page.shorts_label")} title={t("gallery_page.shorts_title")} subtitle={t("gallery_page.shorts_desc")} />
           </Reveal>
           <div className="mt-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 lg:gap-6">
             {loading ? (
-               <div className="col-span-full py-12 text-center text-muted-foreground">લોડ થઈ રહ્યું છે...</div>
+               <div className="col-span-full py-12 text-center text-muted-foreground">{t("about.loading")}</div>
             ) : shorts.length === 0 ? (
-               <div className="col-span-full py-12 text-center text-muted-foreground">કોઈ શોર્ટ્સ ઉપલબ્ધ નથી.</div>
+               <div className="col-span-full py-12 text-center text-muted-foreground">{t("gallery_page.no_shorts")}</div>
             ) : (
               shorts.map((v, i) => {
                 const details = getYouTubeDetails(v.youtube_url);
@@ -185,7 +187,7 @@ export default function Gallery() {
       <section id="photos" className="bg-white py-20 lg:py-[120px] scroll-mt-20">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
-            <SectionHeading label="ફોટો ગેલેરી" title="યાદગાર ક્ષણો" subtitle="" />
+            <SectionHeading label={t("gallery_page.photo_label")} title={t("gallery_page.photo_title")} subtitle="" />
           </Reveal>
 
           {/* Categories */}
@@ -202,7 +204,7 @@ export default function Gallery() {
                       : 'bg-white text-foreground border-border hover:border-accent hover:text-accent'
                   )}
                 >
-                  {cat}
+                  {cat === 'બધા' ? t("gallery_page.all_photos") : cat}
                 </button>
               ))}
             </div>
@@ -210,9 +212,9 @@ export default function Gallery() {
 
           <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-4">
             {loading ? (
-               <div className="col-span-full py-12 text-center text-muted-foreground">લોડ થઈ રહ્યું છે...</div>
+               <div className="col-span-full py-12 text-center text-muted-foreground">{t("about.loading")}</div>
             ) : filteredPhotos.length === 0 ? (
-               <div className="col-span-full py-12 text-center text-muted-foreground">કોઈ માહિતી ઉપલબ્ધ નથી.</div>
+               <div className="col-span-full py-12 text-center text-muted-foreground">{t("gallery_page.no_photos")}</div>
             ) : (
               filteredPhotos.map((photo, i) => (
                 <Reveal key={photo._id || i} delay={(i % 4) * 0.08}>
@@ -259,11 +261,11 @@ export default function Gallery() {
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8 text-center">
           <Reveal>
             <h2 className="font-heading font-extrabold text-3xl md:text-[40px] !leading-[1.5] md:!leading-[1.45] pb-1">
-              આજે જ તમારા બાળકના ભવિષ્યની શરૂઆત કરો.
+              {t("results_page.cta_title", "આજે જ તમારા બાળકના ભવિષ્યની શરૂઆત કરો.")}
             </h2>
             <div className="mt-8">
               <Btn to="/admission" variant="maroon" size="lg" iconRight={ArrowRight}>
-                હમણાં જ પ્રવેશ લો
+                {t("home.btn_admission")}
               </Btn>
             </div>
           </Reveal>

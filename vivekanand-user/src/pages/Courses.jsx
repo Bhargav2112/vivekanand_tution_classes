@@ -7,10 +7,13 @@ import Reveal from '@/components/site/Reveal';
 import { apiClient } from '@/api/apiClient';
 import { cn } from '@/lib/utils';
 import { BATCH_TIMINGS } from '@/data/site'; // Fallback if backend doesn't have it yet
+import { useTranslation } from 'react-i18next';
 
 const ICONS = { GraduationCap, Lightbulb, Brain, BookOpen };
 
 export default function Courses() {
+  const { t } = useTranslation();
+  const T_BATCHES = t("batch_timings_data", { returnObjects: true });
   const [courses, setCourses] = useState([]);
   const [batches, setBatches] = useState([]);
   const [activeCourse, setActiveCourse] = useState(null);
@@ -27,7 +30,7 @@ export default function Courses() {
         const batchData = Array.isArray(batchRes.data) ? batchRes.data : (batchRes.data?.data || []);
         
         setCourses(courseData);
-        setBatches(batchData.length > 0 ? batchData : BATCH_TIMINGS);
+        setBatches(batchData.length > 0 ? batchData : T_BATCHES);
         
         if (courseData.length > 0) {
           setActiveCourse(courseData[0]._id || courseData[0].id);
@@ -44,22 +47,22 @@ export default function Courses() {
   const active = courses.find((c) => (c._id || c.id) === activeCourse);
 
   if (loading) {
-    return <div className="py-20 text-center font-heading text-lg">લોડ થઈ રહ્યું છે...</div>;
+    return <div className="py-20 text-center font-heading text-lg">{t("about.loading")}</div>;
   }
 
   return (
     <>
       <PageHero
-        title="અમારા અભ્યાસક્રમો"
-        subtitle="દરેક વિદ્યાર્થી માટે યોગ્ય માર્ગદર્શન અને પરિણામ આધારિત અભ્યાસ."
-        breadcrumb={[{ label: 'અભ્યાસક્રમો' }]}
+        title={t("nav.courses")}
+        subtitle={t("courses_page.hero_subtitle")}
+        breadcrumb={[{ label: t("nav.courses") }]}
       />
 
       {/* Course Detail with Tabs */}
       <section className="bg-white py-20 lg:py-[120px]">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
-            <SectionHeading label="અભ્યાસક્રમો" title="કોર્સ વિગત" subtitle="દરેક કોર્સની સંપૂર્ણ માહિતી અહીં જુઓ." />
+            <SectionHeading label={t("nav.courses")} title={t("home.courses_title")} subtitle={t("home.courses_desc")} />
           </Reveal>
 
           {courses.length === 0 ? (
@@ -119,7 +122,7 @@ export default function Courses() {
                           <span className="font-body text-[15px] text-foreground"><b>બેચ:</b> {active.classes}</span>
                         </div>
                       </div>
-                      <h4 className="font-heading font-bold text-[18px] text-foreground mb-3">ખાસિયતો</h4>
+                      <h4 className="font-heading font-bold text-[18px] text-foreground mb-3">{t("home.course_features", "ખાસિયતો")}</h4>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-8">
                         {(active.features || []).map((f) => (
                           <li key={f} className="flex items-center gap-2">
@@ -129,8 +132,8 @@ export default function Courses() {
                         ))}
                       </ul>
                       <div className="flex flex-col sm:flex-row gap-3">
-                        <Btn to="/admission" variant="primary" size="md">પ્રવેશ લો</Btn>
-                        <Btn to="/contact" variant="secondary" size="md">વધુ માહિતી</Btn>
+                        <Btn to="/admission" variant="primary" size="md">{t("home.btn_admission")}</Btn>
+                        <Btn to="/contact" variant="secondary" size="md">{t("home.course_details")}</Btn>
                       </div>
                     </div>
                     <div className="bg-background border border-border p-8">
@@ -174,7 +177,7 @@ export default function Courses() {
       <section className="bg-background py-20 lg:py-[120px]">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
-            <SectionHeading label="તુલના" title="તમારા બાળક માટે કયો કોર્સ?" subtitle="સરળ તુલનાથી યોગ્ય નિર્ણય લો." />
+            <SectionHeading label={t("nav.courses")} title={t("courses_page.table_title", "તમારા બાળક માટે કયો કોર્સ?")} subtitle={t("courses_page.table_desc", "સરળ તુલનાથી યોગ્ય નિર્ણય લો.")} />
           </Reveal>
           <Reveal>
             <div className="mt-12 overflow-x-auto">
@@ -217,7 +220,7 @@ export default function Courses() {
       <section className="bg-white py-20 lg:py-[120px]">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
-            <SectionHeading label="સમય" title="બેચ સમય" subtitle="તમારી સુવિધાનુસાર બેચ પસંદ કરો." />
+            <SectionHeading label={t("courses_page.timings_label")} title={t("courses_page.timings_title")} subtitle={t("courses_page.timings_desc")} />
           </Reveal>
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {batches.map((b, i) => {
@@ -243,12 +246,18 @@ export default function Courses() {
       <section className="bg-background py-20 lg:py-[120px]">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
-            <SectionHeading label="પ્રવેશ પ્રક્રિયા" title="પ્રવેશ કેવી રીતે લેવો?" subtitle="સરળ 5 પગલામાં પ્રવેશ મેળવો." />
+            <SectionHeading label={t("admission.steps_label")} title={t("admission.steps_title")} subtitle={t("admission.steps_desc")} />
           </Reveal>
           <div className="mt-14">
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
               <div className="hidden md:block absolute top-7 left-[10%] right-[10%] h-[2px] bg-accent/30" />
-              {['સંપર્ક કરો', 'કાઉન્સેલિંગ', 'ડેમો ક્લાસ', 'પ્રવેશ', 'અભ્યાસ શરૂ'].map((step, i) => (
+              {[
+                t("admission.step1", "સંપર્ક કરો"),
+                t("admission.step2", "કાઉન્સેલિંગ"),
+                t("admission.step3", "ડેમો ક્લાસ"),
+                t("admission.step4", "પ્રવેશ"),
+                t("admission.step5", "અભ્યાસ શરૂ")
+              ].map((step, i) => (
                 <Reveal key={step} delay={i * 0.12}>
                   <div className="flex flex-col items-center text-center relative">
                     <div className="flex items-center justify-center w-14 h-14 bg-accent text-white font-heading font-extrabold text-[20px] z-10 relative">
@@ -263,7 +272,7 @@ export default function Courses() {
           <Reveal>
             <div className="mt-14 text-center">
               <Btn to="/admission" variant="primary" size="lg" iconRight={ArrowRight}>
-                હમણાં જ પ્રવેશ લો
+                {t("home.btn_admission")}
               </Btn>
             </div>
           </Reveal>

@@ -10,10 +10,13 @@ import ImgPlaceholder from '@/components/ui/ImgPlaceholder';
 import Reveal from '@/components/site/Reveal';
 import { VALUES } from '@/data/site';
 import { apiClient } from '@/api/apiClient';
+import { useTranslation } from 'react-i18next';
 
 const VALUE_ICONS = { Heart, ShieldCheck, BookOpen, Lightbulb, Flag, Target };
 
 export default function About() {
+  const { t } = useTranslation();
+  const T_VALUES = t("values_data", { returnObjects: true });
   const [teachers, setTeachers] = useState([]);
   const [settings, setSettings] = useState(null);
   const [shortVideos, setShortVideos] = useState([]);
@@ -50,9 +53,9 @@ export default function About() {
   return (
     <>
       <PageHero
-        title="અમારા વિશે"
-        subtitle="વિવેકાનંદ ટ્યુશન ક્લાસીસ — વિદ્યાર્થીઓના સર્વાંગી વિકાસ માટે પ્રતિબદ્ધ શૈક્ષણિક પરિવાર."
-        breadcrumb={[{ label: 'અમારા વિશે' }]}
+        title={t("nav.about")}
+        subtitle={t("about.hero_subtitle")}
+        breadcrumb={[{ label: t("nav.about") }]}
       />
 
       {/* About Detail */}
@@ -75,24 +78,24 @@ export default function About() {
                   />
                 )}
                 <div className="absolute -bottom-6 -left-6 bg-primary text-white px-8 py-6 premium-shadow-lg hidden sm:block">
-                  <div className="font-heading font-extrabold text-4xl text-golden">15+</div>
-                  <div className="font-body text-[14px] mt-1">વર્ષનો અનુભવ</div>
+                  <div className="font-heading font-extrabold text-4xl text-golden">{t("stats_data.2.value" , "15")}+</div>
+                  <div className="font-body text-[14px] mt-1">{t("home.stats_experience")}</div>
                 </div>
               </div>
             </Reveal>
             <Reveal delay={0.15}>
-              <SectionHeading label="અમારા વિશે" align="left" title="ગુજરાતની વિશ્વાસપાત્ર શૈક્ષણિક સંસ્થા" />
+              <SectionHeading label={t("nav.about")} align="left" title={t("home.about_title")} />
               <p className="mt-5 font-body text-[18px] leading-[1.8] text-muted-foreground">
-                વિવેકાનંદ ટ્યુશન ક્લાસીસ માત્ર ટ્યુશન સંસ્થા નથી, પરંતુ વિદ્યાર્થીઓના સર્વાંગી વિકાસ માટે પ્રતિબદ્ધ એક શૈક્ષણિક પરિવાર છે. વર્ષોના અનુભવ, ગુણવત્તાસભર શિક્ષણ, અનુભવી શિક્ષકો અને પરિણામકેન્દ્રિત અભ્યાસક્રમ દ્વારા અમે વિદ્યાર્થીઓને સફળતાની દિશામાં આગળ વધારીએ છીએ.
+                {t("home.about_desc")}
               </p>
               <p className="mt-4 font-body text-[18px] leading-[1.8] text-muted-foreground">
-                અમારો મુખ્ય હેતુ માત્ર પરીક્ષા પાસ કરાવવાનો નથી, પરંતુ વિદ્યાર્થીઓમાં આત્મવિશ્વાસ, શિસ્ત, વિચારશક્તિ અને જીવનમાં સફળ થવા માટેની ક્ષમતાનો વિકાસ કરવાનો છે.
+                {t("about.mission_desc_2")}
               </p>
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {[
-                  { icon: Users, title: 'અનુભવી શિક્ષકો', desc: 'વિષય નિષ્ણાત શિક્ષકો.' },
-                  { icon: Award, title: 'શ્રેષ્ઠ પરિણામો', desc: 'દર વર્ષે ઉત્તમ પરિણામ.' },
-                  { icon: UserCheck, title: 'વ્યક્તિગત માર્ગદર્શન', desc: 'દરેક વિદ્યાર્થી પર ખાસ ધ્યાન.' },
+                  { icon: Users, title: t("home.about_f1_title"), desc: t("home.about_f1_desc") },
+                  { icon: Award, title: t("home.about_f2_title"), desc: t("home.about_f2_desc") },
+                  { icon: UserCheck, title: t("home.about_f3_title"), desc: t("home.about_f3_desc") },
                 ].map((f, i) => (
                   <Reveal key={f.title} delay={0.2 + i * 0.1}>
                     <div className="card-hover border border-border p-5 h-full">
@@ -113,7 +116,7 @@ export default function About() {
         <section className="bg-background py-16 lg:py-24 border-t border-border">
           <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
             <Reveal>
-              <SectionHeading label="શોર્ટ્સ વિડિઓ" title="અમારા શોર્ટ્સ વિડિઓ" subtitle="શિક્ષણ અને પ્રેરણાના ટૂંકા વિડિઓઝ નિહાળો." />
+              <SectionHeading label={t("about.shorts_label")} title={t("about.shorts_title")} subtitle={t("about.shorts_desc")} />
             </Reveal>
             <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {shortVideos.map((video, i) => {
@@ -154,11 +157,11 @@ export default function About() {
       <section className="bg-background py-20 lg:py-[120px]">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
-            <SectionHeading label="શિક્ષક મંડળ" title="અમારી શિક્ષક મંડળી" subtitle="વિષય નિષ્ણાત અને અનુભવી શિક્ષકો." />
+            <SectionHeading label={t("about.faculty_label")} title={t("about.faculty_title")} subtitle={t("about.faculty_desc")} />
           </Reveal>
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {loadingTeachers ? (
-              <div className="col-span-full py-8 text-center text-muted-foreground font-body">લોડ થઈ રહ્યું છે...</div>
+              <div className="col-span-full py-8 text-center text-muted-foreground font-body">{t("about.loading")}</div>
             ) : teachers.length > 0 ? (
               teachers.map((t, i) => (
                 <Reveal key={t._id || i} delay={i * 0.1}>
@@ -176,7 +179,7 @@ export default function About() {
                         <p className="font-body text-[14px] text-accent font-semibold mt-1">{t.subject}</p>
                       </div>
                       <div className="mt-4 pt-3 border-t border-border/60 flex items-center justify-between text-[13px] text-muted-foreground">
-                        <span>{t.experience ? `અનુભવ: ${t.experience}` : 'અનુભવી'}</span>
+                        <span>{t.experience || ''}</span>
                         <span>{t.qualification || ''}</span>
                       </div>
                     </div>
@@ -185,7 +188,7 @@ export default function About() {
               ))
             ) : (
               <div className="col-span-full py-8 text-center text-muted-foreground font-body">
-                કોઈ શિક્ષકની વિગત હાલ ઉપલબ્ધ નથી.
+                {t("about.no_teachers")}
               </div>
             )}
           </div>
@@ -208,12 +211,12 @@ export default function About() {
                 )}
               </div>
             <Reveal delay={0.15}>
-              <SectionHeading label="સંદેશ" align="left" title="સ્થાપકનો સંદેશ" />
+              <SectionHeading label={t("about.msg_label")} align="left" title={t("about.msg_title")} />
               <p className="mt-6 font-body text-[20px] leading-[1.9] text-muted-foreground italic">
-                "વિદ્યાર્થીઓમાં માત્ર ગુણ જ નહીં પરંતુ સારા સંસ્કાર, આત્મવિશ્વાસ અને જીવનમાં સફળતા માટેની તૈયારી કરાવવી એ અમારી સંસ્થાનો મુખ્ય ધ્યેય છે."
+                {t("about.founder_msg")}
               </p>
               <div className="mt-6">
-                <div className="font-heading font-bold text-[20px] text-golden">— સ્થાપક, વિવેકાનંદ ટ્યુશન ક્લાસીસ</div>
+                <div className="font-heading font-bold text-[20px] text-golden">{t("about.founder_name")}</div>
               </div>
             </Reveal>
           </div>
@@ -228,9 +231,9 @@ export default function About() {
               <div className="bg-primary text-white p-10 lg:p-12 h-full relative overflow-hidden">
                 <Target className="absolute top-6 right-6 w-24 h-24 text-white/5" strokeWidth={1} />
                 <Target className="w-12 h-12 text-golden mb-5" strokeWidth={1.8} />
-                <h3 className="font-heading font-extrabold text-3xl mb-4">અમારું ધ્યેય</h3>
+                <h3 className="font-heading font-extrabold text-3xl mb-4">{t("home.mission")}</h3>
                 <p className="font-body text-[18px] leading-[1.8] text-white/85">
-                  દરેક વિદ્યાર્થીમાં જ્ઞાન, શિસ્ત, આત્મવિશ્વાસ અને જવાબદારીનો વિકાસ કરીને તેને ઉજ્જવળ ભવિષ્ય માટે તૈયાર કરવો.
+                  {t("home.mission_desc")}
                 </p>
               </div>
             </Reveal>
@@ -238,9 +241,9 @@ export default function About() {
               <div className="bg-secondary text-white p-10 lg:p-12 h-full relative overflow-hidden">
                 <Eye className="absolute top-6 right-6 w-24 h-24 text-white/5" strokeWidth={1} />
                 <Eye className="w-12 h-12 text-golden mb-5" strokeWidth={1.8} />
-                <h3 className="font-heading font-extrabold text-3xl mb-4">અમારું વિઝન</h3>
+                <h3 className="font-heading font-extrabold text-3xl mb-4">{t("home.vision")}</h3>
                 <p className="font-body text-[18px] leading-[1.8] text-white/85">
-                  ગુજરાતની સૌથી વિશ્વાસપાત્ર અને પરિણામકેન્દ્રિત શૈક્ષણિક સંસ્થા તરીકે વિદ્યાર્થીઓ અને વાલીઓનો પ્રથમ વિશ્વાસ બનવો.
+                  {t("home.vision_desc")}
                 </p>
               </div>
             </Reveal>
@@ -252,11 +255,11 @@ export default function About() {
       <section className="bg-background py-20 lg:py-[120px]">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
-            <SectionHeading label="અમારા મૂલ્યો" title="અમારા સિદ્ધાંતો" subtitle="જે મૂલ્યો અમને દરેક નિર્ણયમાં માર્ગદર્શન આપે છે." />
+            <SectionHeading label={t("about.values_label")} title={t("about.values_title")} subtitle={t("about.values_desc")} />
           </Reveal>
           <div className="mt-12 max-w-3xl mx-auto">
             <div className="relative pl-8 border-l-2 border-accent space-y-8">
-              {VALUES.map((val, i) => {
+              {Array.isArray(T_VALUES) && T_VALUES.map((val, i) => {
                 const Icon = VALUE_ICONS[val.icon] || Target;
                 return (
                   <Reveal key={val.title} delay={i * 0.1}>
@@ -284,11 +287,11 @@ export default function About() {
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8 text-center">
           <Reveal>
             <h2 className="font-heading font-extrabold text-3xl md:text-[40px] !leading-[1.5] md:!leading-[1.45] pb-1">
-              આજે જ તમારા બાળકના ભવિષ્યની શરૂઆત કરો.
+              {t("about.cta_title")}
             </h2>
             <div className="mt-8">
               <Btn to="/admission" variant="maroon" size="lg" iconRight={ArrowRight}>
-                હમણાં જ પ્રવેશ લો
+                {t("home.btn_admission")}
               </Btn>
             </div>
           </Reveal>

@@ -47,6 +47,12 @@ function getYouTubeDetails(url) {
 
 export default function Home() {
   const { t } = useTranslation();
+  
+  const T_COURSES = t("courses_data", { returnObjects: true });
+  const T_STATS = t("stats_data", { returnObjects: true });
+  const T_WHY_CHOOSE_US = t("why_choose_us_data", { returnObjects: true });
+  const T_FAQS = t("faqs_data", { returnObjects: true });
+
   const [courses, setCourses] = useState([]);
   const [notices, setNotices] = useState([]);
   const [photos, setPhotos] = useState([]);
@@ -84,7 +90,7 @@ export default function Home() {
       label: settings.stats_merit_label || t("home.stats_merit"),
       icon: "Star"
     }
-  ] : STATS;
+  ] : T_STATS;
 
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -102,9 +108,9 @@ export default function Home() {
         
         if (courseRes.status === 'fulfilled') {
           const data = Array.isArray(courseRes.value.data) ? courseRes.value.data : (courseRes.value.data?.data || []);
-          setCourses(data.length > 0 ? data : FALLBACK_COURSES);
+          setCourses(data.length > 0 ? data : T_COURSES);
         } else {
-          setCourses(FALLBACK_COURSES);
+          setCourses(T_COURSES);
         }
 
         if (noticeRes.status === 'fulfilled') {
@@ -143,7 +149,7 @@ export default function Home() {
         }
       } catch (err) {
         console.error("Home data fetch error:", err);
-        setCourses(FALLBACK_COURSES);
+        setCourses(T_COURSES);
       }
     };
     fetchHomeData();
@@ -160,7 +166,13 @@ export default function Home() {
 
   const marqueeItems = notices.length > 0
     ? notices.map(n => n.title)
-    : ['પ્રવેશ શરૂ 2026-27', 'જવાહર નવોદય બેચ શરૂ', 'સ્કોલરશિપ પરીક્ષા', 'નવો બેચ જાન્યુઆરીમાં', 'મફત ડેમો ક્લાસ ઉપલબ્ધ'];
+    : [
+        t("header.admission_started"),
+        'જવાહર નવોદય બેચ શરૂ',
+        'સ્કોલરશિપ પરીક્ષા',
+        'નવો બેચ જાન્યુઆરીમાં',
+        'મફત ડેમો ક્લાસ ઉપલબ્ધ'
+      ];
 
   const yearsAvailable = [...new Set(results.map(r => r.year).filter(Boolean))].sort((a, b) => b.localeCompare(a));
   const latestYear = yearsAvailable.length > 0 ? yearsAvailable[0] : '2024';
@@ -483,7 +495,7 @@ export default function Home() {
             />
           </Reveal>
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {WHY_CHOOSE_US.map((item, i) => {
+            {Array.isArray(T_WHY_CHOOSE_US) && T_WHY_CHOOSE_US.map((item, i) => {
               const Icon = ICONS[item.icon];
               return (
                 <Reveal key={item.num} delay={i * 0.08}>
@@ -492,8 +504,8 @@ export default function Home() {
                       {Icon && <Icon className="w-9 h-9 text-accent transition-transform duration-300 group-hover:rotate-6" strokeWidth={1.8} />}
                       <span className="font-display font-extrabold text-2xl text-border">{item.num}</span>
                     </div>
-                    <h3 className="font-heading font-bold text-[18px] text-foreground mb-2">{t(`home.${item.title_key}`) || item.title}</h3>
-                    <p className="font-body text-[14px] text-muted-foreground leading-relaxed">{t(`home.${item.desc_key}`) || item.desc}</p>
+                    <h3 className="font-heading font-bold text-[18px] text-foreground mb-2">{item.title}</h3>
+                    <p className="font-body text-[14px] text-muted-foreground leading-relaxed">{item.desc}</p>
                   </div>
                 </Reveal>
               );
@@ -747,7 +759,7 @@ export default function Home() {
           <Reveal>
             <div className="mt-10 text-center">
               <Btn to="/gallery" variant="outline" size="md" iconRight={ArrowRight}>
-                સંપૂર્ણ ગેલેરી જુઓ
+                {t("nav.gallery")}
               </Btn>
             </div>
           </Reveal>

@@ -10,10 +10,12 @@ import StatCounter from '@/components/site/StatCounter';
 import { STATS } from '@/data/site';
 import { apiClient } from '@/api/apiClient';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 const TABS = ['બધા', 'જવાહર નવોદય', 'જ્ઞાન શક્તિ', 'CET', 'ધોરણ 6-10'];
 
 export default function Results() {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -100,9 +102,9 @@ export default function Results() {
   return (
     <>
       <PageHero
-        title="અમારા ગૌરવપૂર્ણ પરિણામો"
-        subtitle="વિદ્યાર્થીઓની સફળતા જ અમારી સૌથી મોટી સિદ્ધિ છે."
-        breadcrumb={[{ label: 'પરિણામ' }]}
+        title={t("nav.results")}
+        subtitle={t("results_page.hero_subtitle")}
+        breadcrumb={[{ label: t("nav.results") }]}
       />
 
       {/* Success Counter */}
@@ -130,7 +132,7 @@ export default function Results() {
       <section className="bg-white py-20 lg:py-[120px]">
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8">
           <Reveal>
-            <SectionHeading label="ટોપર્સ" title="અમારા મેરિટ વિદ્યાર્થીઓ" subtitle="દર વર્ષે ઉત્તમ પરિણામોની પરંપરા." />
+            <SectionHeading label={t("results_page.toppers_label")} title={t("results_page.toppers_title")} subtitle={t("results_page.toppers_desc")} />
           </Reveal>
 
           {/* Year Filter Tabs */}
@@ -151,7 +153,7 @@ export default function Results() {
                 </button>
               ))}
               {yearsAvailable.length === 0 && (
-                <div className="text-muted-foreground">કોઈ વર્ષના પરિણામો ઉપલબ્ધ નથી.</div>
+                <div className="text-muted-foreground">{t("results_page.no_years")}</div>
               )}
             </div>
           </Reveal>
@@ -159,18 +161,18 @@ export default function Results() {
           {/* Render Groups */}
           <div className="mt-14 space-y-16">
             {loading ? (
-               <div className="py-10 text-center text-muted-foreground">લોડ થઈ રહ્યું છે...</div>
+               <div className="py-10 text-center text-muted-foreground">{t("about.loading")}</div>
             ) : filteredResultsByYear.length === 0 ? (
-               <div className="py-10 text-center text-muted-foreground">{activeYear} ના કોઈ પરિણામ મળ્યું નથી.</div>
+               <div className="py-10 text-center text-muted-foreground">{activeYear} {t("results_page.no_results")}</div>
             ) : (
               (urlExam && groupedResults[urlExam] ? [urlExam] : examsAvailableForYear).map((examType) => (
                 <div key={examType}>
                   <Reveal>
                     <div className="flex items-center gap-4 mb-8 border-b-2 border-border/60 pb-2">
-                      <h3 className="font-heading font-extrabold text-2xl text-[#7a1d1d]">{examType} પરિણામો</h3>
+                      <h3 className="font-heading font-extrabold text-2xl text-[#7a1d1d]">{examType} {t("nav.results")}</h3>
                       <div className="flex-1 border-b border-dashed border-border/80"></div>
                       <span className="font-semibold text-accent bg-accent/10 px-3 py-1 rounded-full text-sm">
-                        {groupedResults[examType]?.length || 0} વિદ્યાર્થીઓ
+                        {groupedResults[examType]?.length || 0} {t("results_page.students")}
                       </span>
                     </div>
                   </Reveal>
@@ -183,7 +185,7 @@ export default function Results() {
                             {t.photo_url ? (
                                <img src={t.photo_url} alt={t.student_name} className="w-full aspect-square object-cover border-0 group-hover:scale-105 transition-transform duration-500" />
                             ) : (
-                               <ImgPlaceholder label="વિદ્યાર્થી છબી" ratio="1/1" className="border-0 group-hover:scale-105 transition-transform duration-500" showLabel={false} />
+                               <ImgPlaceholder label={t("results_page.student_img")} ratio="1/1" className="border-0 group-hover:scale-105 transition-transform duration-500" showLabel={false} />
                             )}
                             {t.rank && (
                               <div className="absolute top-3 right-3 bg-golden text-white w-12 h-12 flex flex-col items-center justify-center rounded-full shadow-lg border-2 border-white">
@@ -196,13 +198,13 @@ export default function Results() {
                             <h3 className="font-heading font-bold text-[20px] text-foreground mb-1">{t.student_name}</h3>
                             <div className="mt-3 mb-4">
                               <div className="inline-block bg-[#7a1d1d] text-white px-5 py-1.5 rounded-full font-heading font-extrabold text-[20px] shadow-sm">
-                                {t.marks ? `${t.marks} માર્ક્સ` : `${t.percentage}%`}
+                                {t.marks ? `${t.marks} ${t("results_page.marks")}` : `${t.percentage}%`}
                               </div>
                             </div>
                             {t.school && <p className="font-body text-[14px] text-muted-foreground mt-auto">{t.school}</p>}
                             <div className="mt-4 pt-4 border-t border-border flex items-center justify-center gap-2">
                               <Award className="w-5 h-5 text-golden" strokeWidth={2} />
-                              <span className="font-body text-[15px] font-bold text-foreground">{t.achievement || t.category || 'મેરિટ સ્ટુડન્ટ'}</span>
+                              <span className="font-body text-[15px] font-bold text-foreground">{t.achievement || t.category || t("results_page.merit_student")}</span>
                             </div>
                           </div>
                         </div>
@@ -221,11 +223,11 @@ export default function Results() {
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8 text-center">
           <Reveal>
             <h2 className="font-heading font-extrabold text-3xl md:text-[40px] !leading-[1.5] md:!leading-[1.45] pb-1">
-              તમારા બાળકને પણ સફળતાના શિખરે પહોંચાડો.
+              {t("results_page.cta_title")}
             </h2>
             <div className="mt-8">
               <Btn to="/admission" variant="maroon" size="lg" iconRight={ArrowRight}>
-                હમણાં જ પ્રવેશ લો
+                {t("home.btn_admission")}
               </Btn>
             </div>
           </Reveal>
