@@ -14,7 +14,7 @@ import StatCounter from '@/components/site/StatCounter';
 import Marquee from '@/components/site/Marquee';
 import TopperSlider from '@/components/site/TopperSlider';
 import InstagramFeed from '@/components/site/InstagramFeed';
-import { SITE, STATS, WHY_CHOOSE_US, COURSES as FALLBACK_COURSES } from '@/data/site';
+import { SITE, STATS, WHY_CHOOSE_US, COURSES as FALLBACK_COURSES, FAQS } from '@/data/site';
 import { apiClient } from '@/api/apiClient';
 import FaqSection from '@/components/site/FaqSection';
 import { useTranslation } from 'react-i18next';
@@ -48,10 +48,17 @@ function getYouTubeDetails(url) {
 export default function Home() {
   const { t } = useTranslation();
   
-  const T_COURSES = t("courses_data", { returnObjects: true });
-  const T_STATS = t("stats_data", { returnObjects: true });
-  const T_WHY_CHOOSE_US = t("why_choose_us_data", { returnObjects: true });
-  const T_FAQS = t("faqs_data", { returnObjects: true });
+  const tCourses = t("courses_data", { returnObjects: true });
+  const T_COURSES = Array.isArray(tCourses) ? tCourses : FALLBACK_COURSES;
+  
+  const tStats = t("stats_data", { returnObjects: true });
+  const T_STATS = Array.isArray(tStats) ? tStats : STATS;
+  
+  const tWhyChooseUs = t("why_choose_us_data", { returnObjects: true });
+  const T_WHY_CHOOSE_US = Array.isArray(tWhyChooseUs) ? tWhyChooseUs : WHY_CHOOSE_US;
+  
+  const tFaqs = t("faqs_data", { returnObjects: true });
+  const T_FAQS = Array.isArray(tFaqs) ? tFaqs : FAQS;
 
   const [courses, setCourses] = useState([]);
   const [notices, setNotices] = useState([]);

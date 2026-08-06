@@ -29,21 +29,20 @@ export default function FloatingButtons() {
       {/* Call */}
       <a
         href={`tel:${SITE.phoneRaw}`}
-        className="flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary text-white shadow-[0_4px_14px_rgba(0,0,0,0.3)] hover:bg-[#68090E] transition-all duration-300 hover:scale-110"
+        className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 hover:scale-110 transition-all duration-300 drop-shadow-[0_4px_14px_rgba(0,0,0,0.3)]"
         aria-label="કોલ કરો"
       >
-        <CallIcon className="w-6 h-6 md:w-8 md:h-8" />
+        <CallIcon className="w-full h-full" />
       </a>
       {/* WhatsApp */}
       <a
         href={`https://wa.me/${SITE.whatsapp}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-[#25D366] text-white shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:scale-110 transition-all duration-300 relative group"
+        className="flex items-center justify-center w-14 h-14 md:w-16 md:h-16 hover:scale-110 transition-all duration-300 drop-shadow-[0_4px_20px_rgba(37,211,102,0.4)]"
         aria-label="WhatsApp"
       >
-        <div className="absolute inset-0 bg-white/20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300" />
-        <WhatsAppIcon className="w-9 h-9 md:w-11 md:h-11 relative z-10 drop-shadow-sm" />
+        <WhatsAppIcon className="w-full h-full" />
       </a>
     </div>
   );

@@ -67,9 +67,9 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={s.name}
-                    className="flex items-center justify-center w-11 h-11 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 transition-all duration-300 hover:scale-110"
+                    className="flex items-center justify-center transition-transform duration-300 hover:scale-110 drop-shadow-md hover:drop-shadow-lg"
                   >
-                    <img src={s.icon} alt={s.name} className="w-5 h-5 object-contain" />
+                    <img src={s.icon} alt={s.name} className="w-8 h-8 object-contain" />
                   </a>
               ))}
             </div>
