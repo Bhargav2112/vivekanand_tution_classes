@@ -192,11 +192,11 @@ export default function Home() {
                 {t("home.hero_desc")}
               </p>
               <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                <Btn to="/admission" className="bg-[#FF6600] text-white hover:bg-[#E65100] text-base font-bold px-8 py-3.5 shadow-lg flex items-center justify-center gap-2 w-full sm:w-auto">
-                  <CallIcon className="w-5 h-5 flex-shrink-0" /> {t("home.btn_admission")}
+                <Btn to="/admission" className="bg-[#FF6600] text-white hover:bg-[#E65100] text-base font-bold px-8 py-3.5 shadow-lg flex items-center justify-center gap-2 w-full sm:w-auto" icon={CallIcon}>
+                  {t("home.btn_admission")}
                 </Btn>
-                <Btn href={`https://wa.me/${SITE.whatsapp}`} className="bg-[#420405] text-white border border-white/30 hover:bg-[#58070A] text-base font-bold px-8 py-3.5 flex items-center justify-center gap-2 w-full sm:w-auto">
-                  <WhatsAppIcon className="w-5 h-5 flex-shrink-0" /> {t("home.btn_whatsapp")}
+                <Btn href={`https://wa.me/${SITE.whatsapp}`} className="bg-[#420405] text-white border border-white/30 hover:bg-[#58070A] text-base font-bold px-8 py-3.5 flex items-center justify-center gap-2 w-full sm:w-auto" icon={WhatsAppIcon}>
+                  {t("home.btn_whatsapp")}
                 </Btn>
               </div>
             </Reveal>

@@ -19,7 +19,7 @@ export default function FloatingButtons() {
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         className={cn(
-          'flex items-center justify-center w-12 h-12 bg-accent text-white shadow-lg hover:bg-[#D96D00] transition-all duration-300',
+          'flex items-center justify-center w-12 h-12 rounded-full bg-accent text-white shadow-lg hover:bg-[#D96D00] transition-all duration-300',
           showTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         )}
         aria-label="ઉપર જાઓ"
@@ -29,7 +29,7 @@ export default function FloatingButtons() {
       {/* Call */}
       <a
         href={`tel:${SITE.phoneRaw}`}
-        className="flex items-center justify-center w-12 h-12 bg-primary text-white shadow-lg hover:bg-[#68090E] transition-all duration-300"
+        className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white shadow-lg hover:bg-[#68090E] transition-all duration-300"
         aria-label="કોલ કરો"
       >
         <CallIcon className="w-5 h-5" />
@@ -39,7 +39,7 @@ export default function FloatingButtons() {
         href={`https://wa.me/${SITE.whatsapp}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center w-14 h-14 bg-[#25D366] text-white shadow-lg hover:scale-105 transition-all duration-300"
+        className="flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg hover:scale-105 transition-all duration-300"
         aria-label="WhatsApp"
       >
         <WhatsAppIcon className="w-7 h-7" />
