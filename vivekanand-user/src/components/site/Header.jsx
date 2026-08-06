@@ -154,7 +154,7 @@ export default function Header() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={s.name}
-                    className="text-golden hover:text-white transition-colors duration-200"
+                    className="text-golden hover:text-white transition-colors duration-200 p-1.5"
                   >
                     <Icon className="w-4 h-4" strokeWidth={1.8} />
                   </a>
@@ -277,7 +277,7 @@ export default function Header() {
       <div
         className={cn(
           'fixed inset-0 z-[100] lg:hidden transition-all duration-300',
-          mobileOpen ? 'visible opacity-100' : 'invisible opacity-0'
+          mobileOpen ? 'visible opacity-100 pointer-events-auto' : 'invisible opacity-0 pointer-events-none'
         )}
       >
         <div

@@ -190,12 +190,12 @@ export default function Home() {
               <p className="mt-4 max-w-[600px] font-body text-[16px] lg:text-[18px] leading-[1.7] text-white/90">
                 {t("home.hero_desc")}
               </p>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Btn to="/admission" className="bg-[#FF6600] text-white hover:bg-[#E65100] text-base font-bold px-8 py-3.5 shadow-lg flex items-center gap-2">
-                  <Check className="w-5 h-5" /> {t("home.btn_admission")}
+              <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                <Btn to="/admission" className="bg-[#FF6600] text-white hover:bg-[#E65100] text-base font-bold px-8 py-3.5 shadow-lg flex items-center justify-center gap-2 w-full sm:w-auto">
+                  <img src="/call.png" alt="Call" className="w-6 h-6 object-contain" /> {t("home.btn_admission")}
                 </Btn>
-                <Btn href={`https://wa.me/${SITE.whatsapp}`} className="bg-[#420405] text-white border border-white/30 hover:bg-[#58070A] text-base font-bold px-8 py-3.5 flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-[#25D366]" /> {t("home.btn_whatsapp")}
+                <Btn href={`https://wa.me/${SITE.whatsapp}`} className="bg-[#420405] text-white border border-white/30 hover:bg-[#58070A] text-base font-bold px-8 py-3.5 flex items-center justify-center gap-2 w-full sm:w-auto">
+                  <img src="/whatsapp.png" alt="WhatsApp" className="w-6 h-6 object-contain" /> {t("home.btn_whatsapp")}
                 </Btn>
               </div>
             </Reveal>
