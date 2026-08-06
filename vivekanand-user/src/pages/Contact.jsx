@@ -6,16 +6,17 @@ import Btn from '@/components/ui/Btn';
 import Reveal from '@/components/site/Reveal';
 import { SITE, SOCIAL } from '@/data/site';
 import { useTranslation } from 'react-i18next';
+import { cn } from '@/lib/utils';
 
 const SOCIAL_ICONS = { Instagram, Youtube, Facebook };
 
 export default function Contact() {
   const { t } = useTranslation();
   const contactItems = [
-    { icon: MapPin, label: t("contact.address_label", "સરનામું"), value: SITE.address, href: `https://maps.google.com/?q=${encodeURIComponent(SITE.mapQuery)}` },
+    { icon: "/icons/location.png", isImage: true, label: t("contact.address_label", "સરનામું"), value: SITE.address, href: `https://maps.google.com/?q=${encodeURIComponent(SITE.mapQuery)}` },
     { icon: CallIcon, label: t("contact.phone_label", "ફોન"), value: SITE.phone, href: `tel:${SITE.phoneRaw}` },
     { icon: WhatsAppIcon, label: 'WhatsApp', value: SITE.phone, href: `https://wa.me/${SITE.whatsapp}` },
-    { icon: Mail, label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
+    { icon: "/icons/mail.png", isImage: true, label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
   ];
 
   return (
@@ -36,10 +37,14 @@ export default function Contact() {
                   href={item.href}
                   target={item.href.startsWith('http') ? '_blank' : undefined}
                   rel="noopener noreferrer"
-                  className="card-hover border border-border bg-white p-7 text-center h-full block"
+                  className="card-hover border border-border bg-white p-7 text-center h-full block group"
                 >
-                  <div className="flex items-center justify-center w-14 h-14 bg-accent/10 mx-auto mb-4">
-                    <item.icon className="w-7 h-7 text-accent" strokeWidth={1.8} />
+                  <div className="w-12 h-12 flex items-center justify-center rounded-full bg-accent/10 mx-auto mb-4 group-hover:bg-accent transition-colors duration-300">
+                    {item.isImage ? (
+                      <img src={item.icon} alt={item.label} className="w-6 h-6 object-contain brightness-0 invert-[.4] group-hover:brightness-0 group-hover:invert" />
+                    ) : (
+                      <item.icon className="w-6 h-6 text-accent group-hover:text-white transition-colors" />
+                    )}
                   </div>
                   <h3 className="font-heading font-bold text-[16px] text-foreground mb-2">{item.label}</h3>
                   <p className="font-body text-[14px] text-muted-foreground leading-relaxed">{item.value}</p>
@@ -85,21 +90,20 @@ export default function Contact() {
                 <h3 className="font-heading font-bold text-[20px] text-foreground mb-4">{t("contact.follow_us")}</h3>
                 <p className="font-body text-[15px] text-muted-foreground mb-5">{t("contact.follow_desc")}</p>
                 <div className="flex items-center gap-3">
-                  {SOCIAL.map((s) => {
-                    const Icon = SOCIAL_ICONS[s.icon];
-                    return Icon ? (
-                      <a
-                        key={s.name}
-                        href={s.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={s.name}
-                        className="flex items-center justify-center w-12 h-12 border-2 border-border text-accent hover:border-accent hover:bg-accent hover:text-white transition-all duration-250"
-                      >
-                        <Icon className="w-5 h-5" strokeWidth={1.8} />
-                      </a>
-                    ) : null;
-                  })}
+                  {SOCIAL.map((social) => (
+                    <a
+                      key={social.name}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(
+                        "w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 transition-all duration-300 hover:-translate-y-1 group/social shadow-sm hover:shadow-md",
+                      )}
+                      aria-label={social.name}
+                    >
+                      <img src={social.image} alt={social.name} className="w-6 h-6 object-contain group-hover/social:scale-110 transition-transform" />
+                    </a>
+                  ))}
                 </div>
                 <div className="mt-6">
                   <Btn to="/admission" variant="primary" size="sm" iconRight={ArrowRight} fullWidth>{t("home.btn_admission")}</Btn>

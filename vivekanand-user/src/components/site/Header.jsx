@@ -10,8 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CallIcon, WhatsAppIcon } from '@/components/ui/CustomIcons';
 
-const SOCIAL_ICONS = { Instagram, Youtube, Facebook };
-
 export default function Header() {
   const { t, i18n } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
@@ -53,9 +51,9 @@ export default function Header() {
   const address = settings?.address || SITE.address;
 
   const socialLinks = [
-    { name: "Instagram", url: settings?.social_links?.instagram || FALLBACK_SOCIAL[0].url, icon: "Instagram" },
-    { name: "YouTube", url: settings?.social_links?.youtube || FALLBACK_SOCIAL[1].url, icon: "Youtube" },
-    { name: "Facebook", url: settings?.social_links?.facebook || FALLBACK_SOCIAL[2].url, icon: "Facebook" },
+    { name: "Instagram", url: settings?.social_links?.instagram || FALLBACK_SOCIAL[0].url, icon: "/icons/instagram.png" },
+    { name: "YouTube", url: settings?.social_links?.youtube || FALLBACK_SOCIAL[1].url, icon: "/icons/youtube.png" },
+    { name: "Facebook", url: settings?.social_links?.facebook || FALLBACK_SOCIAL[2].url, icon: "/icons/facebook.png" },
   ];
 
   useEffect(() => {
@@ -92,7 +90,7 @@ export default function Header() {
         <div className="max-w-[1320px] mx-auto px-4 lg:px-8 w-full h-full flex items-center justify-between">
           <div className="flex items-center gap-5 text-[13px] min-w-0">
             <span className="hidden md:flex items-center gap-1.5 min-w-0">
-              <MapPin className="w-3.5 h-3.5 text-golden flex-shrink-0" />
+              <img src="/icons/location.png" alt="Location" className="w-4 h-4 object-contain flex-shrink-0" />
               <span className="truncate font-body">{address}</span>
             </span>
             <a href={`tel:${phoneRaw}`} className="flex items-center gap-1.5 hover:text-golden transition-colors flex-shrink-0">
@@ -102,7 +100,7 @@ export default function Header() {
           </div>
           <div className="flex items-center gap-4 flex-shrink-0 relative">
             <a href={`mailto:${email}`} className="hidden lg:flex items-center gap-1.5 text-[13px] hover:text-golden transition-colors">
-              <Mail className="w-3.5 h-3.5 text-golden" />
+              <img src="/icons/mail.png" alt="Mail" className="w-4 h-4 object-contain flex-shrink-0" />
               <span className="font-body truncate">{email}</span>
             </a>
             <div className="hidden sm:block w-px h-4 bg-white/20" />
@@ -146,21 +144,18 @@ export default function Header() {
 
             <div className="hidden sm:block w-px h-4 bg-white/20" />
             <div className="flex items-center gap-2.5">
-              {socialLinks.map((s) => {
-                const Icon = SOCIAL_ICONS[s.icon];
-                return Icon && s.url ? (
+              {socialLinks.map((s) => (
                   <a
                     key={s.name}
                     href={s.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={s.name}
-                    className="text-golden hover:text-white transition-colors duration-200 p-1.5"
+                    className="hover:scale-110 transition-transform duration-200 p-1"
                   >
-                    <Icon className="w-4 h-4" strokeWidth={1.8} />
+                    <img src={s.icon} alt={s.name} className="w-4 h-4 object-contain" />
                   </a>
-                ) : null;
-              })}
+              ))}
             </div>
           </div>
         </div>
@@ -377,21 +372,18 @@ export default function Header() {
               {t("header.admission_started")}
             </Btn>
             <div className="flex items-center justify-center gap-5 pt-2">
-              {socialLinks.map((s) => {
-                const Icon = SOCIAL_ICONS[s.icon];
-                return Icon && s.url ? (
+              {socialLinks.map((s) => (
                   <a
                     key={s.name}
                     href={s.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={s.name}
-                    className="text-accent hover:text-primary transition-colors bg-white p-2 rounded-full shadow-sm"
+                    className="hover:scale-110 transition-transform bg-white p-2 rounded-full shadow-sm"
                   >
-                    <Icon className="w-5 h-5" strokeWidth={1.8} />
+                    <img src={s.icon} alt={s.name} className="w-5 h-5 object-contain" />
                   </a>
-                ) : null;
-              })}
+              ))}
             </div>
           </div>
         </div>

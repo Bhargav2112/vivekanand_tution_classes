@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { apiClient } from '@/api/apiClient';
-import { Instagram, Heart, MessageCircle } from 'lucide-react';
+import { Heart, MessageCircle } from 'lucide-react';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { motion } from 'framer-motion';
 import Btn from '@/components/ui/Btn';
+import { cn } from '@/lib/utils';
+
+const InstaImage = (props) => <img src="/icons/instagram.png" alt="Instagram" {...props} className={cn("object-contain", props.className)} />;
 
 export default function InstagramFeed() {
   const [posts, setPosts] = useState([]);
@@ -43,7 +46,7 @@ export default function InstagramFeed() {
           <Btn 
             href={`https://instagram.com/${username}`} 
             variant="outline" 
-            icon={Instagram} 
+            icon={InstaImage} 
             className="shrink-0"
           >
             @{username}

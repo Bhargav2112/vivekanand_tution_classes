@@ -13,9 +13,9 @@ export const SITE = {
 };
 
 export const SOCIAL = [
-  { name: "Instagram", url: "https://instagram.com/vivekanand_tution_classes/", icon: "Instagram" },
-  { name: "YouTube", url: "https://youtube.com/@vivekanand_classes/", icon: "Youtube" },
-  { name: "Facebook", url: "https://facebook.com/profile.php?id=61579365471353", icon: "Facebook" },
+  { name: "Instagram", url: "https://instagram.com/vivekanand_tution_classes/", icon: "Instagram", image: "/icons/instagram.png" },
+  { name: "YouTube", url: "https://youtube.com/@vivekanand_classes/", icon: "Youtube", image: "/icons/youtube.png" },
+  { name: "Facebook", url: "https://facebook.com/profile.php?id=61579365471353", icon: "Facebook", image: "/icons/facebook.png" },
 ];
 
 export const NAV_ITEMS = [
