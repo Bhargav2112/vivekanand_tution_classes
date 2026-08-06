@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Youtube, Facebook, Phone, Mail, MapPin, Send, ChevronRight } from 'lucide-react';
+import { Instagram, Youtube, Facebook, Mail, MapPin, Send, ChevronRight } from 'lucide-react';
+import { CallIcon } from '@/components/ui/CustomIcons';
 import { SITE, NAV_ITEMS, COURSES } from '@/data/site';
 import Logo from './Logo';
 import { apiClient } from '@/api/apiClient';
@@ -128,7 +129,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href={`tel:${phoneRaw}`} className="flex items-center gap-3 text-white/75 hover:text-golden transition-colors">
-                  <Phone className="w-5 h-5 text-accent flex-shrink-0" strokeWidth={1.8} />
+                  <CallIcon className="w-5 h-5 flex-shrink-0" />
                   <span className="font-display text-[15px]">{phone}</span>
                 </a>
               </li>

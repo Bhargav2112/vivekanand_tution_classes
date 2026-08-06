@@ -1,4 +1,5 @@
-import { Phone, Mail, MapPin, MessageCircle, Clock, ArrowRight, Instagram, Youtube, Facebook } from 'lucide-react';
+import { Mail, MapPin, Clock, ArrowRight, Instagram, Youtube, Facebook } from 'lucide-react';
+import { CallIcon, WhatsAppIcon } from '@/components/ui/CustomIcons';
 import PageHero from '@/components/site/PageHero';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Btn from '@/components/ui/Btn';
@@ -10,8 +11,8 @@ const SOCIAL_ICONS = { Instagram, Youtube, Facebook };
 export default function Contact() {
   const contactItems = [
     { icon: MapPin, label: 'સરનામું', value: SITE.address, href: `https://maps.google.com/?q=${encodeURIComponent(SITE.mapQuery)}` },
-    { icon: Phone, label: 'ફોન', value: SITE.phone, href: `tel:${SITE.phoneRaw}` },
-    { icon: MessageCircle, label: 'WhatsApp', value: SITE.phone, href: `https://wa.me/${SITE.whatsapp}` },
+    { icon: CallIcon, label: 'ફોન', value: SITE.phone, href: `tel:${SITE.phoneRaw}` },
+    { icon: WhatsAppIcon, label: 'WhatsApp', value: SITE.phone, href: `https://wa.me/${SITE.whatsapp}` },
     { icon: Mail, label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
   ];
 
@@ -52,8 +53,8 @@ export default function Contact() {
                 <h3 className="font-heading font-bold text-[20px] text-golden mb-4">ઝડપી સંપર્ક</h3>
                 <p className="font-body text-[15px] text-white/80 mb-6">તાત્કાલિક માહિતી માટે નીચેના વિકલ્પો વાપરો.</p>
                 <div className="flex flex-col gap-3">
-                  <Btn href={`tel:${SITE.phoneRaw}`} variant="accent" size="sm" icon={Phone} fullWidth>હમણાં કોલ કરો</Btn>
-                  <Btn href={`https://wa.me/${SITE.whatsapp}`} variant="golden" size="sm" icon={MessageCircle} fullWidth>WhatsApp કરો</Btn>
+                  <Btn href={`tel:${SITE.phoneRaw}`} variant="accent" size="sm" icon={CallIcon} fullWidth>હમણાં કોલ કરો</Btn>
+                  <Btn href={`https://wa.me/${SITE.whatsapp}`} variant="golden" size="sm" icon={WhatsAppIcon} fullWidth>WhatsApp કરો</Btn>
                 </div>
               </div>
             </Reveal>

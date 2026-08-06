@@ -8,6 +8,7 @@ import Btn from '@/components/ui/Btn';
 import { apiClient } from '@/api/apiClient';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
+import { CallIcon, WhatsAppIcon } from '@/components/ui/CustomIcons';
 
 const SOCIAL_ICONS = { Instagram, Youtube, Facebook };
 
@@ -95,7 +96,7 @@ export default function Header() {
               <span className="truncate font-body">{address}</span>
             </span>
             <a href={`tel:${phoneRaw}`} className="flex items-center gap-1.5 hover:text-golden transition-colors flex-shrink-0">
-              <Phone className="w-3.5 h-3.5 text-golden" />
+              <CallIcon className="w-4 h-4" />
               <span className="font-display">{phone}</span>
             </a>
           </div>
@@ -251,7 +252,7 @@ export default function Header() {
               href={`tel:${SITE.phoneRaw}`}
               className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-[#7A0C0C] border border-[#7A0C0C]/30 hover:bg-[#7A0C0C]/5 transition-colors"
             >
-              <Phone className="w-4 h-4 text-[#7A0C0C]" />
+              <CallIcon className="w-4 h-4" />
               {t("header.call_now")}
             </a>
             <Link
@@ -369,7 +370,7 @@ export default function Header() {
             })}
           </nav>
           <div className="p-5 border-t border-border space-y-3 bg-gray-50">
-            <Btn href={`tel:${phoneRaw}`} variant="primary" size="md" icon={Phone} fullWidth>
+            <Btn href={`tel:${phoneRaw}`} variant="primary" size="md" icon={CallIcon} fullWidth>
               {t("header.call_now")}
             </Btn>
             <Btn to="/admission" variant="maroon" size="md" fullWidth>

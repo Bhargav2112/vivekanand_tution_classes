@@ -18,6 +18,7 @@ import { SITE, STATS, WHY_CHOOSE_US, COURSES as FALLBACK_COURSES } from '@/data/
 import { apiClient } from '@/api/apiClient';
 import FaqSection from '@/components/site/FaqSection';
 import { useTranslation } from 'react-i18next';
+import { CallIcon, WhatsAppIcon } from '@/components/ui/CustomIcons';
 
 const ICONS = {
   Users, TrendingUp, Award, Star, GraduationCap, Lightbulb, Brain, BookOpen,
@@ -192,10 +193,10 @@ export default function Home() {
               </p>
               <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                 <Btn to="/admission" className="bg-[#FF6600] text-white hover:bg-[#E65100] text-base font-bold px-8 py-3.5 shadow-lg flex items-center justify-center gap-2 w-full sm:w-auto">
-                  <img src="/call.png" alt="Call" className="w-6 h-6 object-contain" /> {t("home.btn_admission")}
+                  <CallIcon className="w-5 h-5 flex-shrink-0" /> {t("home.btn_admission")}
                 </Btn>
                 <Btn href={`https://wa.me/${SITE.whatsapp}`} className="bg-[#420405] text-white border border-white/30 hover:bg-[#58070A] text-base font-bold px-8 py-3.5 flex items-center justify-center gap-2 w-full sm:w-auto">
-                  <img src="/whatsapp.png" alt="WhatsApp" className="w-6 h-6 object-contain" /> {t("home.btn_whatsapp")}
+                  <WhatsAppIcon className="w-5 h-5 flex-shrink-0" /> {t("home.btn_whatsapp")}
                 </Btn>
               </div>
             </Reveal>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Phone, ArrowUp, MessageCircle } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
+import { CallIcon, WhatsAppIcon } from '@/components/ui/CustomIcons';
 import { SITE } from '@/data/site';
 import { cn } from '@/lib/utils';
 
@@ -31,7 +32,7 @@ export default function FloatingButtons() {
         className="flex items-center justify-center w-12 h-12 bg-primary text-white shadow-lg hover:bg-[#68090E] transition-all duration-300"
         aria-label="કોલ કરો"
       >
-        <Phone className="w-5 h-5" strokeWidth={2} />
+        <CallIcon className="w-5 h-5" />
       </a>
       {/* WhatsApp */}
       <a
@@ -41,7 +42,7 @@ export default function FloatingButtons() {
         className="flex items-center justify-center w-14 h-14 bg-[#25D366] text-white shadow-lg hover:scale-105 transition-all duration-300"
         aria-label="WhatsApp"
       >
-        <MessageCircle className="w-7 h-7" strokeWidth={2} />
+        <WhatsAppIcon className="w-7 h-7" />
       </a>
     </div>
   );

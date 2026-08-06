@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Check, ArrowRight, Phone, MessageCircle, User, Users, Smartphone, GraduationCap, BookOpen, Building, MapPin, Send } from 'lucide-react';
+import { Check, ArrowRight, User, Users, Smartphone, GraduationCap, BookOpen, Building, MapPin, Send } from 'lucide-react';
+import { CallIcon, WhatsAppIcon } from '@/components/ui/CustomIcons';
 import PageHero from '@/components/site/PageHero';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Btn from '@/components/ui/Btn';
@@ -74,7 +75,7 @@ export default function Admission() {
                 અમારી ટીમ ટૂક સમયમાં તમારો સંપર્ક કરશે. તાત્કાલિક માહિતી માટે વોટ્સએપ પર સંપર્ક કરો.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Btn href={`https://wa.me/${SITE.whatsapp}`} variant="primary" size="md" icon={MessageCircle}>
+                <Btn href={`https://wa.me/${SITE.whatsapp}`} variant="primary" size="md" icon={WhatsAppIcon}>
                   વોટ્સએપ પર સંપર્ક કરો
                 </Btn>
                 <Btn to="/" variant="secondary" size="md">
@@ -92,7 +93,7 @@ export default function Admission() {
     { name: 'studentName', label: 'વિદ્યાર્થીનું નામ', icon: User, type: 'text', placeholder: 'વિદ્યાર્થીનું પૂરું નામ' },
     { name: 'parentName', label: 'વાલીનું નામ', icon: Users, type: 'text', placeholder: 'વાલીનું નામ' },
     { name: 'mobile', label: 'મોબાઇલ નંબર', icon: Smartphone, type: 'tel', placeholder: 'મોબાઇલ નંબર' },
-    { name: 'whatsapp', label: 'વોટ્સએપ નંબર', icon: MessageCircle, type: 'tel', placeholder: 'વોટ્સએપ નંબર' },
+    { name: 'whatsapp', label: 'વોટ્સએપ નંબર', icon: WhatsAppIcon, type: 'tel', placeholder: 'વોટ્સએપ નંબર' },
     { name: 'grade', label: 'ધોરણ', icon: GraduationCap, type: 'text', placeholder: 'ધોરણ' },
     { name: 'school', label: 'શાળા', icon: Building, type: 'text', placeholder: 'શાળાનું નામ' },
     { name: 'city', label: 'શહેર', icon: MapPin, type: 'text', placeholder: 'શહેર' },
@@ -131,7 +132,7 @@ export default function Admission() {
               <div className="mt-8 space-y-4">
                 <a href={`tel:${SITE.phoneRaw}`} className="flex items-center gap-4 group">
                   <div className="flex items-center justify-center w-12 h-12 bg-accent/10 group-hover:bg-accent transition-colors">
-                    <Phone className="w-5 h-5 text-accent group-hover:text-white transition-colors" strokeWidth={1.8} />
+                    <CallIcon className="w-5 h-5 transition-colors" />
                   </div>
                   <div>
                     <div className="font-body text-[13px] text-muted-foreground">ફોન</div>
@@ -140,7 +141,7 @@ export default function Admission() {
                 </a>
                 <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
                   <div className="flex items-center justify-center w-12 h-12 bg-accent/10 group-hover:bg-accent transition-colors">
-                    <MessageCircle className="w-5 h-5 text-accent group-hover:text-white transition-colors" strokeWidth={1.8} />
+                    <WhatsAppIcon className="w-5 h-5 transition-colors" />
                   </div>
                   <div>
                     <div className="font-body text-[13px] text-muted-foreground">WhatsApp</div>
