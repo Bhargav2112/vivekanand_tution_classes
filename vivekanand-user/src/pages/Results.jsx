@@ -178,33 +178,33 @@ export default function Results() {
                   </Reveal>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {groupedResults[examType]?.map((t, i) => (
-                      <Reveal key={t._id || i} delay={i * 0.08}>
+                    {groupedResults[examType]?.map((r, i) => (
+                      <Reveal key={r._id || i} delay={i * 0.08}>
                         <div className="card-hover group border border-border bg-white overflow-hidden h-full flex flex-col shadow-sm rounded-lg">
                           <div className="relative">
-                            {t.photo_url ? (
-                               <img src={t.photo_url} alt={t.student_name} className="w-full aspect-square object-cover border-0 group-hover:scale-105 transition-transform duration-500" />
+                            {r.photo_url ? (
+                               <img src={r.photo_url} alt={r.student_name} className="w-full aspect-square object-cover border-0 group-hover:scale-105 transition-transform duration-500" />
                             ) : (
                                <ImgPlaceholder label={t("results_page.student_img")} ratio="1/1" className="border-0 group-hover:scale-105 transition-transform duration-500" showLabel={false} />
                             )}
-                            {t.rank && (
+                            {r.rank && (
                               <div className="absolute top-3 right-3 bg-golden text-white w-12 h-12 flex flex-col items-center justify-center rounded-full shadow-lg border-2 border-white">
                                 <Trophy className="w-4 h-4" strokeWidth={2} />
-                                <span className="font-heading font-extrabold text-[13px] !leading-[1.4] mt-0.5">#{t.rank}</span>
+                                <span className="font-heading font-extrabold text-[13px] !leading-[1.4] mt-0.5">#{r.rank}</span>
                               </div>
                             )}
                           </div>
                           <div className="p-6 text-center flex-grow flex flex-col bg-slate-50/50">
-                            <h3 className="font-heading font-bold text-[20px] text-foreground mb-1">{t.student_name}</h3>
+                            <h3 className="font-heading font-bold text-[20px] text-foreground mb-1">{r.student_name}</h3>
                             <div className="mt-3 mb-4">
                               <div className="inline-block bg-[#7a1d1d] text-white px-5 py-1.5 rounded-full font-heading font-extrabold text-[20px] shadow-sm">
-                                {t.marks ? `${t.marks} ${t("results_page.marks")}` : `${t.percentage}%`}
+                                {r.marks ? `${r.marks} ${t("results_page.marks")}` : `${r.percentage}%`}
                               </div>
                             </div>
-                            {t.school && <p className="font-body text-[14px] text-muted-foreground mt-auto">{t.school}</p>}
+                            {r.school && <p className="font-body text-[14px] text-muted-foreground mt-auto">{r.school}</p>}
                             <div className="mt-4 pt-4 border-t border-border flex items-center justify-center gap-2">
                               <Award className="w-5 h-5 text-golden" strokeWidth={2} />
-                              <span className="font-body text-[15px] font-bold text-foreground">{t.achievement || t.category || t("results_page.merit_student")}</span>
+                              <span className="font-body text-[15px] font-bold text-foreground">{r.achievement || r.category || t("results_page.merit_student")}</span>
                             </div>
                           </div>
                         </div>
