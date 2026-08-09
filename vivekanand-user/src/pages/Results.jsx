@@ -75,13 +75,13 @@ export default function Results() {
 
   const yearsAvailable = useMemo(() => {
     const years = [...new Set(results.map(r => r.year).filter(Boolean))];
-    return years.sort((a, b) => b.localeCompare(a));
+    return years.sort((a, b) => String(b).localeCompare(String(a)));
   }, [results]);
 
   const activeYear = urlYear || (yearsAvailable.length > 0 ? yearsAvailable[0] : '2024');
 
   const filteredResultsByYear = useMemo(() => {
-    return results.filter(r => r.year === activeYear);
+    return results.filter(r => String(r.year) === String(activeYear));
   }, [results, activeYear]);
 
   const examsAvailableForYear = useMemo(() => {

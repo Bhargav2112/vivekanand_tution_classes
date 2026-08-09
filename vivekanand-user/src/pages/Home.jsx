@@ -181,9 +181,9 @@ export default function Home() {
         'મફત ડેમો ક્લાસ ઉપલબ્ધ'
       ];
 
-  const yearsAvailable = [...new Set(results.map(r => r.year).filter(Boolean))].sort((a, b) => b.localeCompare(a));
+  const yearsAvailable = [...new Set(results.map(r => r.year).filter(Boolean))].sort((a, b) => String(b).localeCompare(String(a)));
   const latestYear = yearsAvailable.length > 0 ? yearsAvailable[0] : '2024';
-  const latestResults = results.filter(r => r.year === latestYear);
+  const latestResults = results.filter(r => String(r.year) === String(latestYear));
   const latestExams = [...new Set(latestResults.map(r => r.exam || r.category || 'અન્ય'))];
 
   return (
