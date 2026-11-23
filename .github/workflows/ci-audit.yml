@@ -1,0 +1,74 @@
+name: CI audit
+
+on:
+  push:
+    branches: [main, "chore/**", "fix/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  node:
+    name: Node.js checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install and verify Node projects
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t manifests < <(find . -mindepth 2 -maxdepth 4 -name package.json -not -path '*/node_modules/*' -not -path '*/.git/*' | sort)
+          if [ -f package.json ]; then manifests=(package.json "${manifests[@]}"); fi
+          if [ "${#manifests[@]}" -eq 0 ]; then
+            echo "No package.json found; skipping Node checks."
+            exit 0
+          fi
+          for manifest in "${manifests[@]}"; do
+            dir="$(dirname "$manifest")"
+            if [ ! -f "$dir/package-lock.json" ]; then
+              echo "::warning file=$manifest::No package-lock.json; reproducible npm ci check skipped."
+              continue
+            fi
+            echo "::group::Checking $dir"
+            (cd "$dir" && npm ci)
+            if node -e "process.exit(require('./$manifest').scripts?.lint ? 0 : 1)"; then
+              (cd "$dir" && npm run lint)
+            fi
+            if node -e "process.exit(require('./$manifest').scripts?.build ? 0 : 1)"; then
+              (cd "$dir" && npm run build)
+            fi
+            if node -e "process.exit(require('./$manifest').scripts?.test ? 0 : 1)"; then
+              (cd "$dir" && npm test)
+            fi
+            echo "::endgroup::"
+          done
+
+  python:
+    name: Python syntax checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile Python sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t requirements < <(find . -mindepth 2 -maxdepth 4 -name requirements.txt -not -path '*/.venv/*' | sort)
+          for file in "${requirements[@]}"; do
+            python -m pip install -r "$file"
+          done
+          python - <<'PY'
+          import pathlib, py_compile
+          roots = [p for p in pathlib.Path(".").rglob("*.py")
+                   if not any(part in {".git", ".venv", "venv", "__pycache__"} for part in p.parts)]
+          for path in roots:
+              py_compile.compile(str(path), doraise=True)
+          print(f"Compiled {len(roots)} Python files.")
+          PY
